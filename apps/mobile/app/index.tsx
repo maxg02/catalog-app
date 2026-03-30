@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useState } from "react";
 import { Stack } from "expo-router";
-import BusinessCard from "@/components/ui/businessCard";
+import BusinessCard from "@/components/businessCard";
 import { BusinessDto } from "interfaces";
 import { BusinessCategories } from "enums";
 
@@ -107,7 +107,7 @@ export default function Index() {
     const [activeCategory, setActiveCategory] = useState<activeCategory | null>(null);
 
     return (
-        <ScrollView contentContainerClassName="justify-center bg-background gap-6 py-2">
+        <ScrollView contentContainerClassName="justify-center bg-background gap-6 pt-2 pb-6">
             <Stack.Screen
                 options={{
                     header: () => (

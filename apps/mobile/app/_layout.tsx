@@ -18,7 +18,7 @@ import {
     PlusJakartaSans_800ExtraBold,
 } from "@expo-google-fonts/plus-jakarta-sans";
 import { StatusBar } from "expo-status-bar";
-import { View, Text } from "react-native";
+import Footer from "@/components/footer";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -56,6 +56,7 @@ export default function RootLayout() {
                         },
                     }}
                 />
+                <Footer />
             </SafeAreaView>
         </AppThemeProvider>
     );

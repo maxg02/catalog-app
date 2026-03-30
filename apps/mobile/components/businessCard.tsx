@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Image } from "react-native";
 import { Text } from "@/components/ui/text";
-import { Button } from "./button";
+import { Button } from "./ui/button";
 import { StarIcon } from "lucide-nativewind";
 import { BusinessDto } from "interfaces";
 import { BusinessCategories } from "enums";
