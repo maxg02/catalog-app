@@ -17,6 +17,13 @@ import { Stack } from "expo-router";
 import BusinessCard from "@/components/businessCard";
 import { BusinessDto } from "interfaces";
 import { BusinessCategories } from "enums";
+import HeaderContainer from "@/components/layout/headerContainer";
+import Animated, {
+    useAnimatedProps,
+    useAnimatedScrollHandler,
+    useSharedValue,
+    withTiming,
+} from "react-native-reanimated";
 
 type activeCategory = "food" | "fashion" | "services" | "fitness";
 
@@ -105,13 +112,24 @@ const businesses: BusinessDto[] = [
 
 export default function Index() {
     const [activeCategory, setActiveCategory] = useState<activeCategory | null>(null);
+    const scrollAmount = useSharedValue<number>(0);
+
+    const handleScroll = useAnimatedScrollHandler({
+        onScroll: (event: any) => {
+            scrollAmount.value = event.contentOffset.y;
+        },
+    });
 
     return (
-        <ScrollView contentContainerClassName="justify-center bg-background gap-6 pt-2 pb-6">
+        <Animated.ScrollView
+            contentContainerClassName="justify-center bg-background gap-6 py-3"
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+        >
             <Stack.Screen
                 options={{
                     header: () => (
-                        <View className="items-center p-4 flex-row gap-4 bg-background">
+                        <HeaderContainer scrollAmount={scrollAmount}>
                             <MapPinIcon className="text-primary" />
                             <View>
                                 <Text className="text-xs text-muted-foreground font-jakarta-semibold">
@@ -120,7 +138,7 @@ export default function Index() {
                                 <Text className="font-jakarta-bold">Mandinga, Santo Domingo</Text>
                             </View>
                             <BellIcon className="ml-auto" />
-                        </View>
+                        </HeaderContainer>
                     ),
                 }}
             />
@@ -134,7 +152,7 @@ export default function Index() {
                 </Button>
             </View>
             <ScrollView
-                contentContainerClassName="px-4 flex justify-start flex-row gap-3"
+                contentContainerClassName="px-4 flex justify-start flex-row gap-4"
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
             >
@@ -206,14 +224,12 @@ export default function Index() {
                         </Text>
                     </Button>
                 </View>
-                <ScrollView>
-                    <View className="gap-y-3">
-                        {businesses.map((b, key) => (
-                            <BusinessCard key={key} {...b} />
-                        ))}
-                    </View>
-                </ScrollView>
+                <View className="gap-y-4 pb-6">
+                    {businesses.map((b, key) => (
+                        <BusinessCard key={key} {...b} />
+                    ))}
+                </View>
             </View>
-        </ScrollView>
+        </Animated.ScrollView>
     );
 }

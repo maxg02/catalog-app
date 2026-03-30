@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { PortalHost } from "@rn-primitives/portal";
 import { useColorScheme } from "nativewind";
 import * as SplashScreen from "expo-splash-screen";
@@ -18,7 +18,7 @@ import {
     PlusJakartaSans_800ExtraBold,
 } from "@expo-google-fonts/plus-jakarta-sans";
 import { StatusBar } from "expo-status-bar";
-import Footer from "@/components/footer";
+import Footer from "@/components/layout/footer";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -47,7 +47,7 @@ export default function RootLayout() {
     return (
         <AppThemeProvider>
             <StatusBar style={"dark"} />
-            <SafeAreaView className="flex-1 bg-background">
+            <SafeAreaView className="flex-1 bg-background" edges={["left", "right", "top"]}>
                 <Stack
                     screenOptions={{
                         headerShadowVisible: false,
@@ -57,6 +57,7 @@ export default function RootLayout() {
                     }}
                 />
                 <Footer />
+                <PortalHost name="root-portal" />
             </SafeAreaView>
         </AppThemeProvider>
     );

@@ -6,12 +6,12 @@ import { StarIcon } from "lucide-nativewind";
 import { BusinessDto } from "interfaces";
 import { BusinessCategories } from "enums";
 
-const testImageUrl = "https://cdn-icons-png.freepik.com/512/2474/2474161.png";
+const testImageUrl = "https://foodtank.com/wp-content/uploads/2021/09/gemma-stpjHJGqZyw-unsplash.jpg";
 
 function BusinessCard(businessData: BusinessDto) {
     return (
         <View className="border border-transparent rounded-3xl overflow-hidden bg-card shadow-black shadow-sm">
-            <View className="h-40 overflow-hidden relative">
+            <View className="h-56 overflow-hidden relative">
                 <View className="absolute top-3 right-3 z-10 bg-secondary px-2 py-1 rounded-full flex-row items-center gap-[0.4rem]">
                     <StarIcon className="fill-primary text-primary" size={15} />
                     <Text
