@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useState } from "react";
 import { Stack } from "expo-router";
-import BusinessCard from "@/components/businessCard";
+import BusinessCard from "@/components/ui/businessCard";
 import { BusinessDto } from "interfaces";
 import { BusinessCategories } from "enums";
 import HeaderContainer from "@/components/layout/headerContainer";

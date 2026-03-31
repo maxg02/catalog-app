@@ -3,7 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "workspaces": [
-  "apps/*",
-  "packages/*"
-  ]
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "expo-blur": "~15.0.8"
+  }
 }

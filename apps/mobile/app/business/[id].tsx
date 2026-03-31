@@ -15,14 +15,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useState, useMemo } from "react";
-import { Stack, useLocalSearchParams } from "expo-router";
-import BusinessCard from "@/components/businessCard";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import BusinessCard from "@/components/ui/businessCard";
 import { BusinessDto } from "interfaces";
 import { BusinessCategories } from "enums";
 import HeaderContainer from "@/components/layout/headerContainer";
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
-
-type activeCategory = "food" | "fashion" | "services" | "fitness";
+import FeaturedProduct from "@/components/ui/featuredProduct";
 
 const testImageUrl = "https://foodtank.com/wp-content/uploads/2021/09/gemma-stpjHJGqZyw-unsplash.jpg";
 
@@ -119,8 +118,59 @@ const businesses: BusinessDto[] = [
     },
 ];
 
-export default function Index() {
-    const [activeCategory, setActiveCategory] = useState<activeCategory | null>(null);
+const featuredProducts = [
+    {
+        id: 1,
+        name: "Wireless Headphones",
+        price: 89.99,
+        image: "https://cdn.shopify.com/s/files/1/0057/8938/4802/files/413_lifestyle.png?v=1752737623&width=400",
+        description: "High-quality wireless headphones with noise cancellation.",
+        trending: true,
+        BestSeller: true,
+        Sale: false,
+        SalePrice: null,
+        Stock: 10,
+    },
+    {
+        id: 2,
+        name: "Smart Watch",
+        price: 129.5,
+        image: "https://cdn.mos.cms.futurecdn.net/FkGweMeB7hdPgaSFQdgsfj-2000-80.jpg",
+        description: "Track your fitness and notifications with this sleek smartwatch.",
+        trending: true,
+        BestSeller: false,
+        Sale: false,
+        SalePrice: null,
+        Stock: 5,
+    },
+    {
+        id: 3,
+        name: "Gaming Mouse",
+        price: 45.0,
+        image: "https://assetsio.gnwcdn.com/g502x_f9QuuM8.jpeg?width=690&quality=85&format=jpg&dpr=3&auto=webp",
+        description: "Ergonomic gaming mouse with customizable RGB lighting.",
+        trending: false,
+        BestSeller: true,
+        Sale: true,
+        SalePrice: 35.0,
+        Stock: 20,
+    },
+    {
+        id: 4,
+        name: "Bluetooth Speaker",
+        price: 59.99,
+        image: "https://cdn.thewirecutter.com/wp-content/media/2024/11/portablebluetoothspeakers-2048px-9130.jpg?width=2048&quality=60&crop=2048:1365&auto=webp",
+        description: "Portable speaker with powerful sound and long battery life.",
+        trending: false,
+        BestSeller: false,
+        Sale: true,
+        SalePrice: 49.99,
+        Stock: 15,
+    },
+];
+
+export default function BusinessPage() {
+    const router = useRouter();
     const scrollAmount = useSharedValue<number>(0);
     const { id } = useLocalSearchParams();
 
@@ -144,7 +194,7 @@ export default function Index() {
                 options={{
                     header: () => (
                         <HeaderContainer scrollAmount={scrollAmount}>
-                            <Button variant={"ghost"} size={"icon"}>
+                            <Button variant={"ghost"} size={"icon"} onPress={() => router.back()}>
                                 <CircleArrowLeftIcon size={30} />
                             </Button>
                             <View>
@@ -155,20 +205,20 @@ export default function Index() {
                     ),
                 }}
             />
-            <View className="flex-row px-4">
-                <View className="h-28 w-28 border border-transparent rounded-2xl bg-slate-300 overflow-hidden">
+            <View className="flex-row px-4 gap-4">
+                <View className="h-28 w-28 border border-transparent rounded-2xl overflow-hidden">
                     <Image
                         source={{ uri: selectedBusiness?.image }}
                         className="w-full h-full"
                         resizeMode="cover"
                     />
                 </View>
-                <View className="items-start">
+                <View className="items-start flex-1 justify-between">
                     <Text variant={"h1"}>{selectedBusiness?.name}</Text>
                     <Text variant={"muted"} className="text-wrap">
                         {selectedBusiness?.description}
                     </Text>
-                    <View className="flex-row items-center">
+                    <View className="flex-row items-center gap-1">
                         <MapPinIcon className="text-primary" size={15} />
                         <Text variant={"muted"}>SANTO DOMINGO, DR</Text>
                     </View>
@@ -185,10 +235,35 @@ export default function Index() {
             </View>
             <View className="px-4">
                 <View className="flex-row justify-between items-center mb-2">
-                    <Text variant={"h1"}>Discover Nearby</Text>
+                    <Text variant={"h1"}>Featured Collection</Text>
                     <Button variant={"link"}>
                         <Text variant={"small"} className="font-jakarta-semibold">
                             View All
+                        </Text>
+                    </Button>
+                </View>
+                <ScrollView
+                    contentContainerClassName="flex justify-start flex-row gap-4"
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {featuredProducts.map((b, key) => (
+                        <FeaturedProduct key={key} {...b} />
+                    ))}
+                </ScrollView>
+            </View>
+            <View className="px-4">
+                <View className="flex-row justify-between items-center mb-2">
+                    <Text variant={"h1"}>Product Catalog</Text>
+                    <Button variant={"secondary"}>
+                        <Text variant={"muted"} className="text-muted-foreground">
+                            Sort by:{" "}
+                            <Text
+                                variant={"muted"}
+                                className="font-jakarta-semibold text-muted-foreground"
+                            >
+                                Newest
+                            </Text>
                         </Text>
                     </Button>
                 </View>
