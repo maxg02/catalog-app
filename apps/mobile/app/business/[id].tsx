@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Image } from "react-native";
 import {
     DumbbellIcon,
     SearchIcon,
@@ -9,11 +9,13 @@ import {
     WrenchIcon,
     MapPinIcon,
     BellIcon,
+    CircleArrowLeftIcon,
+    Share2Icon,
 } from "lucide-nativewind";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { useState } from "react";
-import { Stack } from "expo-router";
+import { useState, useMemo } from "react";
+import { Stack, useLocalSearchParams } from "expo-router";
 import BusinessCard from "@/components/businessCard";
 import { BusinessDto } from "interfaces";
 import { BusinessCategories } from "enums";
@@ -22,6 +24,8 @@ import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native
 
 type activeCategory = "food" | "fashion" | "services" | "fitness";
 
+const testImageUrl = "https://foodtank.com/wp-content/uploads/2021/09/gemma-stpjHJGqZyw-unsplash.jpg";
+
 const businesses: BusinessDto[] = [
     {
         id: 1,
@@ -29,7 +33,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.FOOD,
         location: "placeholder",
         rating: 4.5,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Cafetería acogedora con una gran variedad de cafés artesanales.",
     },
     {
@@ -38,7 +42,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.TECH,
         location: "placeholder",
         rating: 4.2,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Tienda especializada en dispositivos electrónicos y accesorios.",
     },
     {
@@ -47,7 +51,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.FITNESS,
         location: "placeholder",
         rating: 4.7,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Gimnasio moderno con entrenadores certificados y equipos de última generación.",
     },
     {
@@ -56,7 +60,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.GROCERY,
         location: "placeholder",
         rating: 4.3,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Supermercado con productos orgánicos y frescos.",
     },
     {
@@ -65,7 +69,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.FASHION,
         location: "placeholder",
         rating: 4.1,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Boutique de ropa moderna para todas las edades.",
     },
     {
@@ -74,7 +78,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.AUTOMOTIVE,
         location: "placeholder",
         rating: 4.6,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Centro de mantenimiento y reparación de vehículos.",
     },
     {
@@ -83,7 +87,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.BOOKSTORE,
         location: "placeholder",
         rating: 4.8,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Librería con una amplia colección de libros y ambiente tranquilo.",
     },
     {
@@ -92,7 +96,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.PETS,
         location: "placeholder",
         rating: 4.4,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Tienda especializada en productos y cuidado para mascotas.",
     },
     {
@@ -101,7 +105,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.BEAUTY,
         location: "placeholder",
         rating: 4.9,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Centro de spa con servicios de relajación y cuidado personal.",
     },
     {
@@ -110,7 +114,7 @@ const businesses: BusinessDto[] = [
         category: BusinessCategories.FOOD,
         location: "placeholder",
         rating: 4.0,
-        image: "placeholder",
+        image: testImageUrl,
         description: "Restaurante de comida rápida con opciones variadas y económicas.",
     },
 ];
@@ -118,6 +122,11 @@ const businesses: BusinessDto[] = [
 export default function Index() {
     const [activeCategory, setActiveCategory] = useState<activeCategory | null>(null);
     const scrollAmount = useSharedValue<number>(0);
+    const { id } = useLocalSearchParams();
+
+    const selectedBusiness = useMemo(() => {
+        return businesses.find((b) => b.id === Number(id));
+    }, [id]);
 
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event: any) => {
@@ -135,18 +144,36 @@ export default function Index() {
                 options={{
                     header: () => (
                         <HeaderContainer scrollAmount={scrollAmount}>
-                            <MapPinIcon className="text-primary" />
+                            <Button variant={"ghost"} size={"icon"}>
+                                <CircleArrowLeftIcon size={30} />
+                            </Button>
                             <View>
-                                <Text className="text-xs text-muted-foreground font-jakarta-semibold">
-                                    Your Location
-                                </Text>
-                                <Text className="font-jakarta-bold">Mandinga, Santo Domingo</Text>
+                                <Text className="font-jakarta-bold">{selectedBusiness?.name}</Text>
                             </View>
-                            <BellIcon className="ml-auto" />
+                            <Share2Icon className="ml-auto text-primary" />
                         </HeaderContainer>
                     ),
                 }}
             />
+            <View className="flex-row px-4">
+                <View className="h-28 w-28 border border-transparent rounded-2xl bg-slate-300 overflow-hidden">
+                    <Image
+                        source={{ uri: selectedBusiness?.image }}
+                        className="w-full h-full"
+                        resizeMode="cover"
+                    />
+                </View>
+                <View className="items-start">
+                    <Text variant={"h1"}>{selectedBusiness?.name}</Text>
+                    <Text variant={"muted"} className="text-wrap">
+                        {selectedBusiness?.description}
+                    </Text>
+                    <View className="flex-row items-center">
+                        <MapPinIcon className="text-primary" size={15} />
+                        <Text variant={"muted"}>SANTO DOMINGO, DR</Text>
+                    </View>
+                </View>
+            </View>
             <View className="px-4 flex-row items-center gap-2">
                 <View className="flex-1 flex-row items-center px-3 py-1 bg-input border border-transparent rounded-2xl overflow-hidden">
                     <SearchIcon size={20} className="text-muted-foreground/50" />
@@ -156,70 +183,6 @@ export default function Index() {
                     <SlidersHorizontalIcon className="text-primary-foreground" />
                 </Button>
             </View>
-            <ScrollView
-                contentContainerClassName="px-4 flex justify-start flex-row gap-4"
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-            >
-                <Button
-                    variant={activeCategory === "food" ? "default" : "secondary"}
-                    onPress={() => setActiveCategory("food")}
-                >
-                    <UtensilsIcon
-                        size={17}
-                        className={
-                            activeCategory === "food"
-                                ? "text-primary-foreground"
-                                : "text-secondary-foreground"
-                        }
-                    />
-                    <Text variant={"small"} className="font-jakarta-medium">
-                        Food
-                    </Text>
-                </Button>
-                <Button
-                    variant={activeCategory === "fashion" ? "default" : "secondary"}
-                    onPress={() => setActiveCategory("fashion")}
-                >
-                    <ShirtIcon
-                        size={17}
-                        className={
-                            activeCategory === "fashion"
-                                ? "text-primary-foreground"
-                                : "text-secondary-foreground"
-                        }
-                    />
-                    <Text variant={"small"}>Fashion</Text>
-                </Button>
-                <Button
-                    variant={activeCategory === "services" ? "default" : "secondary"}
-                    onPress={() => setActiveCategory("services")}
-                >
-                    <WrenchIcon
-                        size={17}
-                        className={
-                            activeCategory === "services"
-                                ? "text-primary-foreground"
-                                : "text-secondary-foreground"
-                        }
-                    />
-                    <Text variant={"small"}>Services</Text>
-                </Button>
-                <Button
-                    variant={activeCategory === "fitness" ? "default" : "secondary"}
-                    onPress={() => setActiveCategory("fitness")}
-                >
-                    <DumbbellIcon
-                        size={17}
-                        className={
-                            activeCategory === "fitness"
-                                ? "text-primary-foreground"
-                                : "text-secondary-foreground"
-                        }
-                    />
-                    <Text variant={"small"}>Fitness</Text>
-                </Button>
-            </ScrollView>
             <View className="px-4">
                 <View className="flex-row justify-between items-center mb-2">
                     <Text variant={"h1"}>Discover Nearby</Text>

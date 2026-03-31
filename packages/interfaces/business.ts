@@ -1,6 +1,7 @@
 import { BusinessCategories } from "enums";
 
 export interface BusinessDto {
+    id: number;
     name: string;
     category: BusinessCategories;
     location: string;
