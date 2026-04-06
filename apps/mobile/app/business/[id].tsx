@@ -241,7 +241,7 @@ export const products: ProductDto[] = [
         BestSeller: false,
         Sale: false,
         SalePrice: null,
-        Stock: 50,
+        Stock: 0,
     },
     {
         id: 7,
@@ -253,7 +253,7 @@ export const products: ProductDto[] = [
         BestSeller: true,
         Sale: true,
         SalePrice: 29.99,
-        Stock: 70,
+        Stock: 4,
     },
 ];
 
@@ -355,10 +355,12 @@ export default function BusinessPage() {
                         </Text>
                     </Button>
                 </View>
-                <View className="grid grid-cols-2 gap-4">
-                    {products.map((p, key) => (
-                        <ProductCard key={key} {...p} />
-                    ))}
+                <View className="flex-row flex-wrap gap-4">
+                    <View className="flex-1">
+                        {products.map((p, key) => (
+                            <ProductCard key={key} {...p} />
+                        ))}
+                    </View>
                 </View>
             </View>
         </Animated.ScrollView>
