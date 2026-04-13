@@ -13,7 +13,7 @@ function NumericInput() {
     };
 
     return (
-        <View className="flex-row bg-input p-1 gap-2 items-center rounded-2xl h-12 min-w-40 flex-1">
+        <View className="flex-row bg-input p-1 gap-2 items-center rounded-2xl h-12 min-w-0 flex-1">
             <Pressable
                 onPress={() => handleChange((value - 1).toString())}
                 className="rounded-2xl bg-card h-full aspect-square items-center justify-center"

@@ -10,4 +10,5 @@ export interface ProductDto {
     salePrice: number | null;
     stock: number;
     creationDate: Date;
+    details: Record<string, string>;
 }

@@ -21,6 +21,11 @@ export const testProducts: ProductDto[] = [
         salePrice: null,
         stock: 25,
         creationDate: new Date("2023-01-15"),
+        details: {
+            "Battery Life": "20 hours",
+            Connectivity: "Bluetooth 5.0",
+            Color: "Black",
+        },
     },
     {
         id: 2,
@@ -34,6 +39,11 @@ export const testProducts: ProductDto[] = [
         salePrice: 119.99,
         stock: 40,
         creationDate: new Date("2023-02-20"),
+        details: {
+            Display: "1.5-inch AMOLED",
+            "Water Resistance": "5 ATM",
+            Compatibility: "iOS and Android",
+        },
     },
     {
         id: 3,
@@ -49,6 +59,11 @@ export const testProducts: ProductDto[] = [
         salePrice: null,
         stock: 60,
         creationDate: new Date("2023-03-10"),
+        details: {
+            DPI: "Up to 16,000",
+            Buttons: "11 programmable",
+            Sensor: "Optical",
+        },
     },
     {
         id: 4,
@@ -62,6 +77,11 @@ export const testProducts: ProductDto[] = [
         salePrice: 99.99,
         stock: 35,
         creationDate: new Date("2023-04-05"),
+        details: {
+            "Switch Type": "Cherry MX Blue",
+            Backlight: "RGB",
+            "Key Rollover": "N-key",
+        },
     },
     {
         id: 5,
@@ -77,6 +97,11 @@ export const testProducts: ProductDto[] = [
         salePrice: 349.99,
         stock: 20,
         creationDate: new Date("2023-05-12"),
+        details: {
+            Size: "27 inches",
+            Resolution: "3840 x 2160",
+            Panel: "IPS",
+        },
     },
     {
         id: 6,
@@ -92,6 +117,11 @@ export const testProducts: ProductDto[] = [
         salePrice: null,
         stock: 0,
         creationDate: new Date("2023-06-18"),
+        details: {
+            "Battery Life": "12 hours",
+            Connectivity: "Bluetooth 5.0",
+            Color: "Blue",
+        },
     },
     {
         id: 7,
@@ -107,5 +137,10 @@ export const testProducts: ProductDto[] = [
         salePrice: 29.99,
         stock: 4,
         creationDate: new Date("2023-07-22"),
+        details: {
+            Material: "Aluminum",
+            "Height Adjustment": "5 levels",
+            Compatibility: "Fits laptops up to 17 inches",
+        },
     },
 ];

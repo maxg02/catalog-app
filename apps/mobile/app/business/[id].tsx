@@ -1,14 +1,9 @@
 import { Input } from "@/components/ui/input";
 import { ScrollView, View, Image } from "react-native";
 import {
-    DumbbellIcon,
     SearchIcon,
     SlidersHorizontalIcon,
-    UtensilsIcon,
-    ShirtIcon,
-    WrenchIcon,
     MapPinIcon,
-    BellIcon,
     CircleArrowLeftIcon,
     Share2Icon,
     ArrowDownUpIcon,
@@ -18,8 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useState, useMemo } from "react";
-import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import BusinessCard from "@/components/ui/businessCard";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { BusinessDto, ProductDto } from "interfaces";
 import { BusinessCategories } from "enums";
 import HeaderContainer from "@/components/layout/headerContainer";

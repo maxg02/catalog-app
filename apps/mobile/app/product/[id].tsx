@@ -2,11 +2,11 @@ import HeaderContainer from "@/components/layout/headerContainer";
 import { Button } from "@/components/ui/button";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { ProductDto } from "interfaces";
-import { CircleArrowLeftIcon, Share2Icon, ShoppingCartIcon } from "lucide-nativewind";
+import { CircleArrowLeftIcon, HeartIcon, Share2Icon, ShoppingCartIcon } from "lucide-nativewind";
 import React, { useMemo } from "react";
 import { View, Image, Dimensions } from "react-native";
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
-import { testProducts as products } from "@/lib/utils";
+import { cn, testProducts as products } from "@/lib/utils";
 import Carousel from "react-native-reanimated-carousel";
 import { Text } from "@/components/ui/text";
 import { Badge } from "@/components/ui/badge";
@@ -34,7 +34,7 @@ function ProductPage() {
 
     return selectedProduct ? (
         <Animated.ScrollView
-            contentContainerClassName="bg-background py-3 gap-6 flex-1"
+            contentContainerClassName="bg-background py-3 gap-6"
             onScroll={handleScroll}
             scrollEventThrottle={16}
         >
@@ -118,10 +118,12 @@ function ProductPage() {
                 </View>
             </View>
             <View className="px-4 flex-row overflow-hidden justify-between gap-3">
-                <NumericInput />
                 <Button className="h-12 flex-1">
-                    <Text>Add to cart</Text>
                     <ShoppingCartIcon className="text-primary-foreground" />
+                    <Text>Add to cart</Text>
+                </Button>
+                <Button variant={"outline"} className="h-12">
+                    <HeartIcon className="text-muted-foreground" />
                 </Button>
             </View>
             <View className="px-4 gap-6">
@@ -133,6 +135,22 @@ function ProductPage() {
                 </Card>
                 <Card className="p-4">
                     <Text variant={"h3"}>Details</Text>
+                    <View className="mt-2 gap-3">
+                        {Object.entries(selectedProduct?.details || {}).map(
+                            ([key, value], index, arr) => (
+                                <View
+                                    key={index}
+                                    className={cn(
+                                        "flex-row justify-between mt-3 border-b border-muted-foreground/20 pb-3",
+                                        index === arr.length - 1 && "border-b-0 pb-1",
+                                    )}
+                                >
+                                    <Text variant={"muted"}>{key}</Text>
+                                    <Text>{value}</Text>
+                                </View>
+                            ),
+                        )}
+                    </View>
                 </Card>
             </View>
         </Animated.ScrollView>
