@@ -148,9 +148,9 @@ export default function Index() {
                 }}
             />
             <View className="px-4 flex-row items-center gap-2">
-                <View className="flex-1 flex-row items-center px-3 py-1 bg-input border border-transparent rounded-2xl overflow-hidden">
+                <View className="flex-1 flex-row items-center px-3 bg-input border border-transparent rounded-2xl overflow-hidden">
                     <SearchIcon size={20} className="text-muted-foreground/50" />
-                    <Input placeholder="Buscar producto o servicio" className="flex-1 border-0" />
+                    <Input placeholder="Buscar producto o servicio" className="flex-1" />
                 </View>
                 <Button className="h-12 w-12">
                     <SlidersHorizontalIcon className="text-primary-foreground" />

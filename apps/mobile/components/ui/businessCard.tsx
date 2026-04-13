@@ -7,12 +7,13 @@ import { BusinessDto } from "interfaces";
 import { BusinessCategories } from "enums";
 import { Link } from "expo-router";
 import { Badge } from "./badge";
+import Card from "./card";
 
 const testImageUrl = "https://foodtank.com/wp-content/uploads/2021/09/gemma-stpjHJGqZyw-unsplash.jpg";
 
 function BusinessCard(businessData: BusinessDto) {
     return (
-        <View className="border border-transparent rounded-3xl overflow-hidden bg-card shadow-black shadow-sm">
+        <Card>
             <View className="h-52 overflow-hidden relative">
                 <Badge variant={"secondary"} className="absolute top-3 right-3 z-10">
                     <StarIcon className="fill-primary text-primary" size={15} />
@@ -41,7 +42,7 @@ function BusinessCard(businessData: BusinessDto) {
                     </Link>
                 </View>
             </View>
-        </View>
+        </Card>
     );
 }
 

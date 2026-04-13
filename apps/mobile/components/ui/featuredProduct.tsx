@@ -1,6 +1,6 @@
 import React from "react";
 import { ProductDto } from "interfaces";
-import { View, Image, ImageBackground } from "react-native";
+import { View, ImageBackground } from "react-native";
 import { Text } from "@/components/ui/text";
 import { LinearGradient } from "expo-linear-gradient";
 import { Badge } from "./badge";
@@ -8,7 +8,7 @@ import { Badge } from "./badge";
 function FeaturedProduct(productData: ProductDto) {
     return (
         <ImageBackground
-            source={{ uri: productData.image }}
+            source={{ uri: productData.image[0] }}
             resizeMode="cover"
             className="h-52 aspect-[15/9] overflow-hidden border border-transparent rounded-3xl justify-end items-start"
         >
@@ -16,7 +16,7 @@ function FeaturedProduct(productData: ProductDto) {
                 <Badge className="ms-3">
                     <Text>Trending</Text>
                 </Badge>
-            ) : productData.BestSeller ? (
+            ) : productData.bestSeller ? (
                 <Badge variant={"secondary"} className="ms-3">
                     <Text>Best Seller</Text>
                 </Badge>
@@ -27,11 +27,11 @@ function FeaturedProduct(productData: ProductDto) {
                 </Text>
                 <View className="flex-row gap-1">
                     <Text variant={"small"} className="text-white">
-                        {productData.Sale
-                            ? `$${productData.SalePrice?.toFixed(2)}`
+                        {productData.sale
+                            ? `$${productData.salePrice?.toFixed(2)}`
                             : `$${productData.price.toFixed(2)}`}
                     </Text>
-                    {productData.Sale && (
+                    {productData.sale && (
                         <Text className="text-white/50 line-through text-xs">
                             {`$${productData.price.toFixed(2)}`}
                         </Text>

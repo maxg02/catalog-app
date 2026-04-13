@@ -26,6 +26,10 @@ const badgeVariants = cva(
                     "bg-destructive border-transparent",
                     Platform.select({ web: "[a&]:hover:bg-destructive/90" }),
                 ),
+                warning: cn(
+                    "bg-warning border-transparent",
+                    Platform.select({ web: "[a&]:hover:bg-warning/90" }),
+                ),
                 outline: Platform.select({
                     web: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
                 }),
@@ -43,6 +47,7 @@ const badgeTextVariants = cva("text-xs font-jakarta-bold", {
             default: "text-primary-foreground",
             secondary: "text-secondary-foreground",
             destructive: "text-white",
+            warning: "text-white",
             outline: "text-foreground",
         },
     },

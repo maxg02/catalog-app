@@ -30,6 +30,7 @@ export function AppThemeProvider({ children }: Props) {
                 "--border": current.border,
                 "--ring": current.ring,
                 "--input": current.input,
+                "--warning": current.warning,
             })}
             className={cn("flex-1", scheme === "dark" && "dark")}
         >

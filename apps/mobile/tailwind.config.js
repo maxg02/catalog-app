@@ -37,6 +37,10 @@ export const theme = {
                 DEFAULT: "rgb(var(--destructive) / <alpha-value>)",
                 foreground: "rgb(var(--destructive-foreground) / <alpha-value>)",
             },
+            warning: {
+                DEFAULT: "rgb(var(--warning) / <alpha-value>)",
+                foreground: "rgb(var(--warning-foreground) / <alpha-value>)",
+            },
             muted: {
                 DEFAULT: "rgb(var(--muted) / <alpha-value>)",
                 foreground: "rgb(var(--muted-foreground) / <alpha-value>)",
