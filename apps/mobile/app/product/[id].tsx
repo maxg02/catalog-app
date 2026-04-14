@@ -1,7 +1,6 @@
 import HeaderContainer from "@/components/layout/headerContainer";
 import { Button } from "@/components/ui/button";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { ProductDto } from "interfaces";
 import { CircleArrowLeftIcon, HeartIcon, Share2Icon, ShoppingCartIcon } from "lucide-nativewind";
 import React, { useMemo } from "react";
 import { View, Image, Dimensions } from "react-native";
@@ -10,8 +9,6 @@ import { cn, testProducts as products } from "@/lib/utils";
 import Carousel from "react-native-reanimated-carousel";
 import { Text } from "@/components/ui/text";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import NumericInput from "@/components/ui/numericInput";
 import Card from "@/components/ui/card";
 
 const width = Dimensions.get("window").width;

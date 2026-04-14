@@ -9,6 +9,7 @@ import {
     ShoppingBagIcon,
     UserIcon,
     LucidePropsWithClassName,
+    ShoppingCartIcon,
 } from "lucide-nativewind";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ const footerSections: {
     { pathname: "/", name: "Discover", icon: HouseIcon },
     { pathname: "/saved", name: "Saved", icon: HeartIcon },
     { pathname: "/orders", name: "Orders", icon: ShoppingBagIcon },
+    { pathname: "/carts", name: "Carts", icon: ShoppingCartIcon },
     { pathname: "/profile", name: "Profile", icon: UserIcon },
 ];
 
@@ -48,6 +50,7 @@ function Footer() {
                             isActive && "border-t-4 border-t-primary",
                         )}
                         onPress={() => router.push(section.pathname)}
+                        size={"icon"}
                     >
                         {section.icon && (
                             <section.icon
