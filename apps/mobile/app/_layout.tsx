@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PortalHost } from "@rn-primitives/portal";
 import { useColorScheme } from "nativewind";
@@ -42,23 +42,18 @@ export default function RootLayout() {
         }
     }, [fontsLoaded, setColorScheme, error]);
 
+    console.log(usePathname());
     if (!fontsLoaded && !error) return null;
 
     return (
         <AppThemeProvider>
             <StatusBar style={"dark"} />
-            <SafeAreaView className="flex-1 bg-background" edges={["left", "right", "top"]}>
-                <Stack
-                    screenOptions={{
-                        headerShadowVisible: false,
-                        headerStyle: {
-                            backgroundColor: `rgb(${colorScheme === "light" ? THEME.light.background : THEME.dark.background})`,
-                        },
-                    }}
-                />
-                <Footer />
-                <PortalHost name="root-portal" />
-            </SafeAreaView>
+            <Stack
+                screenOptions={{
+                    headerShown: false,
+                }}
+            />
+            <PortalHost name="root-portal" />
         </AppThemeProvider>
     );
 }
