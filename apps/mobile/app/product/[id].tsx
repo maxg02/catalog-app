@@ -34,7 +34,7 @@ function ProductPage() {
 
     return selectedProduct ? (
         <Animated.ScrollView
-            contentContainerClassName="bg-background py-3 gap-6"
+            contentContainerClassName="bg-background pb-3 gap-6"
             onScroll={handleScroll}
             scrollEventThrottle={16}
         >
@@ -74,8 +74,13 @@ function ProductPage() {
                             caoruselProgress.value = absoluteProgress;
                         }}
                         renderItem={({ item }) => (
-                            <View className="w-full h-full overflow-hidden bg-gray-200 rounded-xl">
-                                <Image source={{ uri: item }} className="h-full" resizeMode="contain" />
+                            <View className="w-full h-full overflow-hidden bg-gray-200 rounded-xl items-center">
+                                <Image
+                                    source={{ uri: item }}
+                                    className="flex-1"
+                                    resizeMode="contain"
+                                    style={{ aspectRatio: "16/9" }}
+                                />
                             </View>
                         )}
                     />
