@@ -11,4 +11,11 @@ export interface ProductDto {
     stock: number;
     creationDate: Date;
     details: Record<string, string>;
+    businessId: number;
+}
+
+export interface SavedProductListDto {
+    businessId: number;
+    businessName: string;
+    productData: ProductDto[];
 }

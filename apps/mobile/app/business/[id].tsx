@@ -14,111 +14,15 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useState, useMemo } from "react";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { BusinessDto, ProductDto } from "interfaces";
-import { BusinessCategories } from "enums";
+import { ProductDto } from "interfaces";
 import HeaderContainer from "@/components/layout/headerContainer";
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
 import FeaturedProduct from "@/components/ui/featuredProduct";
 import ProductCard from "@/components/ui/productCard";
 import { SimpleGrid } from "react-native-super-grid";
-import { testProducts as products } from "@/lib/utils";
+import { testProducts as products, testBusinesses as businesses } from "@/lib/utils";
 
 const featuredProducts: ProductDto[] = products.filter((p) => p.trending || p.bestSeller);
-
-const testImageUrl = "https://foodtank.com/wp-content/uploads/2021/09/gemma-stpjHJGqZyw-unsplash.jpg";
-
-const businesses: BusinessDto[] = [
-    {
-        id: 1,
-        name: "Café Aroma",
-        category: BusinessCategories.FOOD,
-        location: "placeholder",
-        rating: 4.5,
-        image: testImageUrl,
-        description: "Cafetería acogedora con una gran variedad de cafés artesanales.",
-    },
-    {
-        id: 2,
-        name: "TechZone",
-        category: BusinessCategories.TECH,
-        location: "placeholder",
-        rating: 4.2,
-        image: testImageUrl,
-        description: "Tienda especializada en dispositivos electrónicos y accesorios.",
-    },
-    {
-        id: 3,
-        name: "FitLife Gym",
-        category: BusinessCategories.FITNESS,
-        location: "placeholder",
-        rating: 4.7,
-        image: testImageUrl,
-        description: "Gimnasio moderno con entrenadores certificados y equipos de última generación.",
-    },
-    {
-        id: 4,
-        name: "Green Market",
-        category: BusinessCategories.GROCERY,
-        location: "placeholder",
-        rating: 4.3,
-        image: testImageUrl,
-        description: "Supermercado con productos orgánicos y frescos.",
-    },
-    {
-        id: 5,
-        name: "Bella Moda",
-        category: BusinessCategories.FASHION,
-        location: "placeholder",
-        rating: 4.1,
-        image: testImageUrl,
-        description: "Boutique de ropa moderna para todas las edades.",
-    },
-    {
-        id: 6,
-        name: "AutoCare Service",
-        category: BusinessCategories.AUTOMOTIVE,
-        location: "placeholder",
-        rating: 4.6,
-        image: testImageUrl,
-        description: "Centro de mantenimiento y reparación de vehículos.",
-    },
-    {
-        id: 7,
-        name: "Book Haven",
-        category: BusinessCategories.BOOKSTORE,
-        location: "placeholder",
-        rating: 4.8,
-        image: testImageUrl,
-        description: "Librería con una amplia colección de libros y ambiente tranquilo.",
-    },
-    {
-        id: 8,
-        name: "Pet World",
-        category: BusinessCategories.PETS,
-        location: "placeholder",
-        rating: 4.4,
-        image: testImageUrl,
-        description: "Tienda especializada en productos y cuidado para mascotas.",
-    },
-    {
-        id: 9,
-        name: "Spa Relax",
-        category: BusinessCategories.BEAUTY,
-        location: "placeholder",
-        rating: 4.9,
-        image: testImageUrl,
-        description: "Centro de spa con servicios de relajación y cuidado personal.",
-    },
-    {
-        id: 10,
-        name: "QuickBites",
-        category: BusinessCategories.FOOD,
-        location: "placeholder",
-        rating: 4.0,
-        image: testImageUrl,
-        description: "Restaurante de comida rápida con opciones variadas y económicas.",
-    },
-];
 
 export default function BusinessPage() {
     const [listDisplay, setListDisplay] = useState(false);
