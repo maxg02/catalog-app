@@ -42,7 +42,6 @@ export default function RootLayout() {
         }
     }, [fontsLoaded, setColorScheme, error]);
 
-    console.log(usePathname());
     if (!fontsLoaded && !error) return null;
 
     return (

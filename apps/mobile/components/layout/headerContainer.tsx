@@ -11,12 +11,15 @@ import Animated, {
 
 interface HeaderContainerProps {
     children: React.ReactNode;
-    scrollAmount: SharedValue<number>;
+    scrollAmount?: SharedValue<number>;
 }
 
 function HeaderContainer({ children, scrollAmount }: HeaderContainerProps) {
     const shadowStyle = useAnimatedStyle(() => {
-        const elevation = interpolate(scrollAmount.value, [0, 50], [0, 5], Extrapolation.CLAMP);
+        const elevation =
+            scrollAmount !== undefined
+                ? interpolate(scrollAmount.value, [0, 50], [0, 5], Extrapolation.CLAMP)
+                : 0;
 
         return {
             elevation, // Android
