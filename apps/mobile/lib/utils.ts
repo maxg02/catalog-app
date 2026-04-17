@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { BusinessCategories } from "enums";
-import { BusinessDto, ProductDto, SavedProductListDto } from "interfaces";
+import { BusinessDto, ProductDto, SavedProductListDto, CartDto } from "interfaces";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -251,6 +251,7 @@ export const testProducts: ProductDto[] = [
 
 export const testSavedProductLists: SavedProductListDto[] = [
     {
+        id: 1,
         businessId: 2,
         businessName: "TechZone",
         productData: [
@@ -273,6 +274,7 @@ export const testSavedProductLists: SavedProductListDto[] = [
         ],
     },
     {
+        id: 2,
         businessId: 4,
         businessName: "Green Market",
         productData: [
@@ -283,6 +285,7 @@ export const testSavedProductLists: SavedProductListDto[] = [
         ],
     },
     {
+        id: 3,
         businessId: 3,
         businessName: "FitLife Gym",
         productData: [
@@ -293,8 +296,56 @@ export const testSavedProductLists: SavedProductListDto[] = [
         ],
     },
     {
+        id: 4,
         businessId: 6,
         businessName: "AutoCare Service",
+        productData: [
+            {
+                ...testProducts[6], // Laptop Stand
+                businessId: 6,
+            },
+        ],
+    },
+];
+
+export const testCarts: CartDto[] = [
+    {
+        id: 1,
+        business: testBusinesses[1], // TechZone
+        productData: [
+            {
+                ...testProducts[0], // Wireless Headphones
+                businessId: 2,
+            },
+            {
+                ...testProducts[1], // Smart Watch
+                businessId: 2,
+            },
+        ],
+    },
+    {
+        id: 2,
+        business: testBusinesses[2], // FitLife Gym
+        productData: [
+            {
+                ...testProducts[5], // Bluetooth Speaker
+                businessId: 3,
+            },
+        ],
+    },
+    {
+        id: 3,
+        business: testBusinesses[3], // Green Market
+        productData: [
+            {
+                ...testProducts[4], // 4K Monitor
+                businessId: 4,
+            },
+        ],
+    },
+    {
+        id: 4,
+        business: testBusinesses[5], // AutoCare Service
         productData: [
             {
                 ...testProducts[6], // Laptop Stand

@@ -1,3 +1,5 @@
+import { BusinessDto } from "./business";
+
 export interface ProductDto {
     id: number;
     name: string;
@@ -15,7 +17,14 @@ export interface ProductDto {
 }
 
 export interface SavedProductListDto {
+    id: number;
     businessId: number;
     businessName: string;
+    productData: ProductDto[];
+}
+
+export interface CartDto {
+    id: number;
+    business: BusinessDto;
     productData: ProductDto[];
 }
