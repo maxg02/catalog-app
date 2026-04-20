@@ -25,6 +25,6 @@ export interface SavedProductListDto {
 
 export interface CartDto {
     id: number;
-    business: BusinessDto;
+    businessData: BusinessDto;
     productData: ProductDto[];
 }

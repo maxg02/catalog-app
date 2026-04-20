@@ -15,105 +15,11 @@ import { Text } from "@/components/ui/text";
 import { useState } from "react";
 import { Stack } from "expo-router";
 import BusinessCard from "@/components/ui/businessCard";
-import { BusinessDto } from "interfaces";
-import { BusinessCategories } from "enums";
+import { testBusinesses as businesses } from "@/lib/utils";
 import HeaderContainer from "@/components/layout/headerContainer";
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
 
 type activeCategory = "food" | "fashion" | "services" | "fitness";
-
-const businesses: BusinessDto[] = [
-    {
-        id: 1,
-        name: "Café Aroma",
-        category: BusinessCategories.FOOD,
-        location: "placeholder",
-        rating: 4.5,
-        image: "placeholder",
-        description: "Cafetería acogedora con una gran variedad de cafés artesanales.",
-    },
-    {
-        id: 2,
-        name: "TechZone",
-        category: BusinessCategories.TECH,
-        location: "placeholder",
-        rating: 4.2,
-        image: "placeholder",
-        description: "Tienda especializada en dispositivos electrónicos y accesorios.",
-    },
-    {
-        id: 3,
-        name: "FitLife Gym",
-        category: BusinessCategories.FITNESS,
-        location: "placeholder",
-        rating: 4.7,
-        image: "placeholder",
-        description: "Gimnasio moderno con entrenadores certificados y equipos de última generación.",
-    },
-    {
-        id: 4,
-        name: "Green Market",
-        category: BusinessCategories.GROCERY,
-        location: "placeholder",
-        rating: 4.3,
-        image: "placeholder",
-        description: "Supermercado con productos orgánicos y frescos.",
-    },
-    {
-        id: 5,
-        name: "Bella Moda",
-        category: BusinessCategories.FASHION,
-        location: "placeholder",
-        rating: 4.1,
-        image: "placeholder",
-        description: "Boutique de ropa moderna para todas las edades.",
-    },
-    {
-        id: 6,
-        name: "AutoCare Service",
-        category: BusinessCategories.AUTOMOTIVE,
-        location: "placeholder",
-        rating: 4.6,
-        image: "placeholder",
-        description: "Centro de mantenimiento y reparación de vehículos.",
-    },
-    {
-        id: 7,
-        name: "Book Haven",
-        category: BusinessCategories.BOOKSTORE,
-        location: "placeholder",
-        rating: 4.8,
-        image: "placeholder",
-        description: "Librería con una amplia colección de libros y ambiente tranquilo.",
-    },
-    {
-        id: 8,
-        name: "Pet World",
-        category: BusinessCategories.PETS,
-        location: "placeholder",
-        rating: 4.4,
-        image: "placeholder",
-        description: "Tienda especializada en productos y cuidado para mascotas.",
-    },
-    {
-        id: 9,
-        name: "Spa Relax",
-        category: BusinessCategories.BEAUTY,
-        location: "placeholder",
-        rating: 4.9,
-        image: "placeholder",
-        description: "Centro de spa con servicios de relajación y cuidado personal.",
-    },
-    {
-        id: 10,
-        name: "QuickBites",
-        category: BusinessCategories.FOOD,
-        location: "placeholder",
-        rating: 4.0,
-        image: "placeholder",
-        description: "Restaurante de comida rápida con opciones variadas y económicas.",
-    },
-];
 
 export default function Index() {
     const [activeCategory, setActiveCategory] = useState<activeCategory | null>(null);

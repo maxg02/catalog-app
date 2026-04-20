@@ -9,8 +9,6 @@ import { Link } from "expo-router";
 import { Badge } from "./badge";
 import Card from "./card";
 
-const testImageUrl = "https://foodtank.com/wp-content/uploads/2021/09/gemma-stpjHJGqZyw-unsplash.jpg";
-
 function BusinessCard(businessData: BusinessDto) {
     return (
         <Card>
@@ -24,7 +22,11 @@ function BusinessCard(businessData: BusinessDto) {
                         3.4 km
                     </Text>
                 </Badge>
-                <Image source={{ uri: testImageUrl }} resizeMode="cover" className="w-full h-full" />
+                <Image
+                    source={{ uri: businessData.image }}
+                    resizeMode="cover"
+                    className="w-full h-full"
+                />
             </View>
             <View className="p-4">
                 <Text className="text-primary text-xs font-jakarta-bold" variant={"small"}>

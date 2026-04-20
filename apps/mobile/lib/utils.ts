@@ -311,7 +311,7 @@ export const testSavedProductLists: SavedProductListDto[] = [
 export const testCarts: CartDto[] = [
     {
         id: 1,
-        business: testBusinesses[1], // TechZone
+        businessData: testBusinesses[1], // TechZone
         productData: [
             {
                 ...testProducts[0], // Wireless Headphones
@@ -325,7 +325,7 @@ export const testCarts: CartDto[] = [
     },
     {
         id: 2,
-        business: testBusinesses[2], // FitLife Gym
+        businessData: testBusinesses[2], // FitLife Gym
         productData: [
             {
                 ...testProducts[5], // Bluetooth Speaker
@@ -335,7 +335,7 @@ export const testCarts: CartDto[] = [
     },
     {
         id: 3,
-        business: testBusinesses[3], // Green Market
+        businessData: testBusinesses[3], // Green Market
         productData: [
             {
                 ...testProducts[4], // 4K Monitor
@@ -345,7 +345,7 @@ export const testCarts: CartDto[] = [
     },
     {
         id: 4,
-        business: testBusinesses[5], // AutoCare Service
+        businessData: testBusinesses[5], // AutoCare Service
         productData: [
             {
                 ...testProducts[6], // Laptop Stand
