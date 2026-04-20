@@ -28,13 +28,13 @@ function BusinessCard(businessData: BusinessDto) {
                     className="w-full h-full"
                 />
             </View>
-            <View className="p-4">
+            <View className="py-4 px-6">
                 <Text className="text-primary text-xs font-jakarta-bold" variant={"small"}>
                     {BusinessCategories[businessData.category]}
                 </Text>
                 <Text variant={"h2"}>{businessData.name}</Text>
                 <View className="flex-row overflow-hidden gap-3 ">
-                    <Text variant={"muted"} className="text-wrap flex-1">
+                    <Text variant={"muted"} className="text-wrap flex-1" numberOfLines={2}>
                         {businessData.description}
                     </Text>
                     <Link href={{ pathname: "/business/[id]", params: { id: businessData.id } }} asChild>

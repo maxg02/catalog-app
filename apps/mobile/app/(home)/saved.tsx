@@ -8,7 +8,7 @@ import SavedProductCard from "@/components/ui/savedProductCard";
 
 function Saved() {
     return (
-        <ScrollView contentContainerClassName="p-4 gap-6 bg-background">
+        <ScrollView contentContainerClassName="py-4 px-6 gap-6 bg-background">
             <Stack.Screen options={{ title: "Saved Products" }} />
             {testSavedProductLists.map((sp, key) => (
                 <View key={key} className="gap-3">

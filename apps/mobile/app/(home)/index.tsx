@@ -53,7 +53,7 @@ export default function Index() {
                     ),
                 }}
             />
-            <View className="px-4 flex-row items-center gap-2">
+            <View className="px-6 flex-row items-center gap-2">
                 <View className="flex-1 flex-row items-center px-3 bg-input border border-transparent rounded-2xl overflow-hidden">
                     <SearchIcon size={20} className="text-muted-foreground/50" />
                     <Input placeholder="Buscar producto o servicio" className="flex-1" />
@@ -63,7 +63,7 @@ export default function Index() {
                 </Button>
             </View>
             <ScrollView
-                contentContainerClassName="px-4 flex justify-start flex-row gap-4"
+                contentContainerClassName="px-6 flex justify-start flex-row gap-4"
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
             >
@@ -126,7 +126,7 @@ export default function Index() {
                     <Text variant={"small"}>Fitness</Text>
                 </Button>
             </ScrollView>
-            <View className="px-4">
+            <View className="px-6">
                 <View className="flex-row justify-between items-center mb-2">
                     <Text variant={"h1"}>Discover Nearby</Text>
                     <Button variant={"link"}>

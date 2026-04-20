@@ -10,7 +10,7 @@ import CartCard from "@/components/ui/cartCard";
 function Carts() {
     return (
         <ScrollView contentContainerClassName="py-4 px-6 gap-6 bg-background">
-            <Stack.Screen options={{ title: "Saved Products" }} />
+            <Stack.Screen options={{ title: "My Carts" }} />
             {testCarts.map((c, key) => (
                 <CartCard key={key} {...c} />
             ))}

@@ -28,7 +28,10 @@ function HeaderContainer({ children, scrollAmount }: HeaderContainerProps) {
     });
 
     return (
-        <Animated.View style={shadowStyle} className="items-center p-4 flex-row gap-4 bg-background">
+        <Animated.View
+            style={shadowStyle}
+            className="items-center py-4 px-6 flex-row gap-4 bg-background"
+        >
             {children}
         </Animated.View>
     );

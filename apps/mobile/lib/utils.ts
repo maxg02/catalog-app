@@ -316,10 +316,22 @@ export const testCarts: CartDto[] = [
             {
                 ...testProducts[0], // Wireless Headphones
                 businessId: 2,
+                quantity: Math.floor(Math.random() * 10) + 1,
             },
             {
                 ...testProducts[1], // Smart Watch
                 businessId: 2,
+                quantity: Math.floor(Math.random() * 10) + 1,
+            },
+            {
+                ...testProducts[2], // Gaming Mouse
+                businessId: 2,
+                quantity: Math.floor(Math.random() * 10) + 1,
+            },
+            {
+                ...testProducts[3], // Mechanical Keyboard
+                businessId: 2,
+                quantity: Math.floor(Math.random() * 10) + 1,
             },
         ],
     },
@@ -330,6 +342,7 @@ export const testCarts: CartDto[] = [
             {
                 ...testProducts[5], // Bluetooth Speaker
                 businessId: 3,
+                quantity: Math.floor(Math.random() * 10) + 1,
             },
         ],
     },
@@ -340,6 +353,7 @@ export const testCarts: CartDto[] = [
             {
                 ...testProducts[4], // 4K Monitor
                 businessId: 4,
+                quantity: Math.floor(Math.random() * 10) + 1,
             },
         ],
     },
@@ -350,6 +364,7 @@ export const testCarts: CartDto[] = [
             {
                 ...testProducts[6], // Laptop Stand
                 businessId: 6,
+                quantity: Math.floor(Math.random() * 10) + 1,
             },
         ],
     },

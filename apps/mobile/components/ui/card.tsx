@@ -5,10 +5,7 @@ import { cn } from "@/lib/utils";
 function Card({ ...props }: React.ComponentProps<typeof View>) {
     return (
         <View
-            className={cn(
-                "border border-transparent rounded-3xl overflow-hidden bg-card shadow-black shadow-sm",
-                props.className,
-            )}
+            className={cn("rounded-3xl overflow-hidden bg-card shadow-black shadow-sm", props.className)}
         >
             {props.children}
         </View>
