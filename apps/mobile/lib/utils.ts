@@ -7,6 +7,21 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
+function createCart(cart: Omit<CartDto, "cartTotal" | "saleTotal">): CartDto {
+    const cartTotal = cart.productData.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const saleTotal = cart.productData.reduce(
+        (sum, item) =>
+            sum + (item.salePrice ? item.salePrice * item.quantity : item.price * item.quantity),
+        0,
+    );
+
+    return {
+        ...cart,
+        cartTotal,
+        saleTotal,
+    };
+}
+
 const testBusinessImageUrl =
     "https://foodtank.com/wp-content/uploads/2021/09/gemma-stpjHJGqZyw-unsplash.jpg";
 
@@ -309,7 +324,7 @@ export const testSavedProductLists: SavedProductListDto[] = [
 ];
 
 export const testCarts: CartDto[] = [
-    {
+    createCart({
         id: 1,
         businessData: testBusinesses[1], // TechZone
         productData: [
@@ -334,8 +349,8 @@ export const testCarts: CartDto[] = [
                 quantity: Math.floor(Math.random() * 10) + 1,
             },
         ],
-    },
-    {
+    }),
+    createCart({
         id: 2,
         businessData: testBusinesses[2], // FitLife Gym
         productData: [
@@ -345,8 +360,8 @@ export const testCarts: CartDto[] = [
                 quantity: Math.floor(Math.random() * 10) + 1,
             },
         ],
-    },
-    {
+    }),
+    createCart({
         id: 3,
         businessData: testBusinesses[3], // Green Market
         productData: [
@@ -356,8 +371,8 @@ export const testCarts: CartDto[] = [
                 quantity: Math.floor(Math.random() * 10) + 1,
             },
         ],
-    },
-    {
+    }),
+    createCart({
         id: 4,
         businessData: testBusinesses[5], // AutoCare Service
         productData: [
@@ -367,5 +382,5 @@ export const testCarts: CartDto[] = [
                 quantity: Math.floor(Math.random() * 10) + 1,
             },
         ],
-    },
+    }),
 ];

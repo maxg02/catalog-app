@@ -5,7 +5,7 @@ import { Stack } from "expo-router";
 import { StoreIcon } from "lucide-nativewind";
 import { testCarts } from "@/lib/utils";
 import SavedProductCard from "@/components/ui/savedProductCard";
-import CartCard from "@/components/ui/cartCard";
+import CartCard from "@/features/cart/components/cartCard";
 
 function Carts() {
     return (

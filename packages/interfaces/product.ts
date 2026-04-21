@@ -31,4 +31,6 @@ export interface CartDto {
     id: number;
     businessData: BusinessDto;
     productData: CartProductDto[];
+    cartTotal: number;
+    saleTotal: number;
 }

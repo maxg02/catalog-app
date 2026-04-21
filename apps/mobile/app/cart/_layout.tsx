@@ -1,24 +1,47 @@
 import HeaderContainer from "@/components/layout/headerContainer";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import React from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/ui/text";
+import { Button } from "@/components/ui/button";
+import { useSharedValue } from "react-native-reanimated";
+import { CartScrollAmountContext } from "@/features/cart/contexts/cartScrollAmountContext";
+import { ChevronLeftIcon } from "lucide-nativewind";
 
-export default function _layout() {
+export default function CartLayout() {
+    const scrollAmount = useSharedValue(0);
+
     return (
         <SafeAreaView className="flex-1 bg-background">
-            <Stack
-                screenOptions={{
-                    header: ({ options }) => (
-                        <HeaderContainer>
-                            <View>
-                                <Text className="font-jakarta-bold">{options.title}</Text>
-                            </View>
-                        </HeaderContainer>
-                    ),
-                }}
-            />
+            <CartScrollAmountContext.Provider value={scrollAmount}>
+                <Stack
+                    screenOptions={{
+                        header: ({ options, navigation }) => (
+                            <HeaderContainer scrollAmount={scrollAmount}>
+                                <View className="flex-1 flex-row items-center">
+                                    {navigation.canGoBack() ? (
+                                        <Button
+                                            variant={"ghost"}
+                                            size={"icon"}
+                                            className="-ms-2"
+                                            onPress={() => router.back()}
+                                        >
+                                            <ChevronLeftIcon size={28} />
+                                        </Button>
+                                    ) : (
+                                        <View className="h-12 w-12" />
+                                    )}
+                                    <View className="flex-1 items-center">
+                                        <Text className="font-jakarta-bold">{options.title}</Text>
+                                    </View>
+                                    <View className="h-12 w-12" />
+                                </View>
+                            </HeaderContainer>
+                        ),
+                    }}
+                />
+            </CartScrollAmountContext.Provider>
         </SafeAreaView>
     );
 }

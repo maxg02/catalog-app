@@ -1,27 +1,15 @@
 import React from "react";
 import { View, Image, ImageBackground } from "react-native";
 import { Text } from "@/components/ui/text";
-import { Button } from "./button";
+import { Button } from "@/components/ui/button";
 import { CartDto } from "interfaces";
 import { BusinessCategories } from "enums";
-import { Badge } from "./badge";
-import Card from "./card";
+import { Badge } from "@/components/ui/badge";
+import Card from "@/components/ui/card";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 
 function CartCard(cartData: CartDto) {
-    const cartTotal = cartData.productData.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-    const hasSale = cartData.productData.some((item) => item.salePrice);
-
-    const saleTotal = hasSale
-        ? cartData.productData.reduce(
-              (sum, item) =>
-                  sum + (item.salePrice ? item.salePrice * item.quantity : item.price * item.quantity),
-              0,
-          )
-        : cartTotal;
-
     return (
         <Card>
             <ImageBackground
@@ -29,7 +17,7 @@ function CartCard(cartData: CartDto) {
                 resizeMode="cover"
                 className="h-52 overflow-hidden border border-transparent rounded-3xl rounded-b-none justify-end items-start"
             >
-                {hasSale && (
+                {cartData.saleTotal < cartData.cartTotal && (
                     <Badge variant={"warning"} className="mb-auto ms-auto mt-3 me-4">
                         <Text>Products In Sale</Text>
                     </Badge>
@@ -52,11 +40,11 @@ function CartCard(cartData: CartDto) {
                         <View>
                             <View className="flex-row gap-2 items-baseline">
                                 <Text variant={"h1"} className="text-primary">
-                                    ${saleTotal.toFixed(2)}
+                                    ${cartData.saleTotal.toFixed(2)}
                                 </Text>
-                                {hasSale && (
+                                {cartData.saleTotal < cartData.cartTotal && (
                                     <Text className="text-muted-foreground/55 line-through text-xs self-start">
-                                        {`$${cartTotal.toFixed(2)}`}
+                                        {`$${cartData.cartTotal.toFixed(2)}`}
                                     </Text>
                                 )}
                                 <Text variant={"muted"} className="text-xs">
