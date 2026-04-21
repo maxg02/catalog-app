@@ -1,7 +1,4 @@
 import React from "react";
-import { View } from "react-native";
-import { Text } from "@/components/ui/text";
-import { cn } from "@/lib/utils";
 import Animated, {
     Extrapolation,
     interpolate,
@@ -11,13 +8,13 @@ import Animated, {
 
 interface HeaderContainerProps {
     children: React.ReactNode;
-    scrollAmount?: SharedValue<number>;
+    scrollAmount?: SharedValue<number> | null;
 }
 
 function HeaderContainer({ children, scrollAmount }: HeaderContainerProps) {
     const shadowStyle = useAnimatedStyle(() => {
         const elevation =
-            scrollAmount !== undefined
+            scrollAmount !== undefined && scrollAmount !== null
                 ? interpolate(scrollAmount.value, [0, 50], [0, 5], Extrapolation.CLAMP)
                 : 0;
 

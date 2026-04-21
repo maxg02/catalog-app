@@ -22,7 +22,6 @@ const footerSections: {
 }[] = [
     { pathname: "/", name: "Discover", icon: HouseIcon },
     { pathname: "/saved", name: "Saved", icon: HeartIcon },
-    { pathname: "/orders", name: "Orders", icon: ShoppingBagIcon },
     { pathname: "/carts", name: "Carts", icon: ShoppingCartIcon },
     { pathname: "/profile", name: "Profile", icon: UserIcon },
 ];

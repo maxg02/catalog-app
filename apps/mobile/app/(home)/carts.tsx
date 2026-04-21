@@ -1,20 +1,43 @@
-import React from "react";
-import { ScrollView, View } from "react-native";
-import { Text } from "@/components/ui/text";
+import React, { useEffect } from "react";
 import { Stack } from "expo-router";
-import { StoreIcon } from "lucide-nativewind";
 import { testCarts } from "@/lib/utils";
-import SavedProductCard from "@/components/ui/savedProductCard";
 import CartCard from "@/features/cart/components/cartCard";
+import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
+import { useScrollAmount } from "@/contexts/scrollAmountContext";
 
 function Carts() {
+    const scrollAmount = useScrollAmount();
+    const handleScroll = useAnimatedScrollHandler({
+        onScroll: (event) => {
+            if (scrollAmount) {
+                scrollAmount.value = event.contentOffset.y;
+            }
+        },
+    });
+
+    useEffect(() => {
+        if (scrollAmount) {
+            scrollAmount.value = 0;
+        }
+
+        return () => {
+            if (scrollAmount) {
+                scrollAmount.value = 0;
+            }
+        };
+    }, [scrollAmount]);
+
     return (
-        <ScrollView contentContainerClassName="py-4 px-6 gap-6 bg-background">
+        <Animated.ScrollView
+            contentContainerClassName="py-4 px-6 gap-6 bg-background"
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+        >
             <Stack.Screen options={{ title: "My Carts" }} />
             {testCarts.map((c, key) => (
                 <CartCard key={key} {...c} />
             ))}
-        </ScrollView>
+        </Animated.ScrollView>
     );
 }
 

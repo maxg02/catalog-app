@@ -7,13 +7,13 @@ import NumericInput from "@/components/ui/numericInput";
 import { Textarea } from "@/components/ui/textarea";
 import Card from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { SendIcon } from "lucide-nativewind";
+import { SendIcon, StoreIcon } from "lucide-nativewind";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
-import { useCartScrollAmount } from "@/features/cart/contexts/cartScrollAmountContext";
+import { useScrollAmount } from "@/contexts/scrollAmountContext";
 
 function Cart() {
     const { id } = useLocalSearchParams();
-    const scrollAmount = useCartScrollAmount();
+    const scrollAmount = useScrollAmount();
 
     const selectedCart = useMemo(() => {
         return testCarts.find((c) => c.id === Number(id));
@@ -42,15 +42,19 @@ function Cart() {
 
     return (
         <View className="flex-1 bg-background">
-            <Stack.Screen
-                options={{ title: `My Cart: ${selectedCart?.businessData.name || "Unknown"}` }}
-            />
+            <Stack.Screen options={{ title: "My Cart" }} />
             <Animated.ScrollView
                 className="flex-1"
                 contentContainerClassName="py-4 px-6 gap-6"
                 onScroll={handleScroll}
                 scrollEventThrottle={16}
             >
+                <View className="bg-primary/10 py-4 rounded-2xl flex-row gap-2 items-center justify-center">
+                    <StoreIcon className="text-primary" size={18} />
+                    <Text className="text-primary text-sm font-jakarta-bold text-center">
+                        Shopping from: {selectedCart?.businessData.name}
+                    </Text>
+                </View>
                 <View className="gap-4">
                     {selectedCart?.productData.map((p, key) => (
                         <View

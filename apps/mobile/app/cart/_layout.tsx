@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import { useSharedValue } from "react-native-reanimated";
-import { CartScrollAmountContext } from "@/features/cart/contexts/cartScrollAmountContext";
+import { ScrollAmountContext } from "@/contexts/scrollAmountContext";
 import { ChevronLeftIcon } from "lucide-nativewind";
 
 export default function CartLayout() {
@@ -14,7 +14,7 @@ export default function CartLayout() {
 
     return (
         <SafeAreaView className="flex-1 bg-background">
-            <CartScrollAmountContext.Provider value={scrollAmount}>
+            <ScrollAmountContext.Provider value={scrollAmount}>
                 <Stack
                     screenOptions={{
                         header: ({ options, navigation }) => (
@@ -33,7 +33,9 @@ export default function CartLayout() {
                                         <View className="h-12 w-12" />
                                     )}
                                     <View className="flex-1 items-center">
-                                        <Text className="font-jakarta-bold">{options.title}</Text>
+                                        <Text variant={"h1"} className="font-jakarta-bold">
+                                            {options.title}
+                                        </Text>
                                     </View>
                                     <View className="h-12 w-12" />
                                 </View>
@@ -41,7 +43,7 @@ export default function CartLayout() {
                         ),
                     }}
                 />
-            </CartScrollAmountContext.Provider>
+            </ScrollAmountContext.Provider>
         </SafeAreaView>
     );
 }

@@ -12,24 +12,39 @@ import {
 } from "lucide-nativewind";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Stack } from "expo-router";
 import BusinessCard from "@/components/ui/businessCard";
 import { testBusinesses as businesses } from "@/lib/utils";
 import HeaderContainer from "@/components/layout/headerContainer";
-import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
+import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
+import { useScrollAmount } from "@/contexts/scrollAmountContext";
 
 type activeCategory = "food" | "fashion" | "services" | "fitness";
 
 export default function Index() {
     const [activeCategory, setActiveCategory] = useState<activeCategory | null>(null);
-    const scrollAmount = useSharedValue<number>(0);
+    const scrollAmount = useScrollAmount();
 
     const handleScroll = useAnimatedScrollHandler({
-        onScroll: (event: any) => {
-            scrollAmount.value = event.contentOffset.y;
+        onScroll: (event) => {
+            if (scrollAmount) {
+                scrollAmount.value = event.contentOffset.y;
+            }
         },
     });
+
+    useEffect(() => {
+        if (scrollAmount) {
+            scrollAmount.value = 0;
+        }
+
+        return () => {
+            if (scrollAmount) {
+                scrollAmount.value = 0;
+            }
+        };
+    }, [scrollAmount]);
 
     return (
         <Animated.ScrollView
