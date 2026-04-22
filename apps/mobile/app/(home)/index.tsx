@@ -48,9 +48,10 @@ export default function Index() {
 
     return (
         <Animated.ScrollView
-            contentContainerClassName="justify-center bg-background gap-6 py-3"
+            contentContainerClassName="justify-center gap-6 py-3"
             onScroll={handleScroll}
             scrollEventThrottle={16}
+            className="flex-1 bg-background"
         >
             <Stack.Screen
                 options={{

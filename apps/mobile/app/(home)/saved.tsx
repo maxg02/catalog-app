@@ -32,9 +32,10 @@ function Saved() {
 
     return (
         <Animated.ScrollView
-            contentContainerClassName="py-4 px-6 gap-6 bg-background"
+            contentContainerClassName="py-4 px-6 gap-6"
             onScroll={handleScroll}
             scrollEventThrottle={16}
+            className="bg-background flex-1"
         >
             <Stack.Screen options={{ title: "Saved Products" }} />
             {testSavedProductLists.map((sp, key) => (
