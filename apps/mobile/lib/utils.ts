@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { BusinessCategories } from "enums";
-import { BusinessDto, ProductDto, SavedProductListDto, CartDto } from "interfaces";
+import { BusinessDto, ProductDto, SavedProductListDto, CartDto, UserDto } from "interfaces";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -384,3 +384,9 @@ export const testCarts: CartDto[] = [
         ],
     }),
 ];
+
+export const testUser: UserDto = {
+    id: "1",
+    name: "John Doe Perez",
+    email: "johndoe@email.com",
+};

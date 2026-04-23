@@ -1,13 +1,13 @@
 import { ProductDto } from "interfaces";
 import React from "react";
-import { View, Image, Pressable } from "react-native";
+import { View, Image } from "react-native";
 import { Text } from "@/components/ui/text";
 import { CircleIcon, HeartIcon, ShoppingCartIcon } from "lucide-nativewind";
 import { cn } from "@/lib/utils";
-import { Badge } from "./badge";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "expo-router";
-import Card from "./card";
-import { Button } from "./button";
+import Card from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 function SavedProductCard(savedProduct: ProductDto) {
     return (

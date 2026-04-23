@@ -4,7 +4,7 @@ import { Text } from "@/components/ui/text";
 import { Stack } from "expo-router";
 import { StoreIcon } from "lucide-nativewind";
 import { testSavedProductLists } from "@/lib/utils";
-import SavedProductCard from "@/components/ui/savedProductCard";
+import SavedProductCard from "@/features/saved-products/components/savedProductCard";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 

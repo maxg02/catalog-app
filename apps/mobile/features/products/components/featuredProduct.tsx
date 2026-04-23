@@ -3,7 +3,7 @@ import { ProductDto } from "interfaces";
 import { View, ImageBackground, Pressable } from "react-native";
 import { Text } from "@/components/ui/text";
 import { LinearGradient } from "expo-linear-gradient";
-import { Badge } from "./badge";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "expo-router";
 
 function FeaturedProduct(productData: ProductDto) {

@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useEffect, useState } from "react";
 import { Stack } from "expo-router";
-import BusinessCard from "@/components/ui/businessCard";
+import BusinessCard from "@/features/business/components/businessCard";
 import { testBusinesses as businesses } from "@/lib/utils";
 import HeaderContainer from "@/components/layout/headerContainer";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";

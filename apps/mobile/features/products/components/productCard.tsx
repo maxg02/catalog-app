@@ -4,7 +4,7 @@ import { View, Image, Pressable } from "react-native";
 import { Text } from "@/components/ui/text";
 import { CircleIcon } from "lucide-nativewind";
 import { cn } from "@/lib/utils";
-import { Badge } from "./badge";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "expo-router";
 
 interface ProductCardProps extends ProductDto {

@@ -17,8 +17,8 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { ProductDto } from "interfaces";
 import HeaderContainer from "@/components/layout/headerContainer";
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
-import FeaturedProduct from "@/components/ui/featuredProduct";
-import ProductCard from "@/components/ui/productCard";
+import FeaturedProduct from "@/features/products/components/featuredProduct";
+import ProductCard from "@/features/products/components/productCard";
 import { SimpleGrid } from "react-native-super-grid";
 import { testProducts as products, testBusinesses as businesses } from "@/lib/utils";
 
