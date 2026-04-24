@@ -6,7 +6,14 @@ import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Stack } from "expo-router";
 import { testUser } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { PencilIcon, PenIcon } from "lucide-nativewind";
+import {
+    BadgeQuestionMarkIcon,
+    ChevronRightIcon,
+    LogOutIcon,
+    PencilIcon,
+    SettingsIcon,
+} from "lucide-nativewind";
+import Card from "@/components/ui/card";
 
 function Profile() {
     const scrollAmount = useScrollAmount();
@@ -61,6 +68,24 @@ function Profile() {
                     {testUser.email}
                 </Text>
             </View>
+            <Card className="px-1 py-2 mt-4">
+                <Button variant={"ghost"} className="h-14 w-full rounded-2xl px-4 gap-3">
+                    <SettingsIcon />
+                    <Text className="text-base">Settings</Text>
+                    <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />
+                </Button>
+                <View className="mx-4 h-px bg-border" />
+                <Button variant={"ghost"} className="h-14 w-full justify-between rounded-2xl px-4 gap-3">
+                    <BadgeQuestionMarkIcon />
+                    <Text className="text-base">Help & Support</Text>
+                    <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />
+                </Button>
+                <View className="mx-4 h-px bg-border" />
+                <Button variant={"ghost"} className="h-14 w-full justify-start rounded-2xl px-4 gap-3">
+                    <LogOutIcon className="text-destructive" />
+                    <Text className="text-base text-destructive">Logout</Text>
+                </Button>
+            </Card>
         </Animated.ScrollView>
     );
 }
