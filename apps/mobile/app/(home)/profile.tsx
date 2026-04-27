@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
-import { Stack } from "expo-router";
+import { Tabs } from "expo-router";
 import { testUser } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +16,7 @@ import {
 import Card from "@/components/ui/card";
 
 function Profile() {
-    const scrollAmount = useScrollAmount();
+    const scrollAmount = useScrollAmount("profile");
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
             if (scrollAmount) {
@@ -50,7 +50,7 @@ function Profile() {
             scrollEventThrottle={16}
             className="bg-background flex-1"
         >
-            <Stack.Screen options={{ title: "Profile" }} />
+            <Tabs.Screen options={{ title: "Profile" }} />
             <View className="items-center">
                 <View className="bg-primary/10 aspect-square h-28 justify-center rounded-full relative">
                     <Text variant={"h1"} className="text-primary">

@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Text } from "@/components/ui/text";
-import { Stack } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { StoreIcon } from "lucide-nativewind";
-import { testSavedProductLists } from "@/lib/utils";
+import { testSavedProductLists, testUser } from "@/lib/utils";
 import SavedProductCard from "@/features/saved-products/components/savedProductCard";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 
 function Saved() {
-    const scrollAmount = useScrollAmount();
+    const scrollAmount = useScrollAmount("saved");
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
             if (scrollAmount) {
@@ -30,6 +30,10 @@ function Saved() {
         };
     }, [scrollAmount]);
 
+    if (testUser.rol === "business") {
+        return <Redirect href="/insights" />;
+    }
+
     return (
         <Animated.ScrollView
             contentContainerClassName="py-4 px-6 gap-6"
@@ -37,7 +41,7 @@ function Saved() {
             scrollEventThrottle={16}
             className="bg-background flex-1"
         >
-            <Stack.Screen options={{ title: "Saved Products" }} />
+            <Tabs.Screen options={{ title: "Saved Products" }} />
             {testSavedProductLists.map((sp, key) => (
                 <View key={key} className="gap-3">
                     <View className="flex-row gap-2 items-center">

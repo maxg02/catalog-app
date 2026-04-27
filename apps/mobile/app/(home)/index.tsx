@@ -13,9 +13,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useEffect, useState } from "react";
-import { Stack } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import BusinessCard from "@/features/business/components/businessCard";
-import { testBusinesses as businesses } from "@/lib/utils";
+import { testBusinesses as businesses, testUser } from "@/lib/utils";
 import HeaderContainer from "@/components/layout/headerContainer";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
@@ -24,7 +24,7 @@ type activeCategory = "food" | "fashion" | "services" | "fitness";
 
 export default function Index() {
     const [activeCategory, setActiveCategory] = useState<activeCategory | null>(null);
-    const scrollAmount = useScrollAmount();
+    const scrollAmount = useScrollAmount("index");
 
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
@@ -46,6 +46,10 @@ export default function Index() {
         };
     }, [scrollAmount]);
 
+    if (testUser.rol === "business") {
+        return <Redirect href="/insights" />;
+    }
+
     return (
         <Animated.ScrollView
             contentContainerClassName="justify-center gap-6 py-3"
@@ -53,7 +57,7 @@ export default function Index() {
             scrollEventThrottle={16}
             className="flex-1 bg-background"
         >
-            <Stack.Screen
+            <Tabs.Screen
                 options={{
                     header: () => (
                         <HeaderContainer scrollAmount={scrollAmount}>

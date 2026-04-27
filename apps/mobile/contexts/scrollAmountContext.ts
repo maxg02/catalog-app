@@ -1,8 +1,29 @@
 import { createContext, useContext } from "react";
 import { SharedValue } from "react-native-reanimated";
 
-export const ScrollAmountContext = createContext<SharedValue<number> | null>(null);
+type ScrollAmountContextValue =
+    | SharedValue<number>
+    | {
+          defaultValue: SharedValue<number>;
+          routeValues: Record<string, SharedValue<number>>;
+      };
 
-export function useScrollAmount() {
-    return useContext(ScrollAmountContext);
+export const ScrollAmountContext = createContext<ScrollAmountContextValue | null>(null);
+
+export function useScrollAmount(routeName?: string) {
+    const scrollAmount = useContext(ScrollAmountContext);
+
+    if (!scrollAmount) {
+        return null;
+    }
+
+    if ("value" in scrollAmount) {
+        return scrollAmount;
+    }
+
+    if (routeName) {
+        return scrollAmount.routeValues[routeName] ?? scrollAmount.defaultValue;
+    }
+
+    return scrollAmount.defaultValue;
 }

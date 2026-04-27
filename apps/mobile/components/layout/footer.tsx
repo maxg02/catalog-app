@@ -1,61 +1,54 @@
-import React, { useState, useLayoutEffect } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import {
-    HouseIcon,
-    HeartIcon,
-    ShoppingBagIcon,
-    UserIcon,
-    LucidePropsWithClassName,
-    ShoppingCartIcon,
-} from "lucide-nativewind";
+import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { Href, usePathname, useRouter } from "expo-router";
+import type { HomeTabConfig } from "@/lib/homeTabs";
 
-const footerSections: {
-    pathname: Href;
-    name: string;
-    icon: (props: LucidePropsWithClassName) => React.ReactNode;
-}[] = [
-    { pathname: "/", name: "Discover", icon: HouseIcon },
-    { pathname: "/saved", name: "Saved", icon: HeartIcon },
-    { pathname: "/carts", name: "Carts", icon: ShoppingCartIcon },
-    { pathname: "/profile", name: "Profile", icon: UserIcon },
-];
+type FooterProps = BottomTabBarProps & {
+    tabs: HomeTabConfig[];
+};
 
-function Footer() {
-    const pathname = usePathname();
-    const router = useRouter();
-
-    const currentSection =
-        footerSections.find((section) => section.pathname === pathname)?.name ?? "Discover";
+function Footer({ state, navigation, tabs }: FooterProps) {
+    const activeRouteKey = state.routes[state.index]?.key;
 
     return (
         <SafeAreaView
             className="flex flex-row items-center shadow-lg shadow-black px-4 pb-1 bg-card"
             edges={["bottom"]}
         >
-            {footerSections.map((section) => {
-                const isActive = currentSection === section.name;
+            {state.routes.map((route) => {
+                const section = tabs.find((item) => item.name === route.name);
+                if (!section) return null;
+
+                const isActive = activeRouteKey === route.key;
+                const Icon = section.icon;
+
+                const handlePress = () => {
+                    const event = navigation.emit({
+                        type: "tabPress",
+                        target: route.key,
+                        canPreventDefault: true,
+                    });
+
+                    if (!isActive && !event.defaultPrevented) {
+                        navigation.navigate(route.name, route.params);
+                    }
+                };
+
                 return (
                     <Button
-                        key={section.name}
+                        key={route.key}
                         variant={"ghost"}
                         className={cn(
                             "flex flex-col flex-1 h-fit rounded-none pt-3 active:bg-card",
                             isActive && "border-t-4 border-t-primary",
                         )}
-                        onPress={() => router.push(section.pathname)}
+                        onPress={handlePress}
                         size={"icon"}
                     >
-                        {section.icon && (
-                            <section.icon
-                                className={isActive ? "text-primary" : "text-muted-foreground"}
-                            />
-                        )}
+                        <Icon className={isActive ? "text-primary" : "text-muted-foreground"} />
                         <Text
                             className={cn(
                                 "text-xs",
@@ -64,7 +57,7 @@ function Footer() {
                                     : "text-muted-foreground font-jakarta-medium",
                             )}
                         >
-                            {section.name}
+                            {section.label}
                         </Text>
                     </Button>
                 );

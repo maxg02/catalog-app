@@ -389,4 +389,5 @@ export const testUser: UserDto = {
     id: "1",
     name: "John Doe Perez",
     email: "johndoe@email.com",
+    rol: "business",
 };

@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
+import { View } from "react-native";
 import { Redirect, Tabs } from "expo-router";
-import { testCarts, testUser } from "@/lib/utils";
-import CartCard from "@/features/cart/components/cartCard";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
+import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
+import { testUser } from "@/lib/utils";
 
-function Carts() {
-    const scrollAmount = useScrollAmount("carts");
+function Catalog() {
+    const scrollAmount = useScrollAmount("catalog");
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
             if (scrollAmount) {
@@ -27,22 +28,23 @@ function Carts() {
         };
     }, [scrollAmount]);
 
-    if (testUser.rol === "business") {
-        return <Redirect href="/insights" />;
+    if (testUser.rol === "customer") {
+        return <Redirect href="/" />;
     }
 
     return (
         <Animated.ScrollView
-            contentContainerClassName="py-4 px-6 gap-6 bg-background"
+            contentContainerClassName="flex-grow items-center justify-center px-6 py-4"
             onScroll={handleScroll}
             scrollEventThrottle={16}
+            className="bg-background flex-1"
         >
-            <Tabs.Screen options={{ title: "My Carts" }} />
-            {testCarts.map((c, key) => (
-                <CartCard key={key} {...c} />
-            ))}
+            <Tabs.Screen options={{ title: "Catalog" }} />
+            <View>
+                <Text variant={"h1"}>Catalog</Text>
+            </View>
         </Animated.ScrollView>
     );
 }
 
-export default Carts;
+export default Catalog;
