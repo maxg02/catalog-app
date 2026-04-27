@@ -2,7 +2,7 @@ import HeaderContainer from "@/components/layout/headerContainer";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { ScrollAmountContext } from "@/contexts/scrollAmountContext";
-import { testBusinesses as businesses } from "@/lib/utils";
+import { testProducts as products } from "@/lib/utils";
 import { ChevronLeftIcon, Share2Icon } from "lucide-nativewind";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
@@ -10,12 +10,12 @@ import { useSharedValue } from "react-native-reanimated";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function BusinessLayout() {
+export default function ProductLayout() {
     const router = useRouter();
     const scrollAmount = useSharedValue(0);
     const { id } = useLocalSearchParams<{ id?: string | string[] }>();
     const selectedId = Array.isArray(id) ? id[0] : id;
-    const selectedBusiness = businesses.find((business) => business.id === Number(selectedId));
+    const selectedProduct = products.find((product) => product.id === Number(selectedId));
 
     return (
         <SafeAreaView className="flex-1 bg-background">
@@ -37,7 +37,7 @@ export default function BusinessLayout() {
                                     <View className="h-12 w-12" />
                                 )}
                                 <View className="flex-1 items-center">
-                                    <Text variant={"h1"}>{selectedBusiness?.name}</Text>
+                                    <Text variant={"h1"}>{selectedProduct?.name}</Text>
                                 </View>
                                 <Button
                                     variant={"ghost"}

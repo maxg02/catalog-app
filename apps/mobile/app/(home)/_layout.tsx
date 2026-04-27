@@ -7,7 +7,7 @@ import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { ScrollAmountContext } from "@/contexts/scrollAmountContext";
 
-export default function RootLayout() {
+export default function HomeLayout() {
     const scrollAmount = useSharedValue(0);
 
     return (

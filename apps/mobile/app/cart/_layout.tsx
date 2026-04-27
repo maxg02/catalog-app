@@ -33,9 +33,7 @@ export default function CartLayout() {
                                         <View className="h-12 w-12" />
                                     )}
                                     <View className="flex-1 items-center">
-                                        <Text variant={"h1"} className="font-jakarta-bold">
-                                            {options.title}
-                                        </Text>
+                                        <Text variant={"h1"}>{options.title}</Text>
                                     </View>
                                     <View className="h-12 w-12" />
                                 </View>

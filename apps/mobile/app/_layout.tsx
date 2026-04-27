@@ -22,7 +22,7 @@ import Footer from "@/components/layout/footer";
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+export default function AppLayout() {
     const { colorScheme, setColorScheme } = useColorScheme();
     const [fontsLoaded, error] = useFonts({
         PlusJakartaSans_200ExtraLight,

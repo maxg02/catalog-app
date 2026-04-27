@@ -1,8 +1,8 @@
-import HeaderContainer from "@/components/layout/headerContainer";
 import { Button } from "@/components/ui/button";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { CircleArrowLeftIcon, HeartIcon, Share2Icon, ShoppingCartIcon } from "lucide-nativewind";
-import React, { useMemo } from "react";
+import { useScrollAmount } from "@/contexts/scrollAmountContext";
+import { useLocalSearchParams } from "expo-router";
+import { HeartIcon, ShoppingCartIcon } from "lucide-nativewind";
+import React, { useEffect, useMemo } from "react";
 import { View, Image, Dimensions } from "react-native";
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
 import { cn, testProducts as products } from "@/lib/utils";
@@ -14,9 +14,8 @@ import Card from "@/components/ui/card";
 const width = Dimensions.get("window").width;
 
 function ProductPage() {
-    const router = useRouter();
-    const scrollAmount = useSharedValue<number>(0);
     const caoruselProgress = useSharedValue<number>(0);
+    const scrollAmount = useScrollAmount();
     const { id } = useLocalSearchParams();
 
     const selectedProduct = useMemo(() => {
@@ -24,10 +23,24 @@ function ProductPage() {
     }, [id]);
 
     const handleScroll = useAnimatedScrollHandler({
-        onScroll: (event: any) => {
-            scrollAmount.value = event.contentOffset.y;
+        onScroll: (event) => {
+            if (scrollAmount) {
+                scrollAmount.value = event.contentOffset.y;
+            }
         },
     });
+
+    useEffect(() => {
+        if (scrollAmount) {
+            scrollAmount.value = 0;
+        }
+
+        return () => {
+            if (scrollAmount) {
+                scrollAmount.value = 0;
+            }
+        };
+    }, [scrollAmount]);
 
     return selectedProduct ? (
         <Animated.ScrollView
@@ -35,21 +48,6 @@ function ProductPage() {
             onScroll={handleScroll}
             scrollEventThrottle={16}
         >
-            <Stack.Screen
-                options={{
-                    header: () => (
-                        <HeaderContainer scrollAmount={scrollAmount}>
-                            <Button variant={"ghost"} size={"icon"} onPress={() => router.back()}>
-                                <CircleArrowLeftIcon size={30} />
-                            </Button>
-                            <View>
-                                <Text className="font-jakarta-bold">{selectedProduct?.name}</Text>
-                            </View>
-                            <Share2Icon className="ml-auto text-primary" />
-                        </HeaderContainer>
-                    ),
-                }}
-            />
             <View>
                 <View className="w-full h-96">
                     <Carousel
@@ -82,7 +80,7 @@ function ProductPage() {
                         )}
                     />
                 </View>
-                <View className="flex-row justify-between items-center px-4 gap-6">
+                <View className="flex-row justify-between items-center px-6 gap-6">
                     <View className="items-start">
                         <Text variant={"h1"}>{selectedProduct?.name}</Text>
                         <View className="flex-row gap-2 items-center">
@@ -119,7 +117,7 @@ function ProductPage() {
                     </View>
                 </View>
             </View>
-            <View className="px-4 flex-row overflow-hidden justify-between gap-3">
+            <View className="px-6 flex-row overflow-hidden justify-between gap-3">
                 <Button className="h-12 flex-1">
                     <ShoppingCartIcon className="text-primary-foreground" />
                     <Text>Add to cart</Text>
@@ -128,7 +126,7 @@ function ProductPage() {
                     <HeartIcon className="text-muted-foreground" />
                 </Button>
             </View>
-            <View className="px-4 gap-6">
+            <View className="px-6 gap-6">
                 <Card className="p-4">
                     <Text variant={"h3"}>Description</Text>
                     <Text variant={"muted"} className="mt-2">
