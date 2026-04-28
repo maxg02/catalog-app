@@ -33,6 +33,10 @@ const badgeVariants = cva(
                 outline: Platform.select({
                     web: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
                 }),
+                muted: cn(
+                    "bg-muted border-transparent",
+                    Platform.select({ web: "[a&]:hover:bg-muted/90" }),
+                ),
             },
         },
         defaultVariants: {
@@ -49,6 +53,7 @@ const badgeTextVariants = cva("text-xs font-jakarta-bold", {
             destructive: "text-white",
             warning: "text-white",
             outline: "text-foreground",
+            muted: "text-muted-foreground",
         },
     },
     defaultVariants: {

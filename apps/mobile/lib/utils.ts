@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { BusinessCategories } from "enums";
-import { BusinessDto, ProductDto, SavedProductListDto, CartDto, UserDto } from "interfaces";
+import { BusinessDto, ProductDto, SavedProductListDto, CartDto, UserBusinessDto } from "interfaces";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -385,9 +385,52 @@ export const testCarts: CartDto[] = [
     }),
 ];
 
-export const testUser: UserDto = {
+// export const testUser: UserDto = {
+//     id: "1",
+//     name: "John Doe Perez",
+//     email: "johndoe@email.com",
+//     rol: "business",
+// };
+
+export const testUser: UserBusinessDto = {
     id: "1",
-    name: "John Doe Perez",
+    name: "Repuestos Mandingo",
     email: "johndoe@email.com",
     rol: "business",
+    profileVisits: {
+        mon: 120,
+        tue: 98,
+        wed: 150,
+        thu: 80,
+        fri: 200,
+        sat: 170,
+        sun: 90,
+    },
+    catalogVisits: {
+        mon: 60,
+        tue: 45,
+        wed: 70,
+        thu: 30,
+        fri: 90,
+        sat: 85,
+        sun: 40,
+    },
+    productViews: {
+        mon: 300,
+        tue: 250,
+        wed: 400,
+        thu: 150,
+        fri: 500,
+        sat: 450,
+        sun: 200,
+    },
+    inquiries: {
+        mon: 20,
+        tue: 15,
+        wed: 30,
+        thu: 10,
+        fri: 40,
+        sat: 35,
+        sun: 5,
+    },
 };
