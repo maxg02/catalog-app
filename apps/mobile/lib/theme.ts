@@ -8,7 +8,7 @@ export const THEME = {
         primaryForeground: "250 250 250",
         secondary: "228 234 237",
         secondaryForeground: "23 23 23",
-        muted: "245 245 245",
+        muted: "229 231 235",
         mutedForeground: "97 124 137",
         accent: "245 245 245",
         accentForeground: "23 23 23",

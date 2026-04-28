@@ -4,10 +4,11 @@ import { Redirect, Tabs } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
-import { testUser } from "@/lib/utils";
 import HeaderContainer from "@/components/layout/headerContainer";
-import { BellIcon, MapPinIcon, StoreIcon } from "lucide-nativewind";
+import { BellIcon, EyeIcon, StoreIcon } from "lucide-nativewind";
 import { Badge } from "@/components/ui/badge";
+import Card from "@/components/ui/card";
+import { testUser } from "@/lib/utils";
 
 function Insights() {
     const scrollAmount = useScrollAmount("insights");
@@ -35,6 +36,8 @@ function Insights() {
         return <Redirect href="/" />;
     }
 
+    const weekday = new Date().getDay() - 1;
+
     return (
         <Animated.ScrollView
             contentContainerClassName="px-6 py-4"
@@ -51,18 +54,39 @@ function Insights() {
                                 <Text className="text-xs text-muted-foreground font-jakarta-semibold">
                                     Analytics Dashboard
                                 </Text>
-                                <Text className="font-jakarta-bold">Mandinga, Santo Domingo</Text>
+                                <Text className="font-jakarta-bold">{testUser.name}</Text>
                             </View>
                             <BellIcon className="ml-auto" />
                         </HeaderContainer>
                     ),
                 }}
             />
-            <View className="flex flex-row items-center justify-between">
+            <View className="flex flex-row items-center justify-between mb-3">
                 <Text variant={"h1"}>Overview</Text>
                 <Badge variant={"muted"}>
-                    <Text variant={"muted"}>Last 24h</Text>
+                    <Text>Last 24h</Text>
                 </Badge>
+            </View>
+            <View className="flex-row gap-3">
+                <Card className="flex-1 py-4 px-6">
+                    <View className="flex-row justify-between">
+                        <Text variant={"muted"}>Profile Visits</Text>
+                        <EyeIcon className="text-primary" />
+                    </View>
+                    <Text variant={"h1"} className="text-start mt-2">
+                        {Object.entries(testUser.profileVisits)[weekday][1]}
+                    </Text>
+                    <Text className="text-xs text-primary mt-2">
+                        +{Object.entries(testUser.profileVisits)[weekday][1]}
+                    </Text>
+                </Card>
+                <Card className="flex-1 py-4 px-6">
+                    <View className="flex-row justify-between">
+                        <Text variant={"small"}>Product Views</Text>
+                        <EyeIcon />
+                    </View>
+                    <Text>{Object.entries(testUser.productViews)[weekday][1]}</Text>
+                </Card>
             </View>
         </Animated.ScrollView>
     );
