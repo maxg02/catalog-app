@@ -7,6 +7,18 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
+function toRgbChannels(color: string) {
+    return color.split(/[,\s]+/).filter(Boolean).join(", ");
+}
+
+export function toRgb(color: string) {
+    return `rgb(${toRgbChannels(color)})`;
+}
+
+export function toRgba(color: string, alpha: number) {
+    return `rgba(${toRgbChannels(color)}, ${alpha})`;
+}
+
 function createCart(cart: Omit<CartDto, "cartTotal" | "saleTotal">): CartDto {
     const cartTotal = cart.productData.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const saleTotal = cart.productData.reduce(
