@@ -124,7 +124,7 @@ function Cart() {
                 <View className="mt-3 items-center gap-3">
                     <Button className="w-full flex-row gap-4">
                         <SendIcon className="text-primary-foreground" />
-                        <Text>Send Order via Whatsapp</Text>
+                        <Text>Place Order via Whatsapp</Text>
                     </Button>
                     <Text variant={"muted"} className="text-xs">
                         OPENS WHATSAPP TO FINALIZE YOUR ORDER
