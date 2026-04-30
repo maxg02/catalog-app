@@ -1,7 +1,8 @@
 import { BusinessCategories } from "enums";
 import { UserRole } from "./misc";
+import type { ProductDto } from "./product";
 
-interface WeeklyMetrics {
+export interface WeeklyMetrics {
     mon: number;
     tue: number;
     wed: number;
@@ -11,15 +12,31 @@ interface WeeklyMetrics {
     sun: number;
 }
 
+export interface BusinessInsightMetric {
+    total: number;
+    previousTotal: number;
+    weekly: WeeklyMetrics;
+}
+
+export interface BusinessProductHighlight {
+    label: string;
+    metric: string;
+    product: ProductDto;
+}
+
 export interface UserBusinessDto {
     id: string;
     name: string;
     email: string;
     rol: UserRole;
-    profileVisits: WeeklyMetrics;
-    catalogVisits: WeeklyMetrics;
-    productViews: WeeklyMetrics;
-    inquiries: WeeklyMetrics;
+    insights: {
+        overview: {
+            catalogVisits: BusinessInsightMetric;
+            ordersPlaced: BusinessInsightMetric;
+            cartsCreated: BusinessInsightMetric;
+        };
+        productHighlights: BusinessProductHighlight[];
+    };
 }
 
 export interface BusinessDto {

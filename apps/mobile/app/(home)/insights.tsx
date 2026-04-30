@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Image, LayoutChangeEvent, ScrollView, View } from "react-native";
+import React, { useEffect } from "react";
+import { View } from "react-native";
 import { Redirect, Tabs } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
@@ -7,79 +7,21 @@ import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import HeaderContainer from "@/components/layout/headerContainer";
 import {
     BellIcon,
-    ChartNoAxesCombinedIcon,
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    HeartIcon,
     PackageSearchIcon,
     ReceiptTextIcon,
     ShoppingCartIcon,
     StoreIcon,
+    TrendingUpIcon,
 } from "lucide-nativewind";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/card";
-import { testProducts, testUser } from "@/lib/utils";
-import WeeklyPerformanceChart from "@/features/insights/components/weeklyPerformanceChart";
-
-const chartDatasets = [
-    {
-        label: "Orders Placed",
-        data: [
-            { name: "Mon", value: 132 },
-            { name: "Tue", value: 148 },
-            { name: "Wed", value: 121 },
-            { name: "Thu", value: 164 },
-            { name: "Fri", value: 188 },
-            { name: "Sat", value: 109 },
-            { name: "Sun", value: 72 },
-        ],
-    },
-    {
-        label: "Catalog Visits",
-        data: [
-            { name: "Mon", value: 184 },
-            { name: "Tue", value: 211 },
-            { name: "Wed", value: 236 },
-            { name: "Thu", value: 168 },
-            { name: "Fri", value: 256 },
-            { name: "Sat", value: 148 },
-            { name: "Sun", value: 82 },
-        ],
-    },
-    {
-        label: "Carts Created",
-        data: [
-            { name: "Mon", value: 120 },
-            { name: "Tue", value: 200 },
-            { name: "Wed", value: 150 },
-            { name: "Thu", value: 80 },
-            { name: "Fri", value: 70 },
-            { name: "Sat", value: 110 },
-            { name: "Sun", value: 130 },
-        ],
-    },
-];
-
-const productHighlights = [
-    {
-        label: "Most Saved",
-        metric: "428 saves",
-        icon: HeartIcon,
-        product: testProducts[1],
-    },
-    {
-        label: "Most Ordered",
-        metric: "316 orders",
-        icon: ReceiptTextIcon,
-        product: testProducts[3],
-    },
-];
+import { testUser } from "@/lib/utils";
+import ProductHighlight from "@/features/insights/components/productHighlight";
+import WeeklyPerformanceCarousel from "@/features/insights/components/weeklyPerformanceCarousel";
+import { formatTrend } from "@/features/insights/lib/insightMetrics";
+import { createWeeklyPerformanceDatasets } from "@/features/insights/lib/weeklyMetrics";
 
 function Insights() {
-    const [selectedChartIndex, setSelectedChartIndex] = useState(0);
-    const [metricCarouselWidth, setMetricCarouselWidth] = useState(0);
-    const metricCarouselRef = useRef<ScrollView>(null);
     const scrollAmount = useScrollAmount("insights");
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
@@ -101,42 +43,17 @@ function Insights() {
         };
     }, [scrollAmount]);
 
-    useEffect(() => {
-        if (metricCarouselWidth === 0) {
-            return;
-        }
-
-        metricCarouselRef.current?.scrollTo({
-            x: selectedChartIndex * metricCarouselWidth,
-            animated: true,
-        });
-    }, [metricCarouselWidth, selectedChartIndex]);
-
     if (testUser.rol === "customer") {
         return <Redirect href="/" />;
     }
 
-    const cartsCreated = 845;
-    const ordersPlaced = 934;
-    const catalogVisits = 1285;
+    const { overview, productHighlights } = testUser.insights;
+    const cartsCreated = overview.cartsCreated.total;
+    const ordersPlaced = overview.ordersPlaced.total;
+    const catalogVisits = overview.catalogVisits.total;
     const catalogToOrderRate = (ordersPlaced / catalogVisits) * 100;
-    const selectedDataset = chartDatasets[selectedChartIndex];
 
-    const showPreviousDataset = () => {
-        setSelectedChartIndex((currentIndex) =>
-            currentIndex === 0 ? chartDatasets.length - 1 : currentIndex - 1,
-        );
-    };
-
-    const showNextDataset = () => {
-        setSelectedChartIndex((currentIndex) =>
-            currentIndex === chartDatasets.length - 1 ? 0 : currentIndex + 1,
-        );
-    };
-
-    const handleMetricCarouselLayout = (event: LayoutChangeEvent) => {
-        setMetricCarouselWidth(event.nativeEvent.layout.width);
-    };
+    const chartDatasets = createWeeklyPerformanceDatasets(overview);
 
     return (
         <Animated.ScrollView
@@ -167,142 +84,83 @@ function Insights() {
                     <Text>Last 24h</Text>
                 </Badge>
             </View>
-            <View className="flex-row gap-3 flex-wrap">
-                <Card className="flex-1 py-4 px-6">
-                    <View className="flex-row justify-between">
-                        <Text variant={"muted"}>Carts Created</Text>
-                        <ShoppingCartIcon className="text-primary" />
-                    </View>
-                    <Text variant={"h1"} className="text-start mt-2">
-                        {cartsCreated}
-                    </Text>
-                    <Text className="text-xs text-destructive mt-2">-31% vs yesterday</Text>
-                </Card>
-                <Card className="flex-1 py-4 px-6">
-                    <View className="flex-row justify-between">
-                        <Text variant={"muted"}>Orders Placed</Text>
-                        <ReceiptTextIcon className="text-primary" />
-                    </View>
-                    <Text variant={"h1"} className="text-start mt-2">
-                        {ordersPlaced}
-                    </Text>
-                    <Text className="text-xs text-destructive mt-2">-11% vs yesterday</Text>
-                </Card>
-                <Card className="flex-1 py-4 px-6">
-                    <View className="flex-row justify-between">
-                        <Text variant={"muted"} numberOfLines={1}>
-                            Catalog Visits
-                        </Text>
-                        <PackageSearchIcon className="text-primary" />
-                    </View>
-                    <Text variant={"h1"} className="text-start mt-2">
-                        {catalogVisits}
-                    </Text>
-                    <Text className="text-xs text-primary mt-2">+12.5% vs yesterday</Text>
-                </Card>
-                <Card className="flex-1 py-4 px-6">
-                    <View className="flex-row justify-between">
+            <View className="gap-3">
+                <Card className="py-4 px-6">
+                    <View className="flex-row justify-between items-center">
                         <Text variant={"muted"} numberOfLines={1}>
                             Conversion Funnel
                         </Text>
-                        <ChartNoAxesCombinedIcon className="text-primary" />
+                        <TrendingUpIcon className="text-primary" size={20} />
                     </View>
-                    <Text variant={"h1"} className="text-start mt-2">
-                        {catalogToOrderRate.toFixed(1)}%
-                    </Text>
-                    <Text className="text-xs text-muted-foreground mt-2" numberOfLines={1}>
-                        {ordersPlaced} orders from {catalogVisits} visits
-                    </Text>
+                    <View className="flex-row items-center justify-between">
+                        <Text variant={"h1"} className="text-start mt-2">
+                            {catalogToOrderRate.toFixed(1)}%
+                        </Text>
+                        <Text className="text-xs text-muted-foreground mt-2" numberOfLines={1}>
+                            {ordersPlaced} orders from {catalogVisits} visits
+                        </Text>
+                    </View>
+                </Card>
+                <View className="flex-row gap-3">
+                    <Card className="flex-1 py-4 px-6">
+                        <View className="flex-row justify-between items-center">
+                            <Text variant={"muted"} numberOfLines={1}>
+                                Catalog Visits
+                            </Text>
+                            <PackageSearchIcon className="text-primary" size={20} />
+                        </View>
+                        <Text variant={"h1"} className="text-start mt-2">
+                            {catalogVisits}
+                        </Text>
+                        <Text className="text-xs text-primary mt-2">
+                            {formatTrend(catalogVisits, overview.catalogVisits.previousTotal)}
+                        </Text>
+                    </Card>
+                    <Card className="flex-1 py-4 px-6">
+                        <View className="flex-row justify-between items-center">
+                            <Text variant={"muted"}>Orders Placed</Text>
+                            <ReceiptTextIcon className="text-primary" size={20} />
+                        </View>
+                        <Text variant={"h1"} className="text-start mt-2">
+                            {ordersPlaced}
+                        </Text>
+                        <Text className="text-xs text-destructive mt-2">
+                            {formatTrend(ordersPlaced, overview.ordersPlaced.previousTotal)}
+                        </Text>
+                    </Card>
+                </View>
+
+                <Card className="py-4 px-6">
+                    <View className="flex-row justify-between items-center">
+                        <Text variant={"muted"}>Carts Created</Text>
+                        <ShoppingCartIcon className="text-primary" size={20} />
+                    </View>
+                    <View className="flex-row items-center justify-between">
+                        <Text variant={"h1"} className="text-start mt-2">
+                            {cartsCreated}
+                        </Text>
+                        <Text className="text-xs text-destructive mt-2">
+                            {formatTrend(cartsCreated, overview.cartsCreated.previousTotal)}
+                        </Text>
+                    </View>
                 </Card>
             </View>
-            <View className="flex-row items-center justify-between">
-                <Text variant={"h1"}>Weekly Performance</Text>
-                <ChartNoAxesCombinedIcon className="text-primary" />
-            </View>
+
+            <Text variant={"h1"} className="text-start">
+                Weekly Performance
+            </Text>
             <Card className="px-6 py-4">
-                <View className="h-64">
-                    <WeeklyPerformanceChart data={selectedDataset.data} />
-                </View>
-                <View className="mt-4 flex-row items-center gap-3">
-                    <Button
-                        size={"icon"}
-                        variant={"outline"}
-                        onPress={showPreviousDataset}
-                        accessibilityLabel="Show previous chart metric"
-                    >
-                        <ChevronLeftIcon size={20} className="text-foreground" />
-                    </Button>
-                    <ScrollView
-                        ref={metricCarouselRef}
-                        horizontal
-                        pagingEnabled
-                        scrollEnabled={false}
-                        showsHorizontalScrollIndicator={false}
-                        className="flex-1"
-                        onLayout={handleMetricCarouselLayout}
-                    >
-                        {chartDatasets.map((dataset) => (
-                            <View
-                                key={dataset.label}
-                                style={{ width: metricCarouselWidth }}
-                                className="items-center justify-center px-2"
-                            >
-                                <View className="w-full rounded-full bg-primary px-4 py-2">
-                                    <Text className="text-center text-xs font-jakarta-bold text-primary-foreground">
-                                        {dataset.label}
-                                    </Text>
-                                </View>
-                            </View>
-                        ))}
-                    </ScrollView>
-                    <Button
-                        size={"icon"}
-                        variant={"outline"}
-                        onPress={showNextDataset}
-                        accessibilityLabel="Show next chart metric"
-                    >
-                        <ChevronRightIcon size={20} className="text-foreground" />
-                    </Button>
-                </View>
+                <WeeklyPerformanceCarousel datasets={chartDatasets} />
             </Card>
-            <View className="flex-row items-center justify-between">
-                <Text variant={"h1"}>Product Highlights</Text>
-                <PackageSearchIcon className="text-primary" />
-            </View>
+
+            <Text variant={"h1"} className="text-start">
+                Product Highlights
+            </Text>
             <Card className="px-6 py-4">
                 <View className="gap-6">
-                    {productHighlights.map(({ label, metric, icon: Icon, product }) => {
-                        const price = product.sale ? product.salePrice : product.price;
-
-                        return (
-                            <View key={label} className="flex-row items-center gap-3">
-                                <View className="h-24 w-24 overflow-hidden rounded-2xl bg-muted">
-                                    <Image
-                                        source={{ uri: product.image[0] }}
-                                        className="h-full w-full"
-                                        resizeMode="cover"
-                                    />
-                                </View>
-                                <View className="flex-1 gap-1">
-                                    <View className="flex-row items-center gap-2">
-                                        <Icon size={16} className="text-primary" />
-                                        <Text className="text-xs font-jakarta-bold text-primary">
-                                            {label}
-                                        </Text>
-                                    </View>
-                                    <Text variant={"h2"} numberOfLines={1} className="font-jakarta-bold">
-                                        {product.name}
-                                    </Text>
-                                    <Text className="font-jakarta-bold text-primary">
-                                        ${price?.toFixed(2)}
-                                    </Text>
-                                </View>
-                                <Badge variant={"muted"}>
-                                    <Text className="text-xs">{metric}</Text>
-                                </Badge>
-                            </View>
-                        );
-                    })}
+                    {productHighlights.map((highlight) => (
+                        <ProductHighlight key={highlight.label} highlight={highlight} />
+                    ))}
                 </View>
             </Card>
         </Animated.ScrollView>
