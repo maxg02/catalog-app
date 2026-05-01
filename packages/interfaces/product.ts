@@ -1,8 +1,11 @@
 import { BusinessDto } from "./business";
 
+export type ProductStatus = "public" | "draft";
+
 export interface ProductDto {
     id: number;
     name: string;
+    status: ProductStatus;
     price: number;
     image: string[];
     description: string;

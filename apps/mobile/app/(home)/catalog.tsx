@@ -4,11 +4,16 @@ import { Redirect, Tabs } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
-import { cn, testUser } from "@/lib/utils";
+import { cn, testProducts, testUser } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import CatalogProductCard from "@/features/catalog/components/catalogProductCard";
 
 function Catalog() {
     const [activeTab, setActiveTab] = useState<"all" | "public" | "draft">("all");
+    const visibleProducts =
+        activeTab === "all"
+            ? testProducts
+            : testProducts.filter((product) => product.status === activeTab);
 
     const scrollAmount = useScrollAmount("catalog");
     const handleScroll = useAnimatedScrollHandler({
@@ -94,6 +99,11 @@ function Catalog() {
                         Draft
                     </Text>
                 </Button>
+            </View>
+            <View className="px-6 py-4 gap-3">
+                {visibleProducts.map((product) => (
+                    <CatalogProductCard key={product.id} {...product} />
+                ))}
             </View>
         </Animated.ScrollView>
     );
