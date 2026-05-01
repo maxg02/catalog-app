@@ -8,7 +8,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 function toRgbChannels(color: string) {
-    return color.split(/[,\s]+/).filter(Boolean).join(", ");
+    return color
+        .split(/[,\s]+/)
+        .filter(Boolean)
+        .join(", ");
 }
 
 export function toRgb(color: string) {
