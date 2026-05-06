@@ -15,6 +15,11 @@ function DateTimeInput({ mode, placeholder }: DateTimeInputProps) {
     const showDateTimePicker = () => {
         DateTimePickerAndroid.open({
             value: date ?? new Date(),
+            onChange(event, date) {
+                if (event.type === "set" && date) {
+                    setDate(date);
+                }
+            },
             mode: mode,
             is24Hour: true,
         });
