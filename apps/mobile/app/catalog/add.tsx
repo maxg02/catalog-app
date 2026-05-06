@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { CoinsIcon, CreditCardIcon, SaveIcon } from "lucide-nativewind";
+import { CoinsIcon, SaveIcon } from "lucide-nativewind";
 import { View } from "react-native";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Button } from "@/components/ui/button";

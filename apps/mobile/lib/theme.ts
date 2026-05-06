@@ -1,6 +1,6 @@
 export const THEME = {
     light: {
-        background: "246 247 248",
+        background: "245 246 247",
         foreground: "10 10 10",
         card: "255 255 255",
         cardForeground: "10 10 10",
@@ -14,9 +14,9 @@ export const THEME = {
         accentForeground: "23 23 23",
         destructive: "239 68 68",
         warning: "245 158 11",
-        border: "224 224 224",
+        border: "226 232 240",
         ring: "14 165 233",
-        input: "228 234 237",
+        input: "248 250 252",
     },
     dark: {
         background: "16 28 34",

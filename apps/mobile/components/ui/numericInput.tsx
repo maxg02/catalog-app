@@ -34,7 +34,7 @@ function NumericInput({ value, className = "" }: NumericInputProps) {
             <Input
                 keyboardType="numeric"
                 inputMode="numeric"
-                className="flex-1 text-center px-0"
+                className="flex-1 text-center px-0 border-0 bg-transparent"
                 defaultValue="0"
                 value={stateValue.toString()}
                 onChangeText={handleChange}

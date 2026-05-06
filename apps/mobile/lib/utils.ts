@@ -141,6 +141,13 @@ export const testProducts: ProductDto[] = [
         price: 99.99,
         image: [
             "https://cdn.shopify.com/s/files/1/0057/8938/4802/files/413_lifestyle.png?v=1752737623&width=400",
+            "https://imgs.search.brave.com/9W0Dpmla0NivVmMjLUy-uOjMBBYpstnwGzWvQgKfPOw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMjQv/ODQxLzI4MC9zbWFs/bC93aXJlbGVzcy1o/ZWFkcGhvbmUtaXNv/bGF0ZWQtb24tdHJh/bnNwYXJlbnQtYmFj/a2dyb3VuZC1oaWdo/LXF1YWxpdHktYmx1/ZXRvb3RoLWhlYWRw/aG9uZS1mb3ItYWR2/ZXJ0aXNpbmctYW5k/LXByb2R1Y3QtY2F0/YWxvZ3MtZ2VuZXJh/dGl2ZS1haS1wbmcu/cG5n",
+            "https://imgs.search.brave.com/hDM-FXzrhvai3ZSieUxE0j9YAKodM6Kc6hpABNkxp1g/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMucGV4ZWxzLmNv/bS9waG90b3MvNTI2/OTc1OS9wZXhlbHMt/cGhvdG8tNTI2OTc1/OS5qcGVnP2F1dG89/Y29tcHJlc3MmY3M9/dGlueXNyZ2ImZHBy/PTEmdz01MDA",
+            "https://imgs.search.brave.com/C-Ae_3FaGGfk0GUDFtUqhsIlnNq6T_r89wpYnvwOrZE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA0LzA4LzI1LzUz/LzM2MF9GXzQwODI1/NTMwNV94c3ZWRlFY/WlhxRHVPSGJiSVBs/V2t3SlAzMEY5Tzha/Qy5qcGc",
+            "https://cdn.shopify.com/s/files/1/0057/8938/4802/files/413_lifestyle.png?v=1752737623&width=400",
+            "https://imgs.search.brave.com/9W0Dpmla0NivVmMjLUy-uOjMBBYpstnwGzWvQgKfPOw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMjQv/ODQxLzI4MC9zbWFs/bC93aXJlbGVzcy1o/ZWFkcGhvbmUtaXNv/bGF0ZWQtb24tdHJh/bnNwYXJlbnQtYmFj/a2dyb3VuZC1oaWdo/LXF1YWxpdHktYmx1/ZXRvb3RoLWhlYWRw/aG9uZS1mb3ItYWR2/ZXJ0aXNpbmctYW5k/LXByb2R1Y3QtY2F0/YWxvZ3MtZ2VuZXJh/dGl2ZS1haS1wbmcu/cG5n",
+            "https://imgs.search.brave.com/hDM-FXzrhvai3ZSieUxE0j9YAKodM6Kc6hpABNkxp1g/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMucGV4ZWxzLmNv/bS9waG90b3MvNTI2/OTc1OS9wZXhlbHMt/cGhvdG8tNTI2OTc1/OS5qcGVnP2F1dG89/Y29tcHJlc3MmY3M9/dGlueXNyZ2ImZHBy/PTEmdz01MDA",
+            "https://imgs.search.brave.com/C-Ae_3FaGGfk0GUDFtUqhsIlnNq6T_r89wpYnvwOrZE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA0LzA4LzI1LzUz/LzM2MF9GXzQwODI1/NTMwNV94c3ZWRlFY/WlhxRHVPSGJiSVBs/V2t3SlAzMEY5Tzha/Qy5qcGc",
         ],
         description: "High-quality wireless headphones with noise cancellation.",
         trending: true,

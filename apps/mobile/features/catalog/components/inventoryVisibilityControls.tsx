@@ -5,16 +5,28 @@ import CheckControl from "@/components/ui/checkControl";
 import NumericInput from "@/components/ui/numericInput";
 import { Text } from "@/components/ui/text";
 
-function InventoryVisibilityControls() {
-    const [featured, setFeatured] = useState(true);
-    const [active, setActive] = useState(true);
+type InventoryVisibilityControlsProps = {
+    initialStock?: number;
+    initialFeatured?: boolean;
+    initialActive?: boolean;
+    stockLabel?: string;
+};
+
+function InventoryVisibilityControls({
+    initialStock = 1,
+    initialFeatured = true,
+    initialActive = true,
+    stockLabel = "Initial Stock",
+}: InventoryVisibilityControlsProps) {
+    const [featured, setFeatured] = useState(initialFeatured);
+    const [active, setActive] = useState(initialActive);
 
     return (
         <View className="overflow-hidden rounded-3xl border border-border bg-card">
             <View className="flex-row items-center gap-3 border-b border-border px-4 py-3">
                 <PackageIcon size={20} className="text-muted-foreground" />
-                <Text className="flex-1 font-jakarta-bold">Initial Stock</Text>
-                <NumericInput value={1} className="w-32" />
+                <Text className="flex-1 font-jakarta-bold">{stockLabel}</Text>
+                <NumericInput value={initialStock} className="w-36" />
             </View>
             <Pressable
                 className="flex-row items-center gap-3 border-b border-border px-4 py-4"

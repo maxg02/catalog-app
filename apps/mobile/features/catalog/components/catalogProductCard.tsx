@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "expo-router";
 import { Image, View } from "react-native";
 import { CircleIcon, PencilIcon } from "lucide-nativewind";
 import type { ProductDto } from "interfaces";
@@ -82,9 +83,15 @@ function CatalogProductCard(product: CatalogProductCardProps) {
                     </View>
                 </View>
                 <View className="justify-center">
-                    <Button size={"icon"} variant={"outline"}>
-                        <PencilIcon className="text-primary" size={20} />
-                    </Button>
+                    <Link asChild href={{ pathname: "/catalog/[id]", params: { id: product.id } }}>
+                        <Button
+                            size={"icon"}
+                            variant={"outline"}
+                            accessibilityLabel={`Edit ${product.name}`}
+                        >
+                            <PencilIcon className="text-primary" size={20} />
+                        </Button>
+                    </Link>
                 </View>
             </View>
         </Card>
