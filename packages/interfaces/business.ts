@@ -24,11 +24,23 @@ export interface BusinessProductHighlight {
     product: ProductDto;
 }
 
+export interface BusinessLocationDto {
+    address: string;
+    city: string;
+    country: string;
+    latitude?: number;
+    longitude?: number;
+}
+
 export interface UserBusinessDto {
     id: string;
     name: string;
     email: string;
-    rol: UserRole;
+    bannerImage: string;
+    description: string;
+    category: BusinessCategories;
+    location: BusinessLocationDto;
+    role: UserRole;
     insights: {
         overview: {
             catalogVisits: BusinessInsightMetric;
@@ -43,7 +55,7 @@ export interface BusinessDto {
     id: number;
     name: string;
     category: BusinessCategories;
-    location: string;
+    location: BusinessLocationDto;
     rating: number;
     image: string;
     description: string;

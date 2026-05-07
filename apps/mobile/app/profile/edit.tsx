@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
-import { Redirect, Tabs } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
+import EditBusinessAccountForm from "@/features/profile/components/editBusinessAccountForm";
 import { testUser } from "@/lib/utils";
 
-function Orders() {
-    const scrollAmount = useScrollAmount("orders");
+function EditBusinessAccount() {
+    const scrollAmount = useScrollAmount();
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
             if (scrollAmount) {
@@ -28,23 +28,30 @@ function Orders() {
         };
     }, [scrollAmount]);
 
-    if (testUser.role === "customer") {
-        return <Redirect href="/" />;
+    if (testUser.role !== "business") {
+        return (
+            <View className="flex-1 items-center justify-center gap-2 bg-background px-6">
+                <Text variant={"h1"} className="text-center">
+                    Business account not found
+                </Text>
+                <Text variant={"muted"} className="text-center">
+                    This form is available for business profiles.
+                </Text>
+            </View>
+        );
     }
 
     return (
         <Animated.ScrollView
-            contentContainerClassName="flex-grow items-center justify-center px-6 py-4"
+            className="flex-1 bg-background"
+            contentContainerClassName="gap-7 px-6 pb-8"
+            keyboardShouldPersistTaps="handled"
             onScroll={handleScroll}
             scrollEventThrottle={16}
-            className="bg-background flex-1"
         >
-            <Tabs.Screen options={{ title: "Orders" }} />
-            <View>
-                <Text variant={"h1"}>Orders</Text>
-            </View>
+            <EditBusinessAccountForm business={testUser} />
         </Animated.ScrollView>
     );
 }
 
-export default Orders;
+export default EditBusinessAccount;

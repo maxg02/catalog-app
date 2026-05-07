@@ -2,7 +2,6 @@ import type React from "react";
 import type { LucidePropsWithClassName } from "lucide-nativewind";
 import {
     ChartNoAxesColumnIcon,
-    ClipboardListIcon,
     HeartIcon,
     HouseIcon,
     PackageIcon,
@@ -27,7 +26,6 @@ export const customerHomeTabs: HomeTabConfig[] = [
 export const businessHomeTabs: HomeTabConfig[] = [
     { name: "insights", title: "Insights", label: "Insights", icon: ChartNoAxesColumnIcon },
     { name: "catalog", title: "Catalog", label: "Catalog", icon: PackageIcon },
-    { name: "orders", title: "Orders", label: "Orders", icon: ClipboardListIcon },
     { name: "profile", title: "Profile", label: "Profile", icon: UserIcon },
 ];
 

@@ -24,11 +24,11 @@ const textVariants = cva(
                     Platform.select({ web: "scroll-m-20 first:mt-0" }),
                 ),
                 h3: cn(
-                    "text-lg font-jakarta-semibold tracking-tight",
+                    "text-base font-jakarta-bold tracking-tight",
                     Platform.select({ web: "scroll-m-20" }),
                 ),
                 h4: cn(
-                    "text-xl font-jakarta-semibold tracking-tight",
+                    "text-xs font-jakarta-extrabold uppercase text-muted-foreground",
                     Platform.select({ web: "scroll-m-20" }),
                 ),
                 p: "mt-3 leading-7 sm:mt-6",

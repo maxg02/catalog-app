@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { Text, Pressable } from "react-native";
 import React, { useState } from "react";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { cn } from "@/lib/utils";

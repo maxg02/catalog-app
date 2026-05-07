@@ -27,7 +27,7 @@ function Carts() {
         };
     }, [scrollAmount]);
 
-    if (testUser.rol === "business") {
+    if (testUser.role === "business") {
         return <Redirect href="/insights" />;
     }
 

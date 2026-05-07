@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import InventoryVisibilityControls from "@/features/catalog/components/inventoryVisibilityControls";
 import ProductMediaUpload from "@/features/catalog/components/productMediaUpload";
+import { IconInput } from "@/components/ui/iconInput";
 
 function AddProduct() {
     const scrollAmount = useScrollAmount();
@@ -52,10 +53,12 @@ function AddProduct() {
                 </View>
                 <View className="gap-2">
                     <Text className="font-jakarta-bold">Price</Text>
-                    <View className="bg-input rounded-2xl flex-row items-center px-4">
-                        <CoinsIcon size={18} className="text-muted-foreground" />
-                        <Input placeholder="0.00" keyboardType="decimal-pad" inputMode="decimal" />
-                    </View>
+                    <IconInput
+                        icon={CoinsIcon}
+                        placeholder="0.00"
+                        keyboardType="decimal-pad"
+                        inputMode="decimal"
+                    />
                 </View>
                 <View className="gap-2">
                     <Text className="font-jakarta-bold">Description</Text>
