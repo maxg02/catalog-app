@@ -69,7 +69,7 @@ function Profile() {
 
             {testUser.role === "business" && <BusinessProfileDetails business={testUser} />}
 
-            <Card className="px-1 py-2 mt-4">
+            <Card className="px-1 py-2">
                 <Button
                     variant={"ghost"}
                     className="h-14 w-full rounded-2xl px-4 gap-3"

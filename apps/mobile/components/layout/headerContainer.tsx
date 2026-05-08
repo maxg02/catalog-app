@@ -5,6 +5,7 @@ import Animated, {
     SharedValue,
     useAnimatedStyle,
 } from "react-native-reanimated";
+import { useColorScheme } from "nativewind";
 
 interface HeaderContainerProps {
     children: React.ReactNode;
@@ -12,22 +13,29 @@ interface HeaderContainerProps {
 }
 
 function HeaderContainer({ children, scrollAmount }: HeaderContainerProps) {
+    const { colorScheme } = useColorScheme();
+    const isDarkMode = colorScheme === "dark";
     const shadowStyle = useAnimatedStyle(() => {
-        const elevation =
+        const scrollElevation =
             scrollAmount !== undefined && scrollAmount !== null
                 ? interpolate(scrollAmount.value, [0, 50], [0, 5], Extrapolation.CLAMP)
                 : 0;
+        const borderBottomWidth =
+            scrollAmount !== undefined && scrollAmount !== null
+                ? interpolate(scrollAmount.value, [0, 50], [0, 1], Extrapolation.CLAMP)
+                : 0;
 
         return {
-            elevation, // Android
-            shadowOpacity: elevation > 0 ? 0.2 : 0, // iOS
+            elevation: isDarkMode ? 0 : scrollElevation,
+            shadowOpacity: !isDarkMode && scrollElevation > 0 ? 0.2 : 0,
+            borderBottomWidth: isDarkMode ? borderBottomWidth : 0,
         };
     });
 
     return (
         <Animated.View
             style={shadowStyle}
-            className="items-center py-4 px-6 flex-row gap-4 bg-background"
+            className="items-center py-4 px-6 flex-row gap-4 bg-background border-border"
         >
             {children}
         </Animated.View>

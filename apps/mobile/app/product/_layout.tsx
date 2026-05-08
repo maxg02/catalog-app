@@ -31,7 +31,7 @@ export default function ProductLayout() {
                                         className="-ms-2"
                                         onPress={() => router.back()}
                                     >
-                                        <ChevronLeftIcon size={28} />
+                                        <ChevronLeftIcon size={28} className="text-foreground" />
                                     </Button>
                                 ) : (
                                     <View className="h-12 w-12" />

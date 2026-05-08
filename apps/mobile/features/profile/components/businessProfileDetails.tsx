@@ -16,7 +16,7 @@ function BusinessProfileDetails({ business }: BusinessProfileDetailsProps) {
     const locationLabel = [location.city, location.country].filter(Boolean).join(", ");
 
     return (
-        <View className="gap-4">
+        <View className="gap-6">
             <Card className="gap-4 px-5 py-5">
                 <View className="flex-row items-center gap-3">
                     <IconCircle icon={InfoIcon} />

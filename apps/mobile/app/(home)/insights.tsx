@@ -73,7 +73,7 @@ function Insights() {
                                 </Text>
                                 <Text className="font-jakarta-bold">{testUser.name}</Text>
                             </View>
-                            <BellIcon className="ml-auto" />
+                            <BellIcon className="ml-auto text-foreground" />
                         </HeaderContainer>
                     ),
                 }}

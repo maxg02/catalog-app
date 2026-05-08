@@ -29,7 +29,7 @@ export default function CatalogLayout() {
                                     onPress={() => router.back()}
                                     accessibilityLabel="Go back"
                                 >
-                                    <ChevronLeftIcon size={28} />
+                                    <ChevronLeftIcon size={28} className="text-foreground" />
                                 </Button>
                                 <View className="flex-1">
                                     <Text variant={"h1"} className="text-left">

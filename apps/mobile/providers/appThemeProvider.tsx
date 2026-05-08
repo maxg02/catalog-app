@@ -1,5 +1,5 @@
-import { vars } from "nativewind";
-import { useColorScheme, View } from "react-native";
+import { useColorScheme, vars } from "nativewind";
+import { View } from "react-native";
 import { THEME } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
@@ -8,8 +8,8 @@ type Props = {
 };
 
 export function AppThemeProvider({ children }: Props) {
-    const scheme = useColorScheme();
-    const current = scheme === "dark" ? THEME.dark : THEME.light;
+    const { colorScheme } = useColorScheme();
+    const current = colorScheme === "dark" ? THEME.dark : THEME.light;
 
     return (
         <View
@@ -32,7 +32,7 @@ export function AppThemeProvider({ children }: Props) {
                 "--input": current.input,
                 "--warning": current.warning,
             })}
-            className={cn("flex-1", scheme === "dark" && "dark")}
+            className={cn("flex-1", colorScheme === "dark" && "dark")}
         >
             {children}
         </View>

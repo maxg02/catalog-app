@@ -42,7 +42,7 @@ function Footer({ state, navigation, tabs }: FooterProps) {
                         key={route.key}
                         variant={"ghost"}
                         className={cn(
-                            "flex flex-col flex-1 h-fit rounded-none pt-3 active:bg-card",
+                            "flex flex-col flex-1 h-fit rounded-none pt-3 dark:active:bg-transparent",
                             isActive && "border-t-4 border-t-primary",
                         )}
                         onPress={handlePress}
