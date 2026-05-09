@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { CalendarIcon, CoinsIcon, SaveIcon, TagIcon } from "lucide-nativewind";
+import { CoinsIcon, SaveIcon, TagIcon } from "lucide-nativewind";
 import { Switch, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
@@ -116,7 +116,15 @@ function EditProduct() {
                                 keyboardType="decimal-pad"
                                 inputMode="decimal"
                             />
-                            <DateTimeInput mode="date" placeholder="End Date (optional)" />
+                            <DateTimeInput
+                                mode="date"
+                                placeholder="End Date (optional)"
+                                initialDate={
+                                    selectedProduct.saleEndDate
+                                        ? new Date(selectedProduct.saleEndDate)
+                                        : null
+                                }
+                            />
                         </View>
                     )}
                 </Card>

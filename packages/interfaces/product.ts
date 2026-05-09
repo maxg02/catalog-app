@@ -13,6 +13,7 @@ export interface ProductDto {
     bestSeller: boolean;
     sale: boolean;
     salePrice: number | null;
+    saleEndDate: string | null;
     stock: number;
     creationDate: Date;
     details: Record<string, string>;

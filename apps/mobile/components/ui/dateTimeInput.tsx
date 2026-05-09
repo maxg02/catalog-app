@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { Text, Pressable } from "react-native";
 import React, { useState } from "react";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { cn } from "@/lib/utils";
@@ -7,10 +7,11 @@ import { CalendarIcon } from "lucide-nativewind";
 interface DateTimeInputProps {
     mode: "date" | "time";
     placeholder?: string;
+    initialDate?: Date | null;
 }
 
-function DateTimeInput({ mode, placeholder }: DateTimeInputProps) {
-    const [date, setDate] = useState<null | Date>(null);
+function DateTimeInput({ mode, placeholder, initialDate = null }: DateTimeInputProps) {
+    const [date, setDate] = useState<null | Date>(initialDate);
 
     const showDateTimePicker = () => {
         DateTimePickerAndroid.open({
