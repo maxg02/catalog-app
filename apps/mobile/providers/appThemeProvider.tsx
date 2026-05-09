@@ -27,10 +27,12 @@ export function AppThemeProvider({ children }: Props) {
                 "--accent": current.accent,
                 "--accent-foreground": current.accentForeground,
                 "--destructive": current.destructive,
+                "--destructive-foreground": current.destructiveForeground,
                 "--border": current.border,
                 "--ring": current.ring,
                 "--input": current.input,
                 "--warning": current.warning,
+                "--warning-foreground": current.warningForeground,
             })}
             className={cn("flex-1", colorScheme === "dark" && "dark")}
         >

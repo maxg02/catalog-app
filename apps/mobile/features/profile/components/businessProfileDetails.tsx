@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { InfoIcon, MapPinIcon } from "lucide-nativewind";
 import Card from "@/components/ui/card";
 import IconCircle from "@/components/ui/iconCircle";
+import TagIcon from "@/components/icons/tagIcon";
 import { Text } from "@/components/ui/text";
 import { formatBusinessCategory } from "@/features/profile/lib/formatBusinessCategory";
 import type { UserBusinessDto } from "interfaces";
@@ -25,8 +26,9 @@ function BusinessProfileDetails({ business }: BusinessProfileDetailsProps) {
                 <Text variant={"muted"} className="leading-6">
                     {business.description}
                 </Text>
-                <View className="self-start rounded-full bg-primary/10 px-3 py-2">
-                    <Text className="text-xs font-jakarta-extrabold uppercase text-primary">
+                <View className="flex-row gap-2 items-center">
+                    <TagIcon className="text-primary" size={20} />
+                    <Text className="uppercase text-primary">
                         {formatBusinessCategory(business.category)}
                     </Text>
                 </View>

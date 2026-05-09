@@ -75,26 +75,28 @@ function Profile() {
                     className="h-14 w-full rounded-2xl px-4 gap-3"
                     onPress={() => router.push("/profile/edit")}
                 >
-                    <UserCogIcon />
+                    <UserCogIcon className="text-foreground" />
                     <Text className="text-base">Edit Account</Text>
                     <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />
                 </Button>
                 <View className="mx-4 h-px bg-border" />
                 <Button variant={"ghost"} className="h-14 w-full rounded-2xl px-4 gap-3">
-                    <SettingsIcon />
+                    <SettingsIcon className="text-foreground" />
                     <Text className="text-base">Settings</Text>
                     <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />
                 </Button>
                 <View className="mx-4 h-px bg-border" />
                 <Button variant={"ghost"} className="h-14 w-full justify-between rounded-2xl px-4 gap-3">
-                    <CircleHelpIcon />
+                    <CircleHelpIcon className="text-foreground" />
                     <Text className="text-base">Help & Support</Text>
                     <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />
                 </Button>
                 <View className="mx-4 h-px bg-border" />
                 <Button variant={"ghost"} className="h-14 w-full justify-start rounded-2xl px-4 gap-3">
                     <LogOutIcon className="text-destructive" />
-                    <Text className="text-base text-destructive">Logout</Text>
+                    <Text className="text-base text-destructive group-active:text-destructive">
+                        Logout
+                    </Text>
                 </Button>
             </Card>
         </Animated.ScrollView>

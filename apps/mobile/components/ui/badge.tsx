@@ -50,8 +50,8 @@ const badgeTextVariants = cva("text-xs font-jakarta-bold", {
         variant: {
             default: "text-primary-foreground",
             secondary: "text-secondary-foreground",
-            destructive: "text-white",
-            warning: "text-white",
+            destructive: "text-destructive-foreground",
+            warning: "text-warning-foreground",
             outline: "text-foreground",
             muted: "text-muted-foreground",
         },
