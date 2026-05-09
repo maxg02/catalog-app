@@ -8,6 +8,7 @@ type OptionSelectorValue = number | string;
 type OptionSelectorOption<TValue extends OptionSelectorValue = OptionSelectorValue> = {
     label: string;
     value: TValue;
+    icon?: React.ComponentType<{ size?: number; className?: string }>;
 };
 
 type OptionSelectorProps<TValue extends OptionSelectorValue = OptionSelectorValue> =
@@ -40,6 +41,8 @@ function OptionSelector<TValue extends OptionSelectorValue = OptionSelectorValue
         <View className={cn("flex-row flex-wrap gap-2", className)} {...props}>
             {options.map((option) => {
                 const selected = selectedValue === option.value;
+                const Icon = option.icon;
+                const contentClassName = selected ? "text-primary-foreground" : "text-muted-foreground";
 
                 return (
                     <Pressable
@@ -48,14 +51,15 @@ function OptionSelector<TValue extends OptionSelectorValue = OptionSelectorValue
                         accessibilityRole="radio"
                         accessibilityState={{ checked: selected }}
                         className={cn(
-                            "rounded-full px-3 py-2",
+                            "flex-row items-center gap-2 rounded-full px-3 py-2",
                             selected ? "bg-primary" : "bg-secondary",
                         )}
                     >
+                        {Icon && <Icon size={14} className={contentClassName} />}
                         <Text
                             className={cn(
                                 "text-xs font-jakarta-extrabold uppercase",
-                                selected ? "text-primary-foreground" : "text-muted-foreground",
+                                contentClassName,
                             )}
                         >
                             {option.label}

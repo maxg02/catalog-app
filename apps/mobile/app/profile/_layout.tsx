@@ -18,7 +18,7 @@ export default function ProfileLayout() {
             <ScrollAmountContext.Provider value={scrollAmount}>
                 <Stack
                     screenOptions={{
-                        header: () => (
+                        header: ({ options }) => (
                             <HeaderContainer scrollAmount={scrollAmount}>
                                 <Button
                                     variant={"ghost"}
@@ -27,11 +27,11 @@ export default function ProfileLayout() {
                                     onPress={() => router.back()}
                                     accessibilityLabel="Go back"
                                 >
-                                    <ChevronLeftIcon size={28} />
+                                    <ChevronLeftIcon size={28} className="text-foreground" />
                                 </Button>
                                 <View className="flex-1">
                                     <Text variant={"h1"} className="text-left">
-                                        Edit Account
+                                        {options.title}
                                     </Text>
                                 </View>
                             </HeaderContainer>

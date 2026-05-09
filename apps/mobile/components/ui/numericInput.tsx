@@ -21,7 +21,7 @@ function NumericInput({ value, className = "" }: NumericInputProps) {
     return (
         <View
             className={cn(
-                "flex-row bg-input p-1 gap-2 items-center rounded-2xl h-12 min-w-0 w-full",
+                "flex-row bg-input p-1 gap-2 items-center rounded-2xl h-12 min-w-0 w-full border-border border",
                 className,
             )}
         >

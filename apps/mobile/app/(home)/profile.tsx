@@ -80,7 +80,11 @@ function Profile() {
                     <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />
                 </Button>
                 <View className="mx-4 h-px bg-border" />
-                <Button variant={"ghost"} className="h-14 w-full rounded-2xl px-4 gap-3">
+                <Button
+                    variant={"ghost"}
+                    className="h-14 w-full rounded-2xl px-4 gap-3"
+                    onPress={() => router.push("/profile/settings")}
+                >
                     <SettingsIcon className="text-foreground" />
                     <Text className="text-base">Settings</Text>
                     <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />

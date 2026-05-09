@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
+import { Stack } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
@@ -49,6 +50,7 @@ function EditBusinessAccount() {
             onScroll={handleScroll}
             scrollEventThrottle={16}
         >
+            <Stack.Screen options={{ title: "Edit Account" }} />
             <EditBusinessAccountForm business={testUser} />
         </Animated.ScrollView>
     );
