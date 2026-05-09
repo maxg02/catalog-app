@@ -5,6 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/card";
+import IconCircle from "@/components/ui/iconCircle";
 import { IconInput } from "@/components/ui/iconInput";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
@@ -71,15 +72,13 @@ function EditProduct() {
             <ProductMediaUpload productImages={selectedProduct.image} />
 
             <View className="gap-4">
-                <Text className="text-xs font-jakarta-extrabold uppercase text-muted-foreground">
-                    Basic Information
-                </Text>
+                <Text variant={"h4"}>BASIC INFORMATION</Text>
                 <View className="gap-2">
-                    <Text className="font-jakarta-bold">Product Name</Text>
+                    <Text variant={"h3"}>Product Name</Text>
                     <Input defaultValue={selectedProduct.name} placeholder="e.g. Handmade Ceramic Vase" />
                 </View>
                 <View className="gap-2">
-                    <Text className="font-jakarta-bold">Price</Text>
+                    <Text variant={"h3"}>Price</Text>
                     <IconInput
                         icon={CoinsIcon}
                         defaultValue={selectedProduct.price.toFixed(2)}
@@ -90,9 +89,9 @@ function EditProduct() {
                 </View>
                 <Card className="gap-3 rounded-3xl px-4 py-4">
                     <View className="flex-row items-center gap-3">
-                        <TagIcon size={20} className="text-muted-foreground" />
+                        <IconCircle icon={TagIcon} />
                         <View className="flex-1">
-                            <Text className="font-jakarta-bold">Enable Sale</Text>
+                            <Text variant={"h3"}>Enable Sale</Text>
                             <Text variant={"muted"} className="text-xs">
                                 Show a temporary promotional price
                             </Text>
@@ -139,9 +138,7 @@ function EditProduct() {
             </View>
 
             <View className="gap-4">
-                <Text className="text-xs font-jakarta-extrabold uppercase text-muted-foreground">
-                    Inventory & Visibility
-                </Text>
+                <Text variant={"h4"}>Inventory & Visibility</Text>
                 <InventoryVisibilityControls
                     initialStock={selectedProduct.stock}
                     initialFeatured={selectedProduct.trending}

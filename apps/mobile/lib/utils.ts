@@ -40,12 +40,18 @@ function createCart(cart: Omit<CartDto, "cartTotal" | "saleTotal">): CartDto {
 const testBusinessImageUrl =
     "https://foodtank.com/wp-content/uploads/2021/09/gemma-stpjHJGqZyw-unsplash.jpg";
 
+const testBusinessLocation = {
+    address: "Av. Siempre Viva 123",
+    city: "La Paz",
+    country: "Bolivia",
+};
+
 export const testBusinesses: BusinessDto[] = [
     {
         id: 1,
         name: "Café Aroma",
         category: BusinessCategories.FOOD,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.5,
         image: testBusinessImageUrl,
         description: "Cafetería acogedora con una gran variedad de cafés artesanales.",
@@ -54,7 +60,7 @@ export const testBusinesses: BusinessDto[] = [
         id: 2,
         name: "TechZone",
         category: BusinessCategories.TECH,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.2,
         image: testBusinessImageUrl,
         description: "Tienda especializada en dispositivos electrónicos y accesorios.",
@@ -63,7 +69,7 @@ export const testBusinesses: BusinessDto[] = [
         id: 3,
         name: "FitLife Gym",
         category: BusinessCategories.FITNESS,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.7,
         image: testBusinessImageUrl,
         description: "Gimnasio moderno con entrenadores certificados y equipos de última generación.",
@@ -72,7 +78,7 @@ export const testBusinesses: BusinessDto[] = [
         id: 4,
         name: "Green Market",
         category: BusinessCategories.GROCERY,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.3,
         image: testBusinessImageUrl,
         description: "Supermercado con productos orgánicos y frescos.",
@@ -81,7 +87,7 @@ export const testBusinesses: BusinessDto[] = [
         id: 5,
         name: "Bella Moda",
         category: BusinessCategories.FASHION,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.1,
         image: testBusinessImageUrl,
         description: "Boutique de ropa moderna para todas las edades.",
@@ -90,7 +96,7 @@ export const testBusinesses: BusinessDto[] = [
         id: 6,
         name: "AutoCare Service",
         category: BusinessCategories.AUTOMOTIVE,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.6,
         image: testBusinessImageUrl,
         description: "Centro de mantenimiento y reparación de vehículos.",
@@ -99,7 +105,7 @@ export const testBusinesses: BusinessDto[] = [
         id: 7,
         name: "Book Haven",
         category: BusinessCategories.BOOKSTORE,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.8,
         image: testBusinessImageUrl,
         description: "Librería con una amplia colección de libros y ambiente tranquilo.",
@@ -108,7 +114,7 @@ export const testBusinesses: BusinessDto[] = [
         id: 8,
         name: "Pet World",
         category: BusinessCategories.PETS,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.4,
         image: testBusinessImageUrl,
         description: "Tienda especializada en productos y cuidado para mascotas.",
@@ -117,7 +123,7 @@ export const testBusinesses: BusinessDto[] = [
         id: 9,
         name: "Spa Relax",
         category: BusinessCategories.BEAUTY,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.9,
         image: testBusinessImageUrl,
         description: "Centro de spa con servicios de relajación y cuidado personal.",
@@ -126,7 +132,7 @@ export const testBusinesses: BusinessDto[] = [
         id: 10,
         name: "QuickBites",
         category: BusinessCategories.FOOD,
-        location: "placeholder",
+        location: testBusinessLocation,
         rating: 4.0,
         image: testBusinessImageUrl,
         description: "Restaurante de comida rápida con opciones variadas y económicas.",
@@ -432,7 +438,11 @@ export const testUser: UserBusinessDto = {
     id: "1",
     name: "Repuestos Mandingo",
     email: "johndoe@email.com",
-    rol: "business",
+    bannerImage: testBusinessImageUrl,
+    description: "Tienda de repuestos automotrices con atención personalizada y entregas locales.",
+    category: BusinessCategories.AUTOMOTIVE,
+    location: testBusinessLocation,
+    role: "business",
     insights: {
         overview: {
             catalogVisits: {

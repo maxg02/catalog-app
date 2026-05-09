@@ -18,9 +18,9 @@ function Footer({ state, navigation, tabs }: FooterProps) {
             className="flex flex-row items-center shadow-lg shadow-black px-4 pb-1 bg-card"
             edges={["bottom"]}
         >
-            {state.routes.map((route) => {
-                const section = tabs.find((item) => item.name === route.name);
-                if (!section) return null;
+            {tabs.map((section) => {
+                const route = state.routes.find((item) => item.name === section.name);
+                if (!route) return null;
 
                 const isActive = activeRouteKey === route.key;
                 const Icon = section.icon;
@@ -42,7 +42,7 @@ function Footer({ state, navigation, tabs }: FooterProps) {
                         key={route.key}
                         variant={"ghost"}
                         className={cn(
-                            "flex flex-col flex-1 h-fit rounded-none pt-3 active:bg-card",
+                            "flex flex-col flex-1 h-fit rounded-none pt-3 dark:active:bg-transparent",
                             isActive && "border-t-4 border-t-primary",
                         )}
                         onPress={handlePress}

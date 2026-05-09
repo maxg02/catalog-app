@@ -2,7 +2,7 @@ import { THEME } from "@/lib/theme";
 import { toRgb, toRgba } from "@/lib/utils";
 import { PlusJakartaSans_300Light } from "@expo-google-fonts/plus-jakarta-sans";
 import { LinearGradient, Text as SkiaText, useFont, vec } from "@shopify/react-native-skia";
-import { useColorScheme } from "react-native";
+import { useColorScheme } from "nativewind";
 import {
     AnimatedPath,
     CartesianChart,
@@ -47,8 +47,9 @@ function GradientBars({ points, chartBounds, primary }: GradientBarsProps) {
 function WeeklyPerformanceChart({ data }: WeeklyPerformanceChartProps) {
     const font = useFont(PlusJakartaSans_300Light);
 
-    const scheme = useColorScheme();
-    const currentTheme = scheme === "dark" ? THEME.dark : THEME.light;
+    const { colorScheme } = useColorScheme();
+    const currentTheme = colorScheme === "dark" ? THEME.dark : THEME.light;
+    const foregroundColor = toRgb(currentTheme.foreground);
     const mutedForegroundColor = toRgb(currentTheme.mutedForeground);
 
     return (
@@ -57,7 +58,7 @@ function WeeklyPerformanceChart({ data }: WeeklyPerformanceChartProps) {
             xKey="name"
             yKeys={["value"]}
             domain={{ y: [0] }}
-            xAxis={{ font, lineColor: "transparent", labelOffset: 10 }}
+            xAxis={{ font, lineColor: "transparent", labelOffset: 10, labelColor: foregroundColor }}
             yAxis={[{ lineColor: "transparent" }]}
             padding={{ bottom: 20 }}
             domainPadding={{ right: 20, left: 20, top: 20 }}

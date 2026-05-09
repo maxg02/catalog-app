@@ -38,7 +38,7 @@ function Catalog() {
         };
     }, [scrollAmount]);
 
-    if (testUser.rol === "customer") {
+    if (testUser.role === "customer") {
         return <Redirect href="/" />;
     }
 

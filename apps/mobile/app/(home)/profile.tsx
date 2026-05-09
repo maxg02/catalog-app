@@ -3,19 +3,21 @@ import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { testUser } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
-    BadgeQuestionMarkIcon,
     ChevronRightIcon,
+    CircleHelpIcon,
     LogOutIcon,
-    PencilIcon,
     SettingsIcon,
+    UserCogIcon,
 } from "lucide-nativewind";
 import Card from "@/components/ui/card";
+import BusinessProfileDetails from "@/features/profile/components/businessProfileDetails";
 
 function Profile() {
+    const router = useRouter();
     const scrollAmount = useScrollAmount("profile");
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
@@ -56,10 +58,6 @@ function Profile() {
                     <Text variant={"h1"} className="text-primary">
                         {abbvName}
                     </Text>
-
-                    <Button className="absolute -bottom-1 -right-1 rounded-full h-10 aspect-square p-0 items-center justify-center">
-                        <PencilIcon size={15} className="text-primary-foreground" />
-                    </Button>
                 </View>
                 <Text variant={"h2"} className="mt-4 text-center">
                     {testUser.name}
@@ -68,7 +66,20 @@ function Profile() {
                     {testUser.email}
                 </Text>
             </View>
-            <Card className="px-1 py-2 mt-4">
+
+            {testUser.role === "business" && <BusinessProfileDetails business={testUser} />}
+
+            <Card className="px-1 py-2">
+                <Button
+                    variant={"ghost"}
+                    className="h-14 w-full rounded-2xl px-4 gap-3"
+                    onPress={() => router.push("/profile/edit")}
+                >
+                    <UserCogIcon />
+                    <Text className="text-base">Edit Account</Text>
+                    <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />
+                </Button>
+                <View className="mx-4 h-px bg-border" />
                 <Button variant={"ghost"} className="h-14 w-full rounded-2xl px-4 gap-3">
                     <SettingsIcon />
                     <Text className="text-base">Settings</Text>
@@ -76,7 +87,7 @@ function Profile() {
                 </Button>
                 <View className="mx-4 h-px bg-border" />
                 <Button variant={"ghost"} className="h-14 w-full justify-between rounded-2xl px-4 gap-3">
-                    <BadgeQuestionMarkIcon />
+                    <CircleHelpIcon />
                     <Text className="text-base">Help & Support</Text>
                     <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />
                 </Button>

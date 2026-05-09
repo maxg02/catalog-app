@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, usePathname, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { ChevronLeftIcon } from "lucide-nativewind";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,11 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { ScrollAmountContext } from "@/contexts/scrollAmountContext";
 
-export default function CatalogLayout() {
+export default function ProfileLayout() {
     const router = useRouter();
-    const pathname = usePathname();
     const scrollAmount = useSharedValue(0);
-    const isEditRoute = pathname !== "/catalog/add";
 
     return (
         <SafeAreaView className="flex-1 bg-background" edges={["left", "right", "top"]}>
@@ -29,16 +27,13 @@ export default function CatalogLayout() {
                                     onPress={() => router.back()}
                                     accessibilityLabel="Go back"
                                 >
-                                    <ChevronLeftIcon size={28} className="text-foreground" />
+                                    <ChevronLeftIcon size={28} />
                                 </Button>
                                 <View className="flex-1">
                                     <Text variant={"h1"} className="text-left">
-                                        {isEditRoute ? "Edit Product" : "Add New Product"}
+                                        Edit Account
                                     </Text>
                                 </View>
-                                <Button variant={"ghost"} className="px-0">
-                                    <Text className="font-jakarta-bold text-primary">Preview</Text>
-                                </Button>
                             </HeaderContainer>
                         ),
                     }}
