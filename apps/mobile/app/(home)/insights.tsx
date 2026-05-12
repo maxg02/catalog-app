@@ -5,20 +5,13 @@ import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import HeaderContainer from "@/components/layout/headerContainer";
-import {
-    BellIcon,
-    PackageSearchIcon,
-    ReceiptTextIcon,
-    ShoppingCartIcon,
-    StoreIcon,
-    TrendingUpIcon,
-} from "lucide-nativewind";
+import { StoreIcon } from "lucide-nativewind";
 import { Badge } from "@/components/ui/badge";
 import Card from "@/components/ui/card";
 import { testUser } from "@/lib/utils";
+import OverviewCards from "@/features/insights/components/overviewCards";
 import ProductHighlight from "@/features/insights/components/productHighlight";
 import WeeklyPerformanceCarousel from "@/features/insights/components/weeklyPerformanceCarousel";
-import { formatTrend } from "@/features/insights/lib/insightMetrics";
 import { createWeeklyPerformanceDatasets } from "@/features/insights/lib/weeklyMetrics";
 
 function Insights() {
@@ -48,11 +41,6 @@ function Insights() {
     }
 
     const { overview, productHighlights } = testUser.insights;
-    const cartsCreated = overview.cartsCreated.total;
-    const ordersPlaced = overview.ordersPlaced.total;
-    const catalogVisits = overview.catalogVisits.total;
-    const catalogToOrderRate = (ordersPlaced / catalogVisits) * 100;
-
     const chartDatasets = createWeeklyPerformanceDatasets(overview);
 
     return (
@@ -83,67 +71,7 @@ function Insights() {
                     <Text>Last 24h</Text>
                 </Badge>
             </View>
-            <View className="gap-3">
-                <Card className="py-4 px-6">
-                    <View className="flex-row justify-between items-center">
-                        <Text variant={"muted"} numberOfLines={1}>
-                            Conversion Funnel
-                        </Text>
-                        <TrendingUpIcon className="text-primary" size={20} />
-                    </View>
-                    <View className="flex-row items-center justify-between">
-                        <Text variant={"h1"} className="text-start mt-2">
-                            {catalogToOrderRate.toFixed(1)}%
-                        </Text>
-                        <Text className="text-xs text-muted-foreground mt-2" numberOfLines={1}>
-                            {ordersPlaced} orders from {catalogVisits} visits
-                        </Text>
-                    </View>
-                </Card>
-                <View className="flex-row gap-3">
-                    <Card className="flex-1 py-4 px-6">
-                        <View className="flex-row justify-between items-center">
-                            <Text variant={"muted"} numberOfLines={1}>
-                                Catalog Visits
-                            </Text>
-                            <PackageSearchIcon className="text-primary" size={20} />
-                        </View>
-                        <Text variant={"h1"} className="text-start mt-2">
-                            {catalogVisits}
-                        </Text>
-                        <Text className="text-xs text-primary mt-2">
-                            {formatTrend(catalogVisits, overview.catalogVisits.previousTotal)}
-                        </Text>
-                    </Card>
-                    <Card className="flex-1 py-4 px-6">
-                        <View className="flex-row justify-between items-center">
-                            <Text variant={"muted"}>Orders Placed</Text>
-                            <ReceiptTextIcon className="text-primary" size={20} />
-                        </View>
-                        <Text variant={"h1"} className="text-start mt-2">
-                            {ordersPlaced}
-                        </Text>
-                        <Text className="text-xs text-destructive mt-2">
-                            {formatTrend(ordersPlaced, overview.ordersPlaced.previousTotal)}
-                        </Text>
-                    </Card>
-                </View>
-
-                <Card className="py-4 px-6">
-                    <View className="flex-row justify-between items-center">
-                        <Text variant={"muted"}>Carts Created</Text>
-                        <ShoppingCartIcon className="text-primary" size={20} />
-                    </View>
-                    <View className="flex-row items-center justify-between">
-                        <Text variant={"h1"} className="text-start mt-2">
-                            {cartsCreated}
-                        </Text>
-                        <Text className="text-xs text-destructive mt-2">
-                            {formatTrend(cartsCreated, overview.cartsCreated.previousTotal)}
-                        </Text>
-                    </View>
-                </Card>
-            </View>
+            <OverviewCards overview={overview} />
 
             <Text variant={"h1"} className="text-start">
                 Weekly Performance
