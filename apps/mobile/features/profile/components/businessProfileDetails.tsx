@@ -6,7 +6,7 @@ import IconCircle from "@/components/ui/iconCircle";
 import TagIcon from "@/components/icons/tagIcon";
 import { Text } from "@/components/ui/text";
 import { formatBusinessCategory } from "@/features/profile/lib/formatBusinessCategory";
-import type { UserBusinessDto } from "interfaces";
+import type { UserBusinessDto } from "@internal/interfaces";
 
 type BusinessProfileDetailsProps = {
     business: UserBusinessDto;

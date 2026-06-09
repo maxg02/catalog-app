@@ -1,9 +1,9 @@
 {
-    "name": "interfaces",
+    "name": "@internal/interfaces",
     "version": "1.0.0",
     "main": "index.ts",
     "types": "index.ts",
     "dependencies": {
-        "enums": "*"
+        "@internal/enums": "workspace:*"
     }
 }

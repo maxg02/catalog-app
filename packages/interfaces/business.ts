@@ -1,4 +1,4 @@
-import { BusinessCategories } from "enums";
+import { BusinessCategories } from "@internal/enums";
 import { UserRole } from "./misc";
 import type { ProductDto } from "./product";
 

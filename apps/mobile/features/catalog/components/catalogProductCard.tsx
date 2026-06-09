@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "expo-router";
 import { Image, View } from "react-native";
 import { CircleIcon, PencilIcon } from "lucide-nativewind";
-import type { ProductDto } from "interfaces";
+import type { ProductDto } from "@internal/interfaces";
 import { Badge } from "@/components/ui/badge";
 import Card from "@/components/ui/card";
 import { Text } from "@/components/ui/text";

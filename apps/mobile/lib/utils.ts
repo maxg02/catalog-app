@@ -1,6 +1,12 @@
 import { type ClassValue, clsx } from "clsx";
-import { BusinessCategories } from "enums";
-import { BusinessDto, ProductDto, SavedProductListDto, CartDto, UserBusinessDto } from "interfaces";
+import { BusinessCategories } from "@internal/enums";
+import {
+    BusinessDto,
+    ProductDto,
+    SavedProductListDto,
+    CartDto,
+    UserBusinessDto,
+} from "@internal/interfaces";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {

@@ -1,4 +1,4 @@
-import type { UserBusinessDto, WeeklyMetrics } from "interfaces";
+import type { UserBusinessDto, WeeklyMetrics } from "@internal/interfaces";
 
 const weeklyMetricLabels = [
     ["Mon", "mon"],

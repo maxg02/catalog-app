@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { BusinessCategories } from "enums";
+import { BusinessCategories } from "@internal/enums";
 import OptionSelector, { type OptionSelectorOption } from "@/components/ui/optionSelector";
 import { formatBusinessCategory } from "@/features/profile/lib/formatBusinessCategory";
 

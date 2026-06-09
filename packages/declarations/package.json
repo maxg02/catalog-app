@@ -1,5 +1,5 @@
 {
-    "name": "declarations",
+    "name": "@internal/declarations",
     "version": "1.0.0",
     "main": "index.d.ts",
     "types": "index.d.ts"

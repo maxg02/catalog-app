@@ -1,4 +1,4 @@
-import { ProductDto } from "interfaces";
+import { ProductDto } from "@internal/interfaces";
 import React from "react";
 import { View, Image, Pressable } from "react-native";
 import { Text } from "@/components/ui/text";

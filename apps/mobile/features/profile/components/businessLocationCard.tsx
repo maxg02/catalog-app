@@ -5,7 +5,7 @@ import Card from "@/components/ui/card";
 import IconCircle from "@/components/ui/iconCircle";
 import { IconInput } from "@/components/ui/iconInput";
 import { Text } from "@/components/ui/text";
-import type { BusinessLocationDto } from "interfaces";
+import type { BusinessLocationDto } from "@internal/interfaces";
 
 type BusinessLocationCardProps = {
     location: BusinessLocationDto;

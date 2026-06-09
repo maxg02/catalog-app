@@ -1,12 +1,10 @@
 {
-  "name": "catalogapp-monorepo",
-  "private": true,
-  "version": "1.0.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "dependencies": {
-    "expo-blur": "~15.0.8"
-  }
+    "name": "catalogapp-monorepo",
+    "private": true,
+    "version": "1.0.0",
+    "packageManager": "pnpm@11.1.3",
+    "scripts": {
+        "dev": "pnpm -r dev",
+        "build": "pnpm -r build"
+    }
 }

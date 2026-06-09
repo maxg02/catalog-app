@@ -1,12 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import {
-    Building2Icon,
-    ImageIcon,
-    LockIcon,
-    MailIcon,
-    SaveIcon,
-} from "lucide-nativewind";
+import { Building2Icon, ImageIcon, LockIcon, MailIcon, SaveIcon } from "lucide-nativewind";
 import { Button } from "@/components/ui/button";
 import { IconInput } from "@/components/ui/iconInput";
 import { Text } from "@/components/ui/text";
@@ -14,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import BusinessBannerUpload from "@/features/profile/components/businessBannerUpload";
 import BusinessCategorySelector from "@/features/profile/components/businessCategorySelector";
 import BusinessLocationCard from "@/features/profile/components/businessLocationCard";
-import type { UserBusinessDto } from "interfaces";
+import type { UserBusinessDto } from "@internal/interfaces";
 
 type EditBusinessAccountFormProps = {
     business: UserBusinessDto;

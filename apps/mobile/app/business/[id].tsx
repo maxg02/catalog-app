@@ -13,7 +13,7 @@ import { Text } from "@/components/ui/text";
 import { useEffect, useState, useMemo } from "react";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import { useLocalSearchParams } from "expo-router";
-import { ProductDto } from "interfaces";
+import { ProductDto } from "@internal/interfaces";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import FeaturedProduct from "@/features/products/components/featuredProduct";
 import ProductCard from "@/features/products/components/productCard";

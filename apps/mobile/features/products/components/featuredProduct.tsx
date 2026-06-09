@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductDto } from "interfaces";
+import { ProductDto } from "@internal/interfaces";
 import { View, ImageBackground, Pressable } from "react-native";
 import { Text } from "@/components/ui/text";
 import { LinearGradient } from "expo-linear-gradient";

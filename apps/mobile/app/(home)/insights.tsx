@@ -6,7 +6,6 @@ import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import HeaderContainer from "@/components/layout/headerContainer";
 import {
-    BellIcon,
     PackageSearchIcon,
     ReceiptTextIcon,
     ShoppingCartIcon,
@@ -83,15 +82,15 @@ function Insights() {
                     <Text>Last 24h</Text>
                 </Badge>
             </View>
-            <View className="gap-3">
-                <Card className="py-4 px-6">
+            <View className="gap-3 flex-row flex-wrap sm:gap-y-0">
+                <Card className="py-4 px-6 w-full sm:flex-1 sm:w-auto">
                     <View className="flex-row justify-between items-center">
                         <Text variant={"muted"} numberOfLines={1}>
                             Conversion Funnel
                         </Text>
                         <TrendingUpIcon className="text-primary" size={20} />
                     </View>
-                    <View className="flex-row items-center justify-between">
+                    <View className="flex-row items-center justify-between sm:flex-col sm:items-start">
                         <Text variant={"h1"} className="text-start mt-2">
                             {catalogToOrderRate.toFixed(1)}%
                         </Text>
@@ -100,41 +99,39 @@ function Insights() {
                         </Text>
                     </View>
                 </Card>
-                <View className="flex-row gap-3">
-                    <Card className="flex-1 py-4 px-6">
-                        <View className="flex-row justify-between items-center">
-                            <Text variant={"muted"} numberOfLines={1}>
-                                Catalog Visits
-                            </Text>
-                            <PackageSearchIcon className="text-primary" size={20} />
-                        </View>
-                        <Text variant={"h1"} className="text-start mt-2">
-                            {catalogVisits}
+                <Card className="flex-1 py-4 px-6">
+                    <View className="flex-row justify-between items-center">
+                        <Text variant={"muted"} numberOfLines={1}>
+                            Catalog Visits
                         </Text>
-                        <Text className="text-xs text-primary mt-2">
-                            {formatTrend(catalogVisits, overview.catalogVisits.previousTotal)}
-                        </Text>
-                    </Card>
-                    <Card className="flex-1 py-4 px-6">
-                        <View className="flex-row justify-between items-center">
-                            <Text variant={"muted"}>Orders Placed</Text>
-                            <ReceiptTextIcon className="text-primary" size={20} />
-                        </View>
-                        <Text variant={"h1"} className="text-start mt-2">
-                            {ordersPlaced}
-                        </Text>
-                        <Text className="text-xs text-destructive mt-2">
-                            {formatTrend(ordersPlaced, overview.ordersPlaced.previousTotal)}
-                        </Text>
-                    </Card>
-                </View>
-
-                <Card className="py-4 px-6">
+                        <PackageSearchIcon className="text-primary" size={20} />
+                    </View>
+                    <Text variant={"h1"} className="text-start mt-2">
+                        {catalogVisits}
+                    </Text>
+                    <Text className="text-xs text-primary mt-2">
+                        {formatTrend(catalogVisits, overview.catalogVisits.previousTotal)}
+                    </Text>
+                </Card>
+                <View className="max-sm:hidden w-full h-3"></View>
+                <Card className="flex-1 py-4 px-6">
+                    <View className="flex-row justify-between items-center">
+                        <Text variant={"muted"}>Orders Placed</Text>
+                        <ReceiptTextIcon className="text-primary" size={20} />
+                    </View>
+                    <Text variant={"h1"} className="text-start mt-2">
+                        {ordersPlaced}
+                    </Text>
+                    <Text className="text-xs text-destructive mt-2">
+                        {formatTrend(ordersPlaced, overview.ordersPlaced.previousTotal)}
+                    </Text>
+                </Card>
+                <Card className="py-4 px-6 w-full sm:flex-1 sm:w-auto">
                     <View className="flex-row justify-between items-center">
                         <Text variant={"muted"}>Carts Created</Text>
                         <ShoppingCartIcon className="text-primary" size={20} />
                     </View>
-                    <View className="flex-row items-center justify-between">
+                    <View className="flex-row items-center justify-between sm:flex-col sm:items-start">
                         <Text variant={"h1"} className="text-start mt-2">
                             {cartsCreated}
                         </Text>

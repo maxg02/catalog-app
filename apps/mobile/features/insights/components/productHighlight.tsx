@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "expo-router";
 import { Image, Pressable, View } from "react-native";
 import { HeartIcon, ReceiptTextIcon } from "lucide-nativewind";
-import type { BusinessProductHighlight } from "interfaces";
+import type { BusinessProductHighlight } from "@internal/interfaces";
 import { Badge } from "@/components/ui/badge";
 import { Text } from "@/components/ui/text";
 
