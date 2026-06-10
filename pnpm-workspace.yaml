@@ -3,4 +3,5 @@ packages:
   - "packages/*"
 allowBuilds:
   '@shopify/react-native-skia': true
+  sharp: true
   unrs-resolver: true
