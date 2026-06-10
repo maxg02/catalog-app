@@ -6,6 +6,7 @@
         "icon": "./assets/images/icon.png",
         "scheme": "mobile",
         "userInterfaceStyle": "automatic",
+        "orientation": "portrait",
         "newArchEnabled": true,
         "ios": {
             "supportsTablet": true
