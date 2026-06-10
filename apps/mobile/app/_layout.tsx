@@ -5,6 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "../global.css";
 import { AppThemeProvider } from "@/providers/appThemeProvider";
+import ReduxProvider from "@/providers/reduxProvider";
 import {
     useFonts,
     PlusJakartaSans_200ExtraLight,
@@ -42,14 +43,16 @@ export default function AppLayout() {
     if (!fontsLoaded && !error) return null;
 
     return (
-        <AppThemeProvider>
-            <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-            <Stack
-                screenOptions={{
-                    headerShown: false,
-                }}
-            />
-            <PortalHost name="root-portal" />
-        </AppThemeProvider>
+        <ReduxProvider>
+            <AppThemeProvider>
+                <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+                <Stack
+                    screenOptions={{
+                        headerShown: false,
+                    }}
+                />
+                <PortalHost name="root-portal" />
+            </AppThemeProvider>
+        </ReduxProvider>
     );
 }
