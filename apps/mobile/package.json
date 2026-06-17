@@ -16,6 +16,8 @@
         "@internal/declarations": "workspace:*",
         "@internal/enums": "workspace:*",
         "@internal/interfaces": "workspace:*",
+        "@internal/mock-data": "workspace:*",
+        "@maplibre/maplibre-react-native": "^11.3.4",
         "@react-native-community/datetimepicker": "8.4.4",
         "@react-navigation/bottom-tabs": "^7.4.0",
         "@react-navigation/elements": "^2.6.3",

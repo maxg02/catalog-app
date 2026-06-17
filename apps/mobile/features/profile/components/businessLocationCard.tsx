@@ -1,18 +1,102 @@
-import React from "react";
-import { View } from "react-native";
-import { MapPinIcon, SearchIcon } from "lucide-nativewind";
+import React, { useEffect, useMemo, useState } from "react";
+import { Switch, View } from "react-native";
+import { MapPinIcon } from "lucide-nativewind";
 import Card from "@/components/ui/card";
 import IconCircle from "@/components/ui/iconCircle";
 import { IconInput } from "@/components/ui/iconInput";
+import SearchableSelect from "@/components/ui/searchableSelect";
 import { Text } from "@/components/ui/text";
+import { useGetCountriesQuery, useGetStatesQuery } from "@/features/profile/api/profileApi";
 import type { BusinessLocationDto } from "@internal/interfaces";
 
 type BusinessLocationCardProps = {
-    location: BusinessLocationDto;
+    location: BusinessLocationDto | null;
+};
+
+const EMPTY_LOCATION: BusinessLocationDto = {
+    address: "",
+    city: "",
+    country: "",
 };
 
 function BusinessLocationCard({ location }: BusinessLocationCardProps) {
-    const locationLabel = [location.city, location.country].filter(Boolean).join(", ");
+    const initialLocation = location ?? EMPTY_LOCATION;
+    const [isLocationEnabled, setIsLocationEnabled] = useState(Boolean(location));
+    const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(null);
+    const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
+
+    const {
+        data: countries = [],
+        isError: isCountriesError,
+        isLoading: isCountriesLoading,
+    } = useGetCountriesQuery(undefined, {
+        skip: !isLocationEnabled,
+    });
+
+    const {
+        data: states = [],
+        isError: isStatesError,
+        isLoading: isStatesLoading,
+    } = useGetStatesQuery(selectedCountryCode ?? "", {
+        skip: !isLocationEnabled || !selectedCountryCode,
+    });
+
+    const countryOptions = useMemo(
+        () =>
+            countries.map((country) => ({
+                label: country.name,
+                value: country.id,
+            })),
+        [countries],
+    );
+
+    const stateOptions = useMemo(
+        () =>
+            states.map((state) => ({
+                label: state.name,
+                value: state.stateCode,
+            })),
+        [states],
+    );
+
+    const countryPlaceholder = isCountriesLoading ? "Loading countries..." : "Select country";
+    const countryEmptyMessage = isCountriesError ? "Unable to load countries" : "No countries found";
+    const statePlaceholder = !selectedCountryCode
+        ? "Select a country first"
+        : isStatesLoading
+          ? "Loading states..."
+          : "Select state";
+    const stateEmptyMessage = isStatesError ? "Unable to load states" : "No states found";
+    const isStateSelectDisabled = !selectedCountryCode || isStatesLoading;
+
+    useEffect(() => {
+        if (!isLocationEnabled || selectedCountryCode || countries.length === 0) {
+            return;
+        }
+
+        const matchingCountry = countries.find(
+            (country) =>
+                country.name === initialLocation.country || country.id === initialLocation.country,
+        );
+
+        if (matchingCountry) {
+            setSelectedCountryCode(matchingCountry.id);
+        }
+    }, [countries, initialLocation.country, isLocationEnabled, selectedCountryCode]);
+
+    const handleCountryChange = (countryCode: string) => {
+        setSelectedCountryCode(countryCode);
+        setSelectedStateCode(null);
+    };
+
+    const handleLocationEnabledChange = (enabled: boolean) => {
+        setIsLocationEnabled(enabled);
+
+        if (!enabled) {
+            setSelectedCountryCode(null);
+            setSelectedStateCode(null);
+        }
+    };
 
     return (
         <Card className="gap-4 px-5 py-5">
@@ -24,38 +108,65 @@ function BusinessLocationCard({ location }: BusinessLocationCardProps) {
                         Your physical headquarters or service areas.
                     </Text>
                 </View>
-            </View>
-
-            <IconInput
-                icon={SearchIcon}
-                defaultValue={location.address}
-                placeholder="Search for your address..."
-                iconSize={18}
-                inputClassName="text-sm"
-            />
-
-            <View className="h-44 overflow-hidden rounded-2xl bg-secondary">
-                <View className="absolute left-0 top-0 h-full w-16 bg-card/70" />
-                <View className="absolute left-4 top-4 h-2 w-10 rounded-full bg-muted" />
-                <View className="absolute left-4 top-9 h-2 w-8 rounded-full bg-muted" />
-                <View className="absolute left-4 top-14 h-2 w-11 rounded-full bg-muted" />
-                <View className="absolute inset-y-0 left-16 w-px bg-card" />
-                <View className="absolute left-20 top-10 h-16 w-44 -rotate-12 rounded-full bg-card/60" />
-                <View className="absolute left-20 top-28 h-8 w-56 rotate-6 rounded-full bg-card/70" />
-                <View className="absolute right-2 top-4 h-24 w-24 rounded-full bg-card/50" />
-                <View className="absolute left-1/2 top-14 -ml-5 items-center">
-                    <IconCircle
-                        icon={MapPinIcon}
-                        className="h-11 w-11 bg-primary"
-                        iconClassName="text-primary-foreground"
-                    />
-                </View>
-                <View className="absolute bottom-4 left-4 rounded bg-card px-3 py-2 shadow-sm shadow-black/10">
-                    <Text className="text-xs font-jakarta-extrabold uppercase" numberOfLines={1}>
-                        {locationLabel}
-                    </Text>
+                <View className="my-auto">
+                    <Switch value={isLocationEnabled} onValueChange={handleLocationEnabledChange} />
                 </View>
             </View>
+
+            {isLocationEnabled ? (
+                <>
+                    <View className="gap-2">
+                        <Text variant={"h3"}>Country</Text>
+                        <SearchableSelect
+                            options={countryOptions}
+                            value={selectedCountryCode}
+                            onValueChange={handleCountryChange}
+                            disabled={isCountriesLoading}
+                            emptyMessage={countryEmptyMessage}
+                            placeholder={countryPlaceholder}
+                            searchPlaceholder="Search countries..."
+                        />
+                        {isCountriesError && (
+                            <Text variant={"muted"} className="text-xs">
+                                Check your connection and try again.
+                            </Text>
+                        )}
+                    </View>
+
+                    <View className="gap-2">
+                        <Text variant={"h3"}>State</Text>
+                        <SearchableSelect
+                            options={stateOptions}
+                            value={selectedStateCode}
+                            onValueChange={setSelectedStateCode}
+                            disabled={isStateSelectDisabled}
+                            emptyMessage={stateEmptyMessage}
+                            placeholder={statePlaceholder}
+                            searchPlaceholder="Search states..."
+                        />
+                        {isStatesError && (
+                            <Text variant={"muted"} className="text-xs">
+                                Check your connection and try again.
+                            </Text>
+                        )}
+                    </View>
+
+                    <View className="gap-2">
+                        <Text variant={"h3"}>Address</Text>
+                        <IconInput
+                            icon={MapPinIcon}
+                            defaultValue={initialLocation.address}
+                            placeholder="Street address"
+                            iconSize={18}
+                            inputClassName="text-sm"
+                        />
+                    </View>
+                </>
+            ) : (
+                <Text variant={"muted"} className="text-xs leading-5">
+                    Turn on location if you want customers to see where your business operates.
+                </Text>
+            )}
         </Card>
     );
 }

@@ -24,12 +24,19 @@ export interface BusinessProductHighlight {
     product: ProductDto;
 }
 
+export interface BusinessInsightsDto {
+    overview: {
+        catalogVisits: BusinessInsightMetric;
+        ordersPlaced: BusinessInsightMetric;
+        cartsCreated: BusinessInsightMetric;
+    };
+    productHighlights: BusinessProductHighlight[];
+}
+
 export interface BusinessLocationDto {
     address: string;
     city: string;
     country: string;
-    latitude?: number;
-    longitude?: number;
 }
 
 export interface UserBusinessDto {
@@ -39,16 +46,8 @@ export interface UserBusinessDto {
     bannerImage: string;
     description: string;
     category: BusinessCategories;
-    location: BusinessLocationDto;
+    location: BusinessLocationDto | null;
     role: UserRole;
-    insights: {
-        overview: {
-            catalogVisits: BusinessInsightMetric;
-            ordersPlaced: BusinessInsightMetric;
-            cartsCreated: BusinessInsightMetric;
-        };
-        productHighlights: BusinessProductHighlight[];
-    };
 }
 
 export interface BusinessDto {

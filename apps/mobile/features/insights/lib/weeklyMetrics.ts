@@ -1,4 +1,4 @@
-import type { UserBusinessDto, WeeklyMetrics } from "@internal/interfaces";
+import type { BusinessInsightsDto, WeeklyMetrics } from "@internal/interfaces";
 
 const weeklyMetricLabels = [
     ["Mon", "mon"],
@@ -10,7 +10,7 @@ const weeklyMetricLabels = [
     ["Sun", "sun"],
 ] as const;
 
-type BusinessInsightsOverview = UserBusinessDto["insights"]["overview"];
+type BusinessInsightsOverview = BusinessInsightsDto["overview"];
 
 function toWeeklyChartData(weekly: WeeklyMetrics) {
     return weeklyMetricLabels.map(([name, key]) => ({

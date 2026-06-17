@@ -36,7 +36,7 @@ function Modal({ visible, title, subtitle, children, footer, onClose }: ModalPro
                             onPress={onClose}
                             accessibilityLabel="Close modal"
                         >
-                            <XIcon size={24} />
+                            <XIcon size={24} className="text-foreground" />
                         </Button>
                     </View>
 

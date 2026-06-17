@@ -4,7 +4,6 @@ import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Tabs, useRouter } from "expo-router";
-import { testUser } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
     ChevronRightIcon,
@@ -15,10 +14,16 @@ import {
 } from "lucide-nativewind";
 import Card from "@/components/ui/card";
 import BusinessProfileDetails from "@/features/profile/components/businessProfileDetails";
+import { useGetUserInformationQueryState } from "@/features/profile/api/profileApi";
 
 function Profile() {
     const router = useRouter();
     const scrollAmount = useScrollAmount("profile");
+    const {
+        data: userInformation,
+        isLoading: isUserInformationLoading,
+        isError: isUserInformationError,
+    } = useGetUserInformationQueryState(undefined);
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
             if (scrollAmount) {
@@ -39,7 +44,9 @@ function Profile() {
         };
     }, [scrollAmount]);
 
-    const abbvName = testUser.name
+    const userName = userInformation?.name ?? (isUserInformationLoading ? "Loading..." : "Unavailable");
+    const userEmail = userInformation?.email ?? "";
+    const abbvName = userName
         .split(" ")
         .map((n: string) => n[0])
         .slice(0, 2)
@@ -60,14 +67,16 @@ function Profile() {
                     </Text>
                 </View>
                 <Text variant={"h2"} className="mt-4 text-center">
-                    {testUser.name}
+                    {userName}
                 </Text>
                 <Text variant={"muted"} className="text-xs text-center mt-1" numberOfLines={1}>
-                    {testUser.email}
+                    {isUserInformationError ? "Unable to load profile information" : userEmail}
                 </Text>
             </View>
 
-            {testUser.role === "business" && <BusinessProfileDetails business={testUser} />}
+            {userInformation?.role === "business" && (
+                <BusinessProfileDetails business={userInformation} />
+            )}
 
             <Card className="px-1 py-2">
                 <Button

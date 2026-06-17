@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import { useWindowDimensions, View } from "react-native";
 import { PackageSearchIcon, ReceiptTextIcon, ShoppingCartIcon, TrendingUpIcon } from "lucide-nativewind";
-import type { UserBusinessDto } from "@internal/interfaces";
+import type { BusinessInsightsDto } from "@internal/interfaces";
 import Card from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { formatTrend } from "@/features/insights/lib/insightMetrics";
 
-type BusinessInsightsOverview = UserBusinessDto["insights"]["overview"];
+type BusinessInsightsOverview = BusinessInsightsDto["overview"];
 
 type OverviewCardProps = {
     className?: string;
