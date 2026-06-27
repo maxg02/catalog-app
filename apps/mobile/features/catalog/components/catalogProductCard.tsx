@@ -12,23 +12,14 @@ import { Button } from "@/components/ui/button";
 type CatalogProductCardProps = ProductDto;
 
 function CatalogProductCard(product: CatalogProductCardProps) {
-    const isPublic = product.status === "public";
-
     const price = product.sale ? product.salePrice : product.price;
     const currentPrice = `$${price?.toFixed(2)}`;
     const originalPrice = `$${product.price.toFixed(2)}`;
 
-    const isInStock = product.stock > 5;
-    const isOutOfStock = product.stock < 1;
-
-    const stockText = isInStock
-        ? `${product.stock} in stock`
-        : isOutOfStock
-          ? "Out of stock"
-          : `Only ${product.stock} left`;
+    const stockText = product.onStock ? "In stock" : "Out of stock";
     const stockClassName = cn(
         "text-sm font-jakarta-medium",
-        isInStock ? "text-muted-foreground" : isOutOfStock ? "text-red-300" : "text-orange-300",
+        product.onStock ? "text-muted-foreground" : "text-red-300",
     );
 
     return (
@@ -47,9 +38,9 @@ function CatalogProductCard(product: CatalogProductCardProps) {
                             {product.name}
                         </Text>
                         <View className="flex-row gap-2">
-                            <Badge variant={isPublic ? "default" : "muted"}>
+                            <Badge variant={product.isPublic ? "default" : "muted"}>
                                 <CircleIcon className="stroke-none fill-card" size={10} />
-                                <Text>{isPublic ? "Public" : "Draft"}</Text>
+                                <Text>{product.isPublic ? "Public" : "Draft"}</Text>
                             </Badge>
                             {product.sale && (
                                 <Badge variant={"warning"}>

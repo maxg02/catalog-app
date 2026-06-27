@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Redirect, Tabs } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
+import { UserRole } from "@internal/interfaces";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import HeaderContainer from "@/components/layout/headerContainer";
@@ -54,7 +55,7 @@ function Insights() {
           ? "Unable to load user information"
           : userInformation?.name;
 
-    if (userInformation?.role === "customer") {
+    if (userInformation?.role === UserRole.Customer) {
         return <Redirect href="/" />;
     }
 

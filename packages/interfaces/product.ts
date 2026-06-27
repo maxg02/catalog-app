@@ -1,11 +1,9 @@
 import { BusinessDto } from "./business";
 
-export type ProductStatus = "public" | "draft";
-
 export interface ProductDto {
     id: number;
     name: string;
-    status: ProductStatus;
+    isPublic: boolean;
     price: number;
     image: string[];
     description: string;
@@ -14,7 +12,7 @@ export interface ProductDto {
     sale: boolean;
     salePrice: number | null;
     saleEndDate: string | null;
-    stock: number;
+    onStock: boolean;
     creationDate: Date;
     details: Record<string, string>;
     businessId: number;

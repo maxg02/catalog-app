@@ -5,6 +5,7 @@ import HeaderContainer from "@/components/layout/headerContainer";
 import { Text } from "@/components/ui/text";
 import { View } from "react-native";
 import { SharedValue, useSharedValue } from "react-native-reanimated";
+import { UserRole } from "@internal/interfaces";
 import { ScrollAmountContext } from "@/contexts/scrollAmountContext";
 import { businessHomeTabs, customerHomeTabs, homeTabs } from "@/lib/homeTabs";
 import { testUser } from "@/lib/utils";
@@ -18,7 +19,7 @@ export default function HomeLayout() {
     const ordersScrollAmount = useSharedValue(0);
     const profileScrollAmount = useSharedValue(0);
 
-    const activeTabs = testUser.role === "business" ? businessHomeTabs : customerHomeTabs;
+    const activeTabs = testUser.role === UserRole.Business ? businessHomeTabs : customerHomeTabs;
 
     const activeRouteNames = activeTabs.map((tab) => tab.name);
     const initialRouteName = activeTabs[0].name;

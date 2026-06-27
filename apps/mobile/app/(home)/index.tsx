@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useEffect, useState } from "react";
+import { UserRole } from "@internal/interfaces";
 import { Redirect, Tabs } from "expo-router";
 import BusinessCard from "@/features/business/components/businessCard";
 import { testBusinesses as businesses, testUser } from "@/lib/utils";
@@ -46,7 +47,7 @@ export default function Index() {
         };
     }, [scrollAmount]);
 
-    if (testUser.role === "business") {
+    if (testUser.role === UserRole.Business) {
         return <Redirect href="/insights" />;
     }
 

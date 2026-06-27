@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Redirect, Tabs } from "expo-router";
+import { UserRole } from "@internal/interfaces";
 import { testCarts, testUser } from "@/lib/utils";
 import CartCard from "@/features/cart/components/cartCard";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
@@ -27,7 +28,7 @@ function Carts() {
         };
     }, [scrollAmount]);
 
-    if (testUser.role === "business") {
+    if (testUser.role === UserRole.Business) {
         return <Redirect href="/insights" />;
     }
 

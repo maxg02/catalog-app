@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { Redirect, Tabs } from "expo-router";
+import { UserRole } from "@internal/interfaces";
 import { StoreIcon } from "lucide-nativewind";
 import { testSavedProductLists, testUser } from "@/lib/utils";
 import SavedProductCard from "@/features/saved-products/components/savedProductCard";
@@ -30,7 +31,7 @@ function Saved() {
         };
     }, [scrollAmount]);
 
-    if (testUser.role === "business") {
+    if (testUser.role === UserRole.Business) {
         return <Redirect href="/insights" />;
     }
 

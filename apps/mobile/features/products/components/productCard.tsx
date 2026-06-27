@@ -64,20 +64,12 @@ function ProductCard(productData: ProductCardProps) {
                         <CircleIcon
                             className={cn(
                                 "stroke-none",
-                                productData.stock > 5
-                                    ? "fill-green-300"
-                                    : productData.stock < 1
-                                      ? "fill-gray-300"
-                                      : "fill-orange-300",
+                                productData.onStock ? "fill-green-300" : "fill-gray-300",
                             )}
                             size={12}
                         />
                         <Text variant={"muted"} className="text-xs">
-                            {productData.stock > 5
-                                ? "In Stock"
-                                : productData.stock < 1
-                                  ? "Out of Stock"
-                                  : `Only ${productData.stock} left`}
+                            {productData.onStock ? "In Stock" : "Out of Stock"}
                         </Text>
                     </View>
                 </View>

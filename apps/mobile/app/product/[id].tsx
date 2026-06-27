@@ -99,19 +99,13 @@ function ProductPage() {
                     <View>
                         <Badge
                             variant={
-                                selectedProduct.stock > 5
+                                selectedProduct.onStock
                                     ? "default"
-                                    : selectedProduct.stock < 1
-                                      ? "destructive"
-                                      : "warning"
+                                    : "destructive"
                             }
                         >
                             <Text>
-                                {selectedProduct?.stock > 5
-                                    ? "In Stock"
-                                    : selectedProduct?.stock < 1
-                                      ? "Out of Stock"
-                                      : `Only ${selectedProduct?.stock} left`}
+                                {selectedProduct.onStock ? "In Stock" : "Out of Stock"}
                             </Text>
                         </Badge>
                     </View>

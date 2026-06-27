@@ -140,10 +140,9 @@ function EditProduct() {
             <View className="gap-4">
                 <Text variant={"h4"}>Inventory & Visibility</Text>
                 <InventoryVisibilityControls
-                    initialStock={selectedProduct.stock}
+                    initialOnStock={selectedProduct.onStock}
                     initialFeatured={selectedProduct.trending}
-                    initialActive={selectedProduct.status === "public"}
-                    stockLabel="Current Stock"
+                    initialActive={selectedProduct.isPublic}
                 />
             </View>
 

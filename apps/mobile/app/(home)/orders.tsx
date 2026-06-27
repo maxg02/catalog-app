@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Redirect, Tabs } from "expo-router";
+import { UserRole } from "@internal/interfaces";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
@@ -28,7 +29,7 @@ function Orders() {
         };
     }, [scrollAmount]);
 
-    if (testUser.role === "customer") {
+    if (testUser.role === UserRole.Customer) {
         return <Redirect href="/" />;
     }
 

@@ -1,21 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { Redirect, Tabs, useRouter } from "expo-router";
+import { UserRole } from "@internal/interfaces";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
-import { cn, testProducts, testUser } from "@/lib/utils";
+import { cn, testUser } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CatalogProductCard from "@/features/catalog/components/catalogProductCard";
 import { PlusIcon } from "lucide-nativewind";
+import { useGetBusinessProductsQuery } from "@/features/catalog/api/catalogApi";
+
+const BUSINESS_ID = 1;
 
 function Catalog() {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<"all" | "public" | "draft">("all");
-    const visibleProducts =
-        activeTab === "all"
-            ? testProducts
-            : testProducts.filter((product) => product.status === activeTab);
+
+    const {
+        data: products = [],
+        isLoading: isProductsLoading,
+        isError: isProductsError,
+    } = useGetBusinessProductsQuery(BUSINESS_ID);
+
+    const visibleProducts = useMemo(
+        () =>
+            activeTab === "all"
+                ? products
+                : products.filter((product) =>
+                      activeTab === "public" ? product.isPublic : !product.isPublic,
+                  ),
+        [activeTab, products],
+    );
 
     const scrollAmount = useScrollAmount("catalog");
     const handleScroll = useAnimatedScrollHandler({
@@ -38,7 +54,7 @@ function Catalog() {
         };
     }, [scrollAmount]);
 
-    if (testUser.role === "customer") {
+    if (testUser.role === UserRole.Customer) {
         return <Redirect href="/" />;
     }
 
@@ -105,9 +121,19 @@ function Catalog() {
                     </Button>
                 </View>
                 <View className="px-6 py-4 gap-3">
-                    {visibleProducts.map((product) => (
-                        <CatalogProductCard key={product.id} {...product} />
-                    ))}
+                    {isProductsLoading || isProductsError ? (
+                        <Text variant={"muted"}>
+                            {isProductsError
+                                ? "Unable to load products from the API."
+                                : "Loading products..."}
+                        </Text>
+                    ) : visibleProducts.length > 0 ? (
+                        visibleProducts.map((product) => (
+                            <CatalogProductCard key={product.id} {...product} />
+                        ))
+                    ) : (
+                        <Text variant={"muted"}>No products found.</Text>
+                    )}
                 </View>
             </Animated.ScrollView>
             <Button

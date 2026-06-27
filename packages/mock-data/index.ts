@@ -7,6 +7,7 @@ import type {
     SavedProductListDto,
     UserBusinessDto,
 } from "@internal/interfaces";
+import { UserRole } from "@internal/interfaces";
 
 function createCart(cart: Omit<CartDto, "cartTotal" | "saleTotal">): CartDto {
     const cartTotal = cart.productData.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -129,7 +130,7 @@ export const testProducts: ProductDto[] = [
     {
         id: 1,
         name: "Wireless Headphones",
-        status: "public",
+        isPublic: true,
         price: 99.99,
         image: [
             "https://cdn.shopify.com/s/files/1/0057/8938/4802/files/413_lifestyle.png?v=1752737623&width=400",
@@ -147,7 +148,7 @@ export const testProducts: ProductDto[] = [
         sale: false,
         salePrice: null,
         saleEndDate: null,
-        stock: 25,
+        onStock: true,
         businessId: Math.floor(Math.random() * 10) + 1,
         creationDate: new Date("2023-01-15"),
         details: {
@@ -159,7 +160,7 @@ export const testProducts: ProductDto[] = [
     {
         id: 2,
         name: "Smart Watch",
-        status: "public",
+        isPublic: true,
         price: 149.99,
         image: ["https://cdn.mos.cms.futurecdn.net/FkGweMeB7hdPgaSFQdgsfj-2000-80.jpg"],
         description: "Track your fitness and notifications with this sleek smartwatch.",
@@ -168,7 +169,7 @@ export const testProducts: ProductDto[] = [
         sale: true,
         salePrice: 119.99,
         saleEndDate: "2026-06-30T23:59:59.000Z",
-        stock: 40,
+        onStock: true,
         businessId: Math.floor(Math.random() * 10) + 1,
         creationDate: new Date("2023-02-20"),
         details: {
@@ -180,7 +181,7 @@ export const testProducts: ProductDto[] = [
     {
         id: 3,
         name: "Gaming Mouse",
-        status: "draft",
+        isPublic: false,
         price: 59.99,
         image: [
             "https://assetsio.gnwcdn.com/g502x_f9QuuM8.jpeg?width=690&quality=85&format=jpg&dpr=3&auto=webp",
@@ -191,7 +192,7 @@ export const testProducts: ProductDto[] = [
         sale: false,
         salePrice: null,
         saleEndDate: null,
-        stock: 60,
+        onStock: true,
         businessId: Math.floor(Math.random() * 10) + 1,
         creationDate: new Date("2023-03-10"),
         details: {
@@ -203,7 +204,7 @@ export const testProducts: ProductDto[] = [
     {
         id: 4,
         name: "Mechanical Keyboard",
-        status: "public",
+        isPublic: true,
         price: 129.99,
         image: ["https://images.indianexpress.com/2021/06/Corsair-Mechanical-Keyboard.jpg"],
         description: "Mechanical keyboard with blue switches for tactile feedback.",
@@ -212,7 +213,7 @@ export const testProducts: ProductDto[] = [
         sale: true,
         salePrice: 99.99,
         saleEndDate: "2026-07-15T23:59:59.000Z",
-        stock: 35,
+        onStock: true,
         businessId: Math.floor(Math.random() * 10) + 1,
         creationDate: new Date("2023-04-05"),
         details: {
@@ -224,7 +225,7 @@ export const testProducts: ProductDto[] = [
     {
         id: 5,
         name: "4K Monitor",
-        status: "draft",
+        isPublic: false,
         price: 399.99,
         image: [
             "https://m.media-amazon.com/images/S/aplus-media-library-service-media/85fa4d9d-eeff-4d9c-be6b-e9c71df5d317.__CR0,0,1200,900_PT0_SX600_V1___.jpg",
@@ -235,7 +236,7 @@ export const testProducts: ProductDto[] = [
         sale: true,
         salePrice: 349.99,
         saleEndDate: "2026-08-31T23:59:59.000Z",
-        stock: 20,
+        onStock: true,
         businessId: Math.floor(Math.random() * 10) + 1,
         creationDate: new Date("2023-05-12"),
         details: {
@@ -247,7 +248,7 @@ export const testProducts: ProductDto[] = [
     {
         id: 6,
         name: "Bluetooth Speaker",
-        status: "public",
+        isPublic: true,
         price: 79.99,
         image: [
             "https://cdn.thewirecutter.com/wp-content/media/2024/11/portablebluetoothspeakers-2048px-9130.jpg?width=2048&quality=60&crop=2048:1365&auto=webp",
@@ -258,7 +259,7 @@ export const testProducts: ProductDto[] = [
         sale: false,
         salePrice: null,
         saleEndDate: null,
-        stock: 0,
+        onStock: false,
         businessId: Math.floor(Math.random() * 10) + 1,
         creationDate: new Date("2023-06-18"),
         details: {
@@ -270,7 +271,7 @@ export const testProducts: ProductDto[] = [
     {
         id: 7,
         name: "Laptop Stand",
-        status: "draft",
+        isPublic: false,
         price: 39.99,
         image: [
             "https://callmateindia.com/cdn/shop/files/Black_1_8a97d0c4-b31e-4874-988b-f8eb9bf7703f.jpg?v=1721391709&width=2048",
@@ -281,7 +282,7 @@ export const testProducts: ProductDto[] = [
         sale: true,
         salePrice: 29.99,
         saleEndDate: "2026-09-15T23:59:59.000Z",
-        stock: 4,
+        onStock: true,
         businessId: Math.floor(Math.random() * 10) + 1,
         creationDate: new Date("2023-07-22"),
         details: {
@@ -421,7 +422,7 @@ export const testUser: UserBusinessDto = {
     description: "Tienda de repuestos automotrices con atención personalizada y entregas locales.",
     category: BusinessCategories.AUTOMOTIVE,
     location: testBusinessLocation,
-    role: "business",
+    role: UserRole.Business,
 };
 
 export const testUserInsights: BusinessInsightsDto = {

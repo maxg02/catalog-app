@@ -38,7 +38,7 @@ type StatesResponseDto = {
 const profileApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getUserInformation: builder.query<UserBusinessDto, void>({
-            query: () => "/api/businessUser",
+            query: () => "/api/business/1",
         }),
         getCountries: builder.query<CountryDto[], void>({
             query: () =>

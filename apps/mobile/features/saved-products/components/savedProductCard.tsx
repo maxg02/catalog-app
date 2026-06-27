@@ -48,20 +48,12 @@ function SavedProductCard(savedProduct: ProductDto) {
                             <CircleIcon
                                 className={cn(
                                     "stroke-none",
-                                    savedProduct.stock > 5
-                                        ? "fill-green-300"
-                                        : savedProduct.stock < 1
-                                          ? "fill-gray-300"
-                                          : "fill-orange-300",
+                                    savedProduct.onStock ? "fill-green-300" : "fill-gray-300",
                                 )}
                                 size={12}
                             />
                             <Text variant={"muted"} className="text-xs">
-                                {savedProduct.stock > 5
-                                    ? "In Stock"
-                                    : savedProduct.stock < 1
-                                      ? "Out of Stock"
-                                      : `Only ${savedProduct.stock} left`}
+                                {savedProduct.onStock ? "In Stock" : "Out of Stock"}
                             </Text>
                         </View>
                     </View>
