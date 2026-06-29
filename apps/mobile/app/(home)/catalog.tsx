@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { View } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { RefreshControl, View } from "react-native";
 import { Redirect, Tabs, useRouter } from "expo-router";
 import { UserRole } from "@internal/interfaces";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
@@ -20,7 +20,9 @@ function Catalog() {
     const {
         data: products = [],
         isLoading: isProductsLoading,
+        isFetching: isProductsFetching,
         isError: isProductsError,
+        refetch: refetchProducts,
     } = useGetBusinessProductsQuery(BUSINESS_ID);
 
     const visibleProducts = useMemo(
@@ -41,6 +43,10 @@ function Catalog() {
             }
         },
     });
+
+    const onRefresh = useCallback(() => {
+        refetchProducts();
+    }, [refetchProducts]);
 
     useEffect(() => {
         if (scrollAmount) {
@@ -65,6 +71,12 @@ function Catalog() {
                 scrollEventThrottle={16}
                 contentContainerClassName="pb-24"
                 className="flex-1"
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isProductsFetching && !isProductsLoading}
+                        onRefresh={onRefresh}
+                    />
+                }
             >
                 <Tabs.Screen options={{ title: "Catalog Management" }} />
                 <View className="flex-row px-4 gap-3 border-b border-border">

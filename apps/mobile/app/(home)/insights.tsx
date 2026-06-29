@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { View } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { RefreshControl, View } from "react-native";
 import { Redirect, Tabs } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { UserRole } from "@internal/interfaces";
@@ -31,10 +31,13 @@ function Insights() {
         isLoading: isUserInformationLoading,
         isError: isUserInformationError,
     } = useGetUserInformationQueryState(undefined);
+
     const {
         data: businessInsights,
         isLoading: isBusinessInsightsLoading,
+        isFetching: isBusinessInsightsFetching,
         isError: isBusinessInsightsError,
+        refetch: refetchBusinessInsights,
     } = useGetBusinessInsightsQuery();
 
     useEffect(() => {
@@ -48,6 +51,10 @@ function Insights() {
             }
         };
     }, [scrollAmount]);
+
+    const onRefresh = useCallback(() => {
+        refetchBusinessInsights();
+    }, [refetchBusinessInsights]);
 
     const headerTitle = isUserInformationLoading
         ? "Loading..."
@@ -69,6 +76,12 @@ function Insights() {
                 onScroll={handleScroll}
                 scrollEventThrottle={16}
                 className="bg-background flex-1"
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isBusinessInsightsFetching && !isBusinessInsightsLoading}
+                        onRefresh={onRefresh}
+                    />
+                }
             >
                 <Tabs.Screen
                     options={{
@@ -87,9 +100,7 @@ function Insights() {
                 />
                 <Card className="px-6 py-5">
                     <Text variant={"muted"}>
-                        {isError
-                            ? "Unable to load insights from the API."
-                            : "Loading insights..."}
+                        {isError ? "Unable to load insights from the API." : "Loading insights..."}
                     </Text>
                 </Card>
             </Animated.ScrollView>
@@ -105,6 +116,12 @@ function Insights() {
             onScroll={handleScroll}
             scrollEventThrottle={16}
             className="bg-background flex-1"
+            refreshControl={
+                <RefreshControl
+                    refreshing={isBusinessInsightsFetching && !isBusinessInsightsLoading}
+                    onRefresh={onRefresh}
+                />
+            }
         >
             <Tabs.Screen
                 options={{

@@ -19,12 +19,14 @@ import { useGetUserInformationQueryState } from "@/features/profile/api/profileA
 
 function Profile() {
     const router = useRouter();
+
     const scrollAmount = useScrollAmount("profile");
     const {
         data: userInformation,
         isLoading: isUserInformationLoading,
         isError: isUserInformationError,
     } = useGetUserInformationQueryState(undefined);
+
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
             if (scrollAmount) {
