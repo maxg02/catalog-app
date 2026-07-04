@@ -5,7 +5,6 @@ import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Tabs, useRouter } from "expo-router";
 import { Button } from "@/components/ui/button";
-import { UserRole } from "@internal/interfaces";
 import {
     ChevronRightIcon,
     CircleHelpIcon,
@@ -77,9 +76,7 @@ function Profile() {
                 </Text>
             </View>
 
-            {userInformation?.role === UserRole.Business && (
-                <BusinessProfileDetails business={userInformation} />
-            )}
+            {userInformation && <BusinessProfileDetails business={userInformation} />}
 
             <Card className="px-1 py-2">
                 <Button

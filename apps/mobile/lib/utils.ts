@@ -2,10 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export {
-    testBusinesses,
-    testCarts,
     testProducts,
-    testSavedProductLists,
     testUser,
     testUserInsights,
 } from "@internal/mock-data";

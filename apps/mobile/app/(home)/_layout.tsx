@@ -5,29 +5,16 @@ import HeaderContainer from "@/components/layout/headerContainer";
 import { Text } from "@/components/ui/text";
 import { View } from "react-native";
 import { SharedValue, useSharedValue } from "react-native-reanimated";
-import { UserRole } from "@internal/interfaces";
 import { ScrollAmountContext } from "@/contexts/scrollAmountContext";
-import { businessHomeTabs, customerHomeTabs, homeTabs } from "@/lib/homeTabs";
-import { testUser } from "@/lib/utils";
+import { businessHomeTabs } from "@/lib/homeTabs";
 
 export default function HomeLayout() {
-    const discoverScrollAmount = useSharedValue(0);
-    const savedScrollAmount = useSharedValue(0);
-    const cartsScrollAmount = useSharedValue(0);
     const insightsScrollAmount = useSharedValue(0);
     const catalogScrollAmount = useSharedValue(0);
     const ordersScrollAmount = useSharedValue(0);
     const profileScrollAmount = useSharedValue(0);
 
-    const activeTabs = testUser.role === UserRole.Business ? businessHomeTabs : customerHomeTabs;
-
-    const activeRouteNames = activeTabs.map((tab) => tab.name);
-    const initialRouteName = activeTabs[0].name;
-
     const scrollAmounts: Record<string, SharedValue<number>> = {
-        index: discoverScrollAmount,
-        saved: savedScrollAmount,
-        carts: cartsScrollAmount,
         insights: insightsScrollAmount,
         catalog: catalogScrollAmount,
         orders: ordersScrollAmount,
@@ -38,17 +25,17 @@ export default function HomeLayout() {
         <SafeAreaView className="flex-1 bg-background" edges={["left", "right", "top"]}>
             <ScrollAmountContext.Provider
                 value={{
-                    defaultValue: discoverScrollAmount,
+                    defaultValue: insightsScrollAmount,
                     routeValues: scrollAmounts,
                 }}
             >
                 <Tabs
-                    initialRouteName={initialRouteName}
-                    tabBar={(props) => <Footer {...props} tabs={activeTabs} />}
+                    initialRouteName={businessHomeTabs[0].name}
+                    tabBar={(props) => <Footer {...props} tabs={businessHomeTabs} />}
                     screenOptions={{
                         header: ({ options, route }) => (
                             <HeaderContainer
-                                scrollAmount={scrollAmounts[route.name] ?? discoverScrollAmount}
+                                scrollAmount={scrollAmounts[route.name] ?? insightsScrollAmount}
                             >
                                 <View>
                                     <Text variant={"h1"} className="font-jakarta-bold">
@@ -59,16 +46,16 @@ export default function HomeLayout() {
                         ),
                     }}
                 >
-                    {homeTabs.map((tab) => (
+                    {businessHomeTabs.map((tab) => (
                         <Tabs.Screen
                             key={tab.name}
                             name={tab.name}
                             options={{
                                 title: tab.title,
-                                href: activeRouteNames.includes(tab.name) ? undefined : null,
                             }}
                         />
                     ))}
+                    <Tabs.Screen name="orders" options={{ href: null, title: "Orders" }} />
                 </Tabs>
             </ScrollAmountContext.Provider>
         </SafeAreaView>

@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { RefreshControl, View } from "react-native";
-import { Redirect, Tabs, useRouter } from "expo-router";
-import { UserRole } from "@internal/interfaces";
+import { Tabs, useRouter } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
-import { cn, testUser } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CatalogProductCard from "@/features/catalog/components/catalogProductCard";
 import { PlusIcon } from "lucide-nativewind";
@@ -59,10 +58,6 @@ function Catalog() {
             }
         };
     }, [scrollAmount]);
-
-    if (testUser.role === UserRole.Customer) {
-        return <Redirect href="/" />;
-    }
 
     return (
         <View className="bg-background flex-1">

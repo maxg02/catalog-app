@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
-import { Redirect, Tabs } from "expo-router";
-import { UserRole } from "@internal/interfaces";
+import { Tabs } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
-import { testUser } from "@/lib/utils";
 
 function Orders() {
     const scrollAmount = useScrollAmount("orders");
@@ -28,10 +26,6 @@ function Orders() {
             }
         };
     }, [scrollAmount]);
-
-    if (testUser.role === UserRole.Customer) {
-        return <Redirect href="/" />;
-    }
 
     return (
         <Animated.ScrollView
