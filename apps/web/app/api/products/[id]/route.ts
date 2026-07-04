@@ -5,7 +5,7 @@ import type { ProductRow } from "@/interfaces";
 
 const PRODUCTS_TABLE = "products";
 const PRODUCT_SELECT =
-    "id,name,is_public,price,description,sale,sale_price,sale_end_date,creation_date,business_id,details,on_stock,product_images(id,image_url,product_id)";
+    "id,name,is_public,is_featured,price,description,sale,sale_price,sale_end_date,creation_date,business_id,details,on_stock,product_images(id,image_url,product_id,is_main)";
 
 type ProductRouteContext = {
     params: Promise<{
@@ -42,3 +42,4 @@ export async function GET(_request: Request, { params }: ProductRouteContext) {
 
     return Response.json(mapProductRowToDto(product as ProductRow));
 }
+

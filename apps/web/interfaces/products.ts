@@ -12,10 +12,12 @@ export interface ProductRow {
     details: Record<string, string> | null;
     on_stock: boolean;
     product_images?: ProductImageRow[] | null;
+    is_featured: boolean;
 }
 
 export interface ProductImageRow {
     id: number;
     image_url: string;
     product_id: number;
+    is_main: boolean;
 }

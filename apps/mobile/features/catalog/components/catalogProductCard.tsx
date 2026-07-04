@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "expo-router";
 import { Image, View } from "react-native";
-import { CircleIcon, PencilIcon } from "lucide-nativewind";
+import { CircleIcon, PencilIcon, StarIcon } from "lucide-nativewind";
 import type { ProductDto } from "@internal/interfaces";
 import { Badge } from "@/components/ui/badge";
 import Card from "@/components/ui/card";
@@ -25,12 +25,18 @@ function CatalogProductCard(product: CatalogProductCardProps) {
     return (
         <Card className="p-3">
             <View className="flex-row gap-3">
-                <View className="w-24 overflow-hidden rounded-2xl bg-muted">
+                <View className="w-24 overflow-hidden rounded-2xl bg-muted relative">
                     <Image
                         source={{ uri: product.image[0] }}
                         className="flex-grow flex-shrink-0 h-24"
                         resizeMode="cover"
                     />
+                    {product.isFeatured && (
+                        <StarIcon
+                            className="absolute top-2 left-2 fill-yellow-400 stroke-none"
+                            size={15}
+                        />
+                    )}
                 </View>
                 <View className="flex-1 justify-between gap-2">
                     <View className="gap-1 items-start">

@@ -20,7 +20,7 @@ import ProductCard from "@/features/products/components/productCard";
 import { SimpleGrid } from "react-native-super-grid";
 import { testProducts as products, testBusinesses as businesses } from "@/lib/utils";
 
-const featuredProducts: ProductDto[] = products.filter((p) => p.trending || p.bestSeller);
+const featuredProducts: ProductDto[] = products.filter((p) => p.isFeatured || p.bestSeller);
 
 export default function BusinessPage() {
     const [listDisplay, setListDisplay] = useState(false);

@@ -7,7 +7,7 @@ export interface ProductDto {
     price: number;
     image: string[];
     description: string;
-    trending: boolean;
+    isFeatured: boolean;
     bestSeller: boolean;
     sale: boolean;
     salePrice: number | null;

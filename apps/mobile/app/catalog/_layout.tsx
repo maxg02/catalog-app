@@ -36,9 +36,6 @@ export default function CatalogLayout() {
                                         {isEditRoute ? "Edit Product" : "Add New Product"}
                                     </Text>
                                 </View>
-                                <Button variant={"ghost"} className="px-0">
-                                    <Text className="font-jakarta-bold text-primary">Preview</Text>
-                                </Button>
                             </HeaderContainer>
                         ),
                     }}

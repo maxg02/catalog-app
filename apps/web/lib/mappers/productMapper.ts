@@ -10,9 +10,11 @@ export function mapProductRowToDto(
         name: row.name,
         isPublic: row.is_public,
         price: row.price,
-        image: images.map((image) => image.image_url),
+        image: [...images]
+            .sort((first, second) => Number(second.is_main) - Number(first.is_main))
+            .map((image) => image.image_url),
         description: row.description,
-        trending: false,
+        isFeatured: row.is_featured,
         bestSeller: false,
         sale: row.sale,
         salePrice: row.sale_price,
@@ -23,3 +25,4 @@ export function mapProductRowToDto(
         businessId: row.business_id,
     };
 }
+

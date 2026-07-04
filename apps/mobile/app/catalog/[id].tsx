@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { Textarea } from "@/components/ui/textarea";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
-import ProductMediaUpload from "@/features/catalog/components/productMediaUpload";
+import ProductMediaUpload, { type ProductImageAsset } from "@/features/catalog/components/productMediaUpload";
 import { testProducts, cn } from "@/lib/utils";
 import DateTimeInput from "@/components/ui/dateTimeInput";
 
@@ -26,8 +26,10 @@ function EditProduct() {
     );
     const [saleEnabled, setSaleEnabled] = useState(false);
     const [onStock, setOnStock] = useState(true);
-    const [featured, setFeatured] = useState(true);
+    const [isFeatured, setIsFeatured] = useState(true);
     const [visibility, setVisibility] = useState<ProductVisibility>("public");
+    const [images, setImages] = useState<ProductImageAsset[]>([]);
+    const [mainImageIndex, setMainImageIndex] = useState<number | null>(null);
     const scrollAmount = useScrollAmount();
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
@@ -52,8 +54,17 @@ function EditProduct() {
     useEffect(() => {
         setSaleEnabled(Boolean(selectedProduct?.sale));
         setOnStock(Boolean(selectedProduct?.onStock));
-        setFeatured(Boolean(selectedProduct?.trending));
+        setIsFeatured(Boolean(selectedProduct?.isFeatured));
         setVisibility(selectedProduct?.isPublic ? "public" : "draft");
+        const nextImages =
+            selectedProduct?.image.map((uri, index) => ({
+                uri,
+                name: `product-image-${index + 1}.jpg`,
+                type: "image/jpeg",
+            })) ?? [];
+
+        setImages(nextImages);
+        setMainImageIndex(nextImages.length > 0 ? 0 : null);
     }, [selectedProduct]);
 
     if (!selectedProduct) {
@@ -77,7 +88,12 @@ function EditProduct() {
             onScroll={handleScroll}
             scrollEventThrottle={16}
         >
-            <ProductMediaUpload productImages={selectedProduct.image} />
+            <ProductMediaUpload
+                images={images}
+                mainImageIndex={mainImageIndex}
+                onImagesChange={setImages}
+                onMainImageIndexChange={setMainImageIndex}
+            />
 
             <View className="gap-4">
                 <Text variant={"h4"}>BASIC INFORMATION</Text>
@@ -165,9 +181,9 @@ function EditProduct() {
                     </Pressable>
                     <Pressable
                         className="flex-row items-center gap-3 border-b border-border px-4 py-4"
-                        onPress={() => setFeatured((current) => !current)}
+                        onPress={() => setIsFeatured((current) => !current)}
                         accessibilityRole="checkbox"
-                        accessibilityState={{ checked: featured }}
+                        accessibilityState={{ checked: isFeatured }}
                     >
                         <StarIcon size={20} className="text-muted-foreground" />
                         <View className="flex-1">
@@ -176,7 +192,7 @@ function EditProduct() {
                                 Highlight at the top of your shop
                             </Text>
                         </View>
-                        <CheckControl checked={featured} />
+                        <CheckControl checked={isFeatured} />
                     </Pressable>
                     <View className="flex-row items-center gap-3 px-4 py-4">
                         <EyeIcon size={20} className="text-muted-foreground" />
@@ -230,3 +246,4 @@ function EditProduct() {
 }
 
 export default EditProduct;
+

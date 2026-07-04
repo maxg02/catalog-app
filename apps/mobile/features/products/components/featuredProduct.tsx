@@ -15,9 +15,9 @@ function FeaturedProduct(productData: ProductDto) {
                     resizeMode="cover"
                     className="h-52 aspect-[15/9] overflow-hidden border border-transparent rounded-3xl justify-end items-start"
                 >
-                    {productData.trending ? (
+                    {productData.isFeatured ? (
                         <Badge className="ms-3">
-                            <Text>Trending</Text>
+                            <Text>Featured</Text>
                         </Badge>
                     ) : productData.bestSeller ? (
                         <Badge variant={"secondary"} className="ms-3">

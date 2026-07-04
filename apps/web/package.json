@@ -9,6 +9,7 @@
         "lint": "eslint"
     },
     "dependencies": {
+        "@aws-sdk/client-s3": "^3.1079.0",
         "@internal/enums": "workspace:*",
         "@internal/interfaces": "workspace:*",
         "@internal/mock-data": "workspace:*",
