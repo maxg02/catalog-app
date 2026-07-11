@@ -18,6 +18,13 @@ export interface ProductDto {
     businessId: number;
 }
 
+export type CatalogProductDto = Pick<
+    ProductDto,
+    "id" | "name" | "isPublic" | "price" | "isFeatured" | "sale" | "salePrice" | "onStock"
+> & {
+    mainImage: string | null;
+};
+
 export interface SavedProductListDto {
     id: number;
     businessId: number;
@@ -36,3 +43,4 @@ export interface CartDto {
     cartTotal: number;
     saleTotal: number;
 }
+

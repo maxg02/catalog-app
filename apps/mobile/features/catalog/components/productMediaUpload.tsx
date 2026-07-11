@@ -10,6 +10,7 @@ type ProductImageAsset = {
     uri: string;
     name: string;
     type: string;
+    isExisting?: boolean;
 };
 
 type ProductMediaUploadProps = {
@@ -191,3 +192,5 @@ function ProductMediaUpload({
 
 export default ProductMediaUpload;
 export type { ProductImageAsset };
+
+

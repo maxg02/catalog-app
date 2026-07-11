@@ -1,5 +1,5 @@
 import { Text, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-nativewind";
@@ -8,17 +8,40 @@ interface DateTimeInputProps {
     mode: "date" | "time";
     placeholder?: string;
     initialDate?: Date | null;
+    value?: Date | null;
+    onDateChange?: (date: Date | null) => void;
 }
 
-function DateTimeInput({ mode, placeholder, initialDate = null }: DateTimeInputProps) {
-    const [date, setDate] = useState<null | Date>(initialDate);
+function DateTimeInput({
+    mode,
+    placeholder,
+    initialDate = null,
+    value,
+    onDateChange,
+}: DateTimeInputProps) {
+    const [internalDate, setInternalDate] = useState<null | Date>(initialDate);
+    const date = value !== undefined ? value : internalDate;
+
+    useEffect(() => {
+        if (value === undefined) {
+            setInternalDate(initialDate);
+        }
+    }, [initialDate, value]);
+
+    const setDate = (nextDate: Date) => {
+        if (value === undefined) {
+            setInternalDate(nextDate);
+        }
+
+        onDateChange?.(nextDate);
+    };
 
     const showDateTimePicker = () => {
         DateTimePickerAndroid.open({
             value: date ?? new Date(),
-            onChange(event, date) {
-                if (event.type === "set" && date) {
-                    setDate(date);
+            onChange(event, nextDate) {
+                if (event.type === "set" && nextDate) {
+                    setDate(nextDate);
                 }
             },
             mode: mode,

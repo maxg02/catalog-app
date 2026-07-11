@@ -19,5 +19,7 @@ const baseQueryWithLogging: typeof baseQuery = async (args, api, extraOptions) =
 export const baseApi = createApi({
     reducerPath: "baseApi",
     baseQuery: baseQueryWithLogging,
+    tagTypes: ["BusinessProducts", "Product"],
     endpoints: () => ({}),
 });
+

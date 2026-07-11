@@ -1,15 +1,16 @@
 import React from "react";
 import { Link } from "expo-router";
 import { Image, View } from "react-native";
-import { CircleIcon, PencilIcon, StarIcon } from "lucide-nativewind";
-import type { ProductDto } from "@internal/interfaces";
+import { BoxIcon, CircleIcon, PencilIcon, StarIcon } from "lucide-nativewind";
+import type { CatalogProductDto } from "@internal/interfaces";
 import { Badge } from "@/components/ui/badge";
 import Card from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Box } from "lucide-react-native";
 
-type CatalogProductCardProps = ProductDto;
+type CatalogProductCardProps = CatalogProductDto;
 
 function CatalogProductCard(product: CatalogProductCardProps) {
     const price = product.sale ? product.salePrice : product.price;
@@ -26,11 +27,17 @@ function CatalogProductCard(product: CatalogProductCardProps) {
         <Card className="p-3">
             <View className="flex-row gap-3">
                 <View className="w-24 overflow-hidden rounded-2xl bg-muted relative">
-                    <Image
-                        source={{ uri: product.image[0] }}
-                        className="flex-grow flex-shrink-0 h-24"
-                        resizeMode="cover"
-                    />
+                    {product.mainImage ? (
+                        <Image
+                            source={{ uri: product.mainImage }}
+                            className="flex-grow flex-shrink-0 h-24"
+                            resizeMode="cover"
+                        />
+                    ) : (
+                        <View className="my-auto mx-auto opacity-30">
+                            <BoxIcon className="text-white" size={30} />
+                        </View>
+                    )}
                     {product.isFeatured && (
                         <StarIcon
                             className="absolute top-2 left-2 fill-yellow-400 stroke-none"

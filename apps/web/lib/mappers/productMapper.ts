@@ -1,4 +1,4 @@
-import type { ProductDto } from "@internal/interfaces";
+import type { CatalogProductDto, ProductDto } from "@internal/interfaces";
 import type { ProductImageRow, ProductRow } from "@/interfaces";
 
 export function mapProductRowToDto(
@@ -23,6 +23,26 @@ export function mapProductRowToDto(
         creationDate: new Date(row.creation_date),
         details: row.details ?? {},
         businessId: row.business_id,
+    };
+}
+export function mapProductRowToCatalogDto(
+    row: ProductRow,
+    images: ProductImageRow[] = row.product_images ?? [],
+): CatalogProductDto {
+    const [mainImage = null] = [...images]
+        .sort((first, second) => Number(second.is_main) - Number(first.is_main))
+        .map((image) => image.image_url);
+
+    return {
+        id: row.id,
+        name: row.name,
+        isPublic: row.is_public,
+        price: row.price,
+        mainImage,
+        isFeatured: row.is_featured,
+        sale: row.sale,
+        salePrice: row.sale_price,
+        onStock: row.on_stock,
     };
 }
 
