@@ -205,3 +205,44 @@ export async function PUT(request: Request, { params }: ProductRouteContext) {
 
     return Response.json(mapProductRowToDto(updatedProduct as ProductRow));
 }
+export async function DELETE(_request: Request, { params }: ProductRouteContext) {
+    const { id } = await params;
+    const productId = Number(id);
+
+    if (!Number.isInteger(productId) || productId < 1) {
+        return Response.json({ error: "Invalid product id" }, { status: 400 });
+    }
+
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+
+    const { data: currentProduct, error: currentProductError } = await supabase
+        .from(PRODUCTS_TABLE)
+        .select(PRODUCT_SELECT)
+        .eq("id", productId)
+        .maybeSingle();
+
+    if (currentProductError) {
+        console.error("Error fetching product before delete:", currentProductError);
+
+        return Response.json({ error: "Error fetching product" }, { status: 500 });
+    }
+
+    if (!currentProduct) {
+        return Response.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    const imageUrls = getProductImageRows(currentProduct as ProductRow).map((image) => image.image_url);
+    const { error: deleteProductError } = await supabase.from(PRODUCTS_TABLE).delete().eq("id", productId);
+
+    if (deleteProductError) {
+        console.error("Error deleting product:", deleteProductError);
+
+        return Response.json({ error: "Error deleting product" }, { status: 500 });
+    }
+
+    await deleteImageUrlsFromR2(imageUrls);
+
+    return new Response(null, { status: 204 });
+}
+

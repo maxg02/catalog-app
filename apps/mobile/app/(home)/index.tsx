@@ -6,9 +6,13 @@ import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import LoadingOverlay from "@/components/ui/loadingOverlay";
 import CatalogProductCard from "@/features/catalog/components/catalogProductCard";
 import { PlusIcon } from "lucide-nativewind";
-import { useGetBusinessProductsQuery } from "@/features/catalog/api/catalogApi";
+import {
+    useDeleteBusinessProductMutation,
+    useGetBusinessProductsQuery,
+} from "@/features/catalog/api/catalogApi";
 
 const BUSINESS_ID = 1;
 
@@ -23,6 +27,7 @@ function Catalog() {
         isError: isProductsError,
         refetch: refetchProducts,
     } = useGetBusinessProductsQuery(BUSINESS_ID);
+    const [deleteBusinessProduct, { isLoading: isDeletingProduct }] = useDeleteBusinessProductMutation();
 
     const visibleProducts = useMemo(
         () =>
@@ -46,6 +51,12 @@ function Catalog() {
     const onRefresh = useCallback(() => {
         refetchProducts();
     }, [refetchProducts]);
+
+    const deleteCatalogProduct = useCallback(
+        (productId: number) =>
+            deleteBusinessProduct({ businessId: BUSINESS_ID, productId }).unwrap(),
+        [deleteBusinessProduct],
+    );
 
     useEffect(() => {
         if (scrollAmount) {
@@ -136,7 +147,12 @@ function Catalog() {
                         </Text>
                     ) : visibleProducts.length > 0 ? (
                         visibleProducts.map((product) => (
-                            <CatalogProductCard key={product.id} {...product} />
+                            <CatalogProductCard
+                                key={product.id}
+                                {...product}
+                                isDeleting={isDeletingProduct}
+                                onDelete={() => deleteCatalogProduct(product.id)}
+                            />
                         ))
                     ) : (
                         <Text variant={"muted"}>No products found.</Text>
@@ -151,6 +167,7 @@ function Catalog() {
             >
                 <PlusIcon size={28} className="text-primary-foreground" />
             </Button>
+            {isDeletingProduct && <LoadingOverlay label="Deleting product..." />}
         </View>
     );
 }

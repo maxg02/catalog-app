@@ -28,6 +28,11 @@ type UpdateBusinessProductRequest = {
     product: ProductMutationPayload;
 };
 
+type DeleteBusinessProductRequest = {
+    businessId: number;
+    productId: number;
+};
+
 function getProductFormData(product: ProductMutationPayload, options: { includeExistingImages: boolean }) {
     const formData = new FormData();
     const existingImages = options.includeExistingImages
@@ -95,15 +100,34 @@ const catalogApi = baseApi.injectEndpoints({
                       ]
                     : [],
         }),
+        deleteBusinessProduct: builder.mutation<void, DeleteBusinessProductRequest>({
+            query: ({ productId }) => ({
+                url: `/api/products/${productId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: (_result, error, { businessId, productId }) =>
+                !error
+                    ? [
+                          { type: "BusinessProducts", id: businessId },
+                          { type: "Product", id: productId },
+                      ]
+                    : [],
+        }),
     }),
 });
 
 export const {
     useCreateBusinessProductMutation,
+    useDeleteBusinessProductMutation,
     useGetBusinessProductsQuery,
     useGetProductQuery,
     useUpdateBusinessProductMutation,
 } = catalogApi;
 export { catalogApi };
-export type { CreateBusinessProductRequest, ProductMutationPayload, UpdateBusinessProductRequest };
+export type {
+    CreateBusinessProductRequest,
+    DeleteBusinessProductRequest,
+    ProductMutationPayload,
+    UpdateBusinessProductRequest,
+};
 

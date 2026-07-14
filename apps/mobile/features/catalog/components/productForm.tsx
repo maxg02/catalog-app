@@ -10,7 +10,7 @@ import {
     TagIcon,
     Trash2Icon,
 } from "lucide-nativewind";
-import { ActivityIndicator, Pressable, Switch, View } from "react-native";
+import { Pressable, Switch, View } from "react-native";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/card";
@@ -19,6 +19,7 @@ import DateTimeInput from "@/components/ui/dateTimeInput";
 import IconCircle from "@/components/ui/iconCircle";
 import { IconInput } from "@/components/ui/iconInput";
 import { Input } from "@/components/ui/input";
+import LoadingOverlay from "@/components/ui/loadingOverlay";
 import { Text } from "@/components/ui/text";
 import { Textarea } from "@/components/ui/textarea";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
@@ -607,12 +608,7 @@ function ProductForm({
                 </Button>
             </Animated.ScrollView>
 
-            {isSaving && (
-                <View className="absolute inset-0 items-center justify-center bg-black/70">
-                    <ActivityIndicator size="large" color="white" />
-                    <Text className="mt-3 font-jakarta-bold text-white">{loadingLabel}</Text>
-                </View>
-            )}
+            {isSaving && <LoadingOverlay label={loadingLabel} />}
         </View>
     );
 }
