@@ -1,9 +1,18 @@
+import Constants from "expo-constants";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const webApiUrl = process.env.EXPO_PUBLIC_WEB_API_URL;
+const getWebApiUrl = () => {
+    if (process.env.EXPO_PUBLIC_WEB_API_URL) {
+        return process.env.EXPO_PUBLIC_WEB_API_URL;
+    }
+
+    const expoHost = Constants.expoConfig?.hostUri?.split(":")[0];
+
+    return expoHost ? `http://${expoHost}:3000` : undefined;
+};
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: webApiUrl,
+    baseUrl: getWebApiUrl(),
 });
 
 const baseQueryWithLogging: typeof baseQuery = async (args, api, extraOptions) => {
@@ -19,7 +28,6 @@ const baseQueryWithLogging: typeof baseQuery = async (args, api, extraOptions) =
 export const baseApi = createApi({
     reducerPath: "baseApi",
     baseQuery: baseQueryWithLogging,
-    tagTypes: ["BusinessProducts", "Product"],
+    tagTypes: ["Profile", "Business", "BusinessProducts", "Product"],
     endpoints: () => ({}),
 });
-

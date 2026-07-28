@@ -3,8 +3,8 @@ import { baseApi } from "@/lib/api/baseApi";
 
 const insightsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getBusinessInsights: builder.query<BusinessInsightsDto, void>({
-            query: () => "/api/business/1/insights",
+        getBusinessInsights: builder.query<BusinessInsightsDto, number>({
+            query: (businessId) => `/api/business/${businessId}/insights`,
         }),
     }),
 });

@@ -1,11 +1,13 @@
 import { BusinessCategories } from "@internal/enums";
 import type {
     BusinessDto,
+    BusinessProfileDto,
     BusinessInsightsDto,
     CartDto,
     ProductDto,
     SavedProductListDto,
-    UserBusinessDto,
+    ProfileDto,
+    UserDto,
 } from "@internal/interfaces";
 import { UserRole } from "@internal/interfaces";
 
@@ -414,15 +416,26 @@ export const testCarts: CartDto[] = [
     }),
 ];
 
-export const testUser: UserBusinessDto = {
-    id: "1",
-    name: "Repuestos Mandingo",
+export const testProfileUser: UserDto = {
+    id: 1,
+    name: "John Doe",
     email: "johndoe@email.com",
+    role: UserRole.Business,
+};
+
+export const testUser: BusinessProfileDto = {
+    id: 1,
+    name: "Repuestos Mandingo",
     bannerImage: testBusinessImageUrl,
     description: "Tienda de repuestos automotrices con atención personalizada y entregas locales.",
     category: BusinessCategories.AUTOMOTIVE,
     location: testBusinessLocation,
-    role: UserRole.Business,
+    userId: 1,
+};
+
+export const testProfile: ProfileDto = {
+    user: testProfileUser,
+    businesses: [testUser],
 };
 
 export const testUserInsights: BusinessInsightsDto = {
@@ -483,3 +496,4 @@ export const testUserInsights: BusinessInsightsDto = {
 
 export const businessUser = testUser;
 export const businessInsights = testUserInsights;
+

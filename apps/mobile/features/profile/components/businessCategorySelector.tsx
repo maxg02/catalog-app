@@ -4,10 +4,16 @@ import OptionSelector, { type OptionSelectorOption } from "@/components/ui/optio
 import { formatBusinessCategory } from "@/features/profile/lib/formatBusinessCategory";
 
 type BusinessCategorySelectorProps = {
-    initialCategory: BusinessCategories;
+    initialCategory?: BusinessCategories | null;
+    value?: BusinessCategories | null;
+    onValueChange?: (category: BusinessCategories) => void;
 };
 
-function BusinessCategorySelector({ initialCategory }: BusinessCategorySelectorProps) {
+function BusinessCategorySelector({
+    initialCategory,
+    value,
+    onValueChange,
+}: BusinessCategorySelectorProps) {
     const categoryOptions = useMemo(
         () =>
             Object.values(BusinessCategories)
@@ -19,7 +25,14 @@ function BusinessCategorySelector({ initialCategory }: BusinessCategorySelectorP
         [],
     );
 
-    return <OptionSelector options={categoryOptions} initialValue={initialCategory} />;
+    return (
+        <OptionSelector
+            options={categoryOptions}
+            initialValue={initialCategory ?? BusinessCategories.FOOD}
+            value={value ?? undefined}
+            onValueChange={onValueChange}
+        />
+    );
 }
 
 export default BusinessCategorySelector;

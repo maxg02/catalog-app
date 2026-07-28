@@ -14,17 +14,18 @@ import {
 } from "lucide-nativewind";
 import Card from "@/components/ui/card";
 import BusinessProfileDetails from "@/features/profile/components/businessProfileDetails";
-import { useGetUserInformationQueryState } from "@/features/profile/api/profileApi";
+import { useGetProfileQueryState } from "@/features/profile/api/profileApi";
 
 function Profile() {
     const router = useRouter();
 
     const scrollAmount = useScrollAmount("profile");
     const {
-        data: userInformation,
-        isLoading: isUserInformationLoading,
-        isError: isUserInformationError,
-    } = useGetUserInformationQueryState(undefined);
+        data: profile,
+        isLoading: isProfileLoading,
+        isError: isProfileError,
+    } = useGetProfileQueryState(undefined);
+    const business = profile?.businesses[0];
 
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
@@ -46,8 +47,8 @@ function Profile() {
         };
     }, [scrollAmount]);
 
-    const userName = userInformation?.name ?? (isUserInformationLoading ? "Loading..." : "Unavailable");
-    const userEmail = userInformation?.email ?? "";
+    const userName = profile?.user.name ?? (isProfileLoading ? "Loading..." : "Unavailable");
+    const userEmail = profile?.user.email ?? "";
     const abbvName = userName
         .split(" ")
         .map((n: string) => n[0])
@@ -72,11 +73,17 @@ function Profile() {
                     {userName}
                 </Text>
                 <Text variant={"muted"} className="text-xs text-center mt-1" numberOfLines={1}>
-                    {isUserInformationError ? "Unable to load profile information" : userEmail}
+                    {isProfileError ? "Unable to load profile information" : userEmail}
                 </Text>
             </View>
 
-            {userInformation && <BusinessProfileDetails business={userInformation} />}
+            {business ? (
+                <BusinessProfileDetails business={business} />
+            ) : (
+                <Card className="px-5 py-5">
+                    <Text variant="muted">No businesses added yet.</Text>
+                </Card>
+            )}
 
             <Card className="px-1 py-2">
                 <Button
@@ -85,7 +92,7 @@ function Profile() {
                     onPress={() => router.push("/profile/edit")}
                 >
                     <UserCogIcon className="text-foreground" />
-                    <Text className="text-base">Edit Account</Text>
+                    <Text className="text-base flex-1" numberOfLines={1}>Manage Account & Businesses</Text>
                     <ChevronRightIcon size={18} className="ms-auto text-muted-foreground" />
                 </Button>
                 <View className="mx-4 h-px bg-border" />
@@ -117,3 +124,5 @@ function Profile() {
 }
 
 export default Profile;
+
+

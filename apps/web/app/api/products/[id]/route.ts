@@ -205,6 +205,7 @@ export async function PUT(request: Request, { params }: ProductRouteContext) {
 
     return Response.json(mapProductRowToDto(updatedProduct as ProductRow));
 }
+
 export async function DELETE(_request: Request, { params }: ProductRouteContext) {
     const { id } = await params;
     const productId = Number(id);
@@ -233,7 +234,10 @@ export async function DELETE(_request: Request, { params }: ProductRouteContext)
     }
 
     const imageUrls = getProductImageRows(currentProduct as ProductRow).map((image) => image.image_url);
-    const { error: deleteProductError } = await supabase.from(PRODUCTS_TABLE).delete().eq("id", productId);
+    const { error: deleteProductError } = await supabase
+        .from(PRODUCTS_TABLE)
+        .delete()
+        .eq("id", productId);
 
     if (deleteProductError) {
         console.error("Error deleting product:", deleteProductError);
@@ -245,4 +249,3 @@ export async function DELETE(_request: Request, { params }: ProductRouteContext)
 
     return new Response(null, { status: 204 });
 }
-

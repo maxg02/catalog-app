@@ -1,12 +1,13 @@
 import React from "react";
+import { ActivityIndicator, View } from "react-native";
 import { useRouter } from "expo-router";
+import { Text } from "@/components/ui/text";
 import ProductForm, {
     type ProductFormSubmitValues,
     type ProductFormValues,
 } from "@/features/catalog/components/productForm";
 import { useCreateBusinessProductMutation } from "@/features/catalog/api/catalogApi";
-
-const BUSINESS_ID = 1;
+import { useGetProfileQuery } from "@/features/profile/api/profileApi";
 
 const defaultValues: ProductFormValues = {
     name: "",
@@ -23,10 +24,34 @@ const defaultValues: ProductFormValues = {
 
 function AddProduct() {
     const router = useRouter();
+    const { data: profile, isLoading: isProfileLoading, isError: isProfileError } = useGetProfileQuery();
+    const businessId = profile?.businesses[0]?.id;
     const [createProduct, { isLoading }] = useCreateBusinessProductMutation();
 
+    if (isProfileLoading) {
+        return (
+            <View className="flex-1 items-center justify-center gap-4 bg-background px-6">
+                <ActivityIndicator size="large" />
+                <Text variant="muted">Loading business...</Text>
+            </View>
+        );
+    }
+
+    if (isProfileError || !businessId) {
+        return (
+            <View className="flex-1 items-center justify-center gap-2 bg-background px-6">
+                <Text variant="h1" className="text-center">
+                    No business found
+                </Text>
+                <Text variant="muted" className="text-center">
+                    Add a business before creating products.
+                </Text>
+            </View>
+        );
+    }
+
     const onSubmit = async (product: ProductFormSubmitValues) => {
-        await createProduct({ businessId: BUSINESS_ID, product }).unwrap();
+        await createProduct({ businessId, product }).unwrap();
         router.back();
     };
 

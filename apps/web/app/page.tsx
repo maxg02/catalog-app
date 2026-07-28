@@ -5,19 +5,18 @@ export default async function Page() {
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
 
-    const { data: userBusinesses, error } = await supabase.from("user_businesses").select();
-    console.log("userBusinesses", userBusinesses);
+    const { data: businesses, error } = await supabase.from("businesses").select();
 
     if (error) {
-        console.error("Error fetching user businesses:", error);
-        return <div>Error fetching user businesses: {error.message}</div>;
+        console.error("Error fetching businesses:", error);
+        return <div>Error fetching businesses: {error.message}</div>;
     }
 
     return (
         <ul>
-            <h1>PEpe</h1>
-            {userBusinesses?.map((userBusiness) => (
-                <li key={userBusiness.id}>{userBusiness.name}</li>
+            <h1>Businesses</h1>
+            {businesses?.map((business) => (
+                <li key={business.id}>{business.name}</li>
             ))}
         </ul>
     );

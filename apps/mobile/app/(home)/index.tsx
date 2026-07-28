@@ -13,12 +13,17 @@ import {
     useDeleteBusinessProductMutation,
     useGetBusinessProductsQuery,
 } from "@/features/catalog/api/catalogApi";
-
-const BUSINESS_ID = 1;
+import { useGetProfileQueryState } from "@/features/profile/api/profileApi";
 
 function Catalog() {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<"all" | "public" | "draft">("all");
+    const {
+        data: profile,
+        isLoading: isProfileLoading,
+        isError: isProfileError,
+    } = useGetProfileQueryState(undefined);
+    const businessId = profile?.businesses[0]?.id;
 
     const {
         data: products = [],
@@ -26,7 +31,7 @@ function Catalog() {
         isFetching: isProductsFetching,
         isError: isProductsError,
         refetch: refetchProducts,
-    } = useGetBusinessProductsQuery(BUSINESS_ID);
+    } = useGetBusinessProductsQuery(businessId ?? 0, { skip: !businessId });
     const [deleteBusinessProduct, { isLoading: isDeletingProduct }] = useDeleteBusinessProductMutation();
 
     const visibleProducts = useMemo(
@@ -49,13 +54,16 @@ function Catalog() {
     });
 
     const onRefresh = useCallback(() => {
-        refetchProducts();
-    }, [refetchProducts]);
+        if (businessId) refetchProducts();
+    }, [businessId, refetchProducts]);
 
     const deleteCatalogProduct = useCallback(
-        (productId: number) =>
-            deleteBusinessProduct({ businessId: BUSINESS_ID, productId }).unwrap(),
-        [deleteBusinessProduct],
+        (productId: number) => {
+            if (!businessId) return Promise.reject(new Error("Missing business"));
+
+            return deleteBusinessProduct({ businessId, productId }).unwrap();
+        },
+        [businessId, deleteBusinessProduct],
     );
 
     useEffect(() => {
@@ -70,6 +78,9 @@ function Catalog() {
         };
     }, [scrollAmount]);
 
+    const isLoading = isProfileLoading || isProductsLoading;
+    const isError = isProfileError || isProductsError;
+
     return (
         <View className="bg-background flex-1">
             <Animated.ScrollView
@@ -79,7 +90,7 @@ function Catalog() {
                 className="flex-1"
                 refreshControl={
                     <RefreshControl
-                        refreshing={isProductsFetching && !isProductsLoading}
+                        refreshing={Boolean(businessId) && isProductsFetching && !isProductsLoading}
                         onRefresh={onRefresh}
                     />
                 }
@@ -139,12 +150,12 @@ function Catalog() {
                     </Button>
                 </View>
                 <View className="px-6 py-4 gap-3">
-                    {isProductsLoading || isProductsError ? (
+                    {isLoading || isError ? (
                         <Text variant={"muted"}>
-                            {isProductsError
-                                ? "Unable to load products from the API."
-                                : "Loading products..."}
+                            {isError ? "Unable to load products from the API." : "Loading products..."}
                         </Text>
+                    ) : !businessId ? (
+                        <Text variant={"muted"}>Add a business before managing products.</Text>
                     ) : visibleProducts.length > 0 ? (
                         visibleProducts.map((product) => (
                             <CatalogProductCard
@@ -163,6 +174,7 @@ function Catalog() {
                 size={"icon"}
                 className="absolute bottom-6 right-6 h-16 w-16 rounded-full shadow-lg shadow-black/25"
                 accessibilityLabel="Add new product"
+                disabled={!businessId}
                 onPress={() => router.push("/catalog/add")}
             >
                 <PlusIcon size={28} className="text-primary-foreground" />

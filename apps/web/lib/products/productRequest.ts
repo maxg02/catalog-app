@@ -286,7 +286,7 @@ function getFileExtension(file: File) {
     return file.type.split("/")[1] || "jpg";
 }
 
-async function uploadImagesToR2(businessId: number, images: File[]) {
+async function uploadImagesToR2(businessId: number, images: File[], prefix = "products") {
     if (images.length === 0) return [];
 
     const r2 = getR2Client();
@@ -297,7 +297,7 @@ async function uploadImagesToR2(businessId: number, images: File[]) {
 
     try {
         for (const [index, image] of images.entries()) {
-            const key = `products/${businessId}/${randomUUID()}-${index}.${getFileExtension(image)}`;
+            const key = `${prefix}/${businessId}/${randomUUID()}-${index}.${getFileExtension(image)}`;
             const body = new Uint8Array(await image.arrayBuffer());
 
             await r2.client.send(
@@ -367,3 +367,4 @@ export {
     deleteImageUrlsFromR2,
 };
 export type { FieldErrors, ParsedProductBody, ProductBody, UploadedImage };
+

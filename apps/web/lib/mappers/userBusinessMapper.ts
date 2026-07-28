@@ -1,26 +1,39 @@
 import { BusinessCategories } from "@internal/enums";
-import type { UserBusinessDto } from "@internal/interfaces";
-import type { UserBusinessRow } from "@/interfaces";
+import type { BusinessProfileDto, UserDto } from "@internal/interfaces";
+import type { BusinessProfileRow, UserRow } from "@/interfaces";
+import { getBusinessImageUrls } from "@/lib/business/businessImages";
 
-function mapBusinessCategory(category: UserBusinessRow["category"]): UserBusinessDto["category"] {
+function mapBusinessCategory(category: BusinessProfileRow["category"]): BusinessProfileDto["category"] {
+    if (category == null) return null;
+
     const zeroBasedCategory = category - 1;
 
     if (BusinessCategories[zeroBasedCategory]) {
         return zeroBasedCategory;
     }
 
-    return category as UserBusinessDto["category"];
+    return category as BusinessProfileDto["category"];
 }
 
-export function mapUserBusinessRowToDto(row: UserBusinessRow): UserBusinessDto {
+export function mapUserRowToDto(row: UserRow): UserDto {
     return {
-        id: String(row.id),
+        id: row.id,
         name: row.name,
         email: row.email,
-        bannerImage: row.banner_image,
+        role: row.role,
+    };
+}
+
+export function mapBusinessProfileRowToDto(row: BusinessProfileRow): BusinessProfileDto {
+    return {
+        id: row.id,
+        name: row.name,
+        bannerImage: getBusinessImageUrls(row.business_images)[0] ?? null,
         description: row.description,
         category: mapBusinessCategory(row.category),
         location: row.location,
-        role: row.user_role,
+        userId: row.user_id,
     };
 }
+
+

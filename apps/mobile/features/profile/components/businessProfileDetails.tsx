@@ -1,15 +1,15 @@
 import React from "react";
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import { InfoIcon, MapPinIcon } from "lucide-nativewind";
 import Card from "@/components/ui/card";
 import IconCircle from "@/components/ui/iconCircle";
 import TagIcon from "@/components/icons/tagIcon";
 import { Text } from "@/components/ui/text";
 import { formatBusinessCategory } from "@/features/profile/lib/formatBusinessCategory";
-import type { UserBusinessDto } from "@internal/interfaces";
+import type { BusinessProfileDto } from "@internal/interfaces";
 
 type BusinessProfileDetailsProps = {
-    business: UserBusinessDto;
+    business: BusinessProfileDto;
 };
 
 function BusinessProfileDetails({ business }: BusinessProfileDetailsProps) {
@@ -20,13 +20,21 @@ function BusinessProfileDetails({ business }: BusinessProfileDetailsProps) {
 
     return (
         <View className="gap-6">
+            {business.bannerImage && (
+                <Image
+                    source={{ uri: business.bannerImage }}
+                    className="h-44 w-full rounded-3xl"
+                    resizeMode="cover"
+                    accessibilityLabel={`${business.name} banner`}
+                />
+            )}
             <Card className="gap-4 px-5 py-5">
                 <View className="flex-row items-center gap-3">
                     <IconCircle icon={InfoIcon} />
                     <Text variant={"h3"}>About Business</Text>
                 </View>
                 <Text variant={"muted"} className="leading-6">
-                    {business.description}
+                    {business.description || "No business description added."}
                 </Text>
                 <View className="flex-row gap-2 items-center">
                     <TagIcon className="text-primary" size={20} />
@@ -42,9 +50,9 @@ function BusinessProfileDetails({ business }: BusinessProfileDetailsProps) {
                     <Text variant={"h3"}>Location</Text>
                 </View>
                 <View className="gap-1">
-                    <Text>{location?.address ?? "No business location added"}</Text>
+                    <Text>{location?.address || "No business location added"}</Text>
                     <Text variant={"muted"} className="text-xs">
-                        {location ? locationLabel : "Add one from Edit Account when you are ready."}
+                        {location ? locationLabel : "Add one from Manage Account when you are ready."}
                     </Text>
                 </View>
             </Card>

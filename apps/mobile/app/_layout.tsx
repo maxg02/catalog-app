@@ -9,7 +9,7 @@ import { AppThemeProvider } from "@/providers/appThemeProvider";
 import ReduxProvider from "@/providers/reduxProvider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { useGetUserInformationQuery } from "@/features/profile/api/profileApi";
+import { useGetProfileQuery } from "@/features/profile/api/profileApi";
 import {
     useFonts,
     PlusJakartaSans_200ExtraLight,
@@ -26,13 +26,13 @@ SplashScreen.preventAutoHideAsync();
 
 function ProfileGate() {
     const {
-        isError: isUserInformationError,
-        isLoading: isUserInformationLoading,
-        isSuccess: isUserInformationSuccess,
-        refetch: refetchUserInformation,
-    } = useGetUserInformationQuery();
+        isError: isProfileError,
+        isLoading: isProfileLoading,
+        isSuccess: isProfileSuccess,
+        refetch: refetchProfile,
+    } = useGetProfileQuery();
 
-    if (isUserInformationLoading) {
+    if (isProfileLoading) {
         return (
             <View className="flex-1 items-center justify-center gap-4 bg-background px-6">
                 <ActivityIndicator size="large" />
@@ -48,7 +48,7 @@ function ProfileGate() {
         );
     }
 
-    if (isUserInformationError || !isUserInformationSuccess) {
+    if (isProfileError || !isProfileSuccess) {
         return (
             <View className="flex-1 items-center justify-center gap-4 bg-background px-6">
                 <View className="gap-1">
@@ -59,7 +59,7 @@ function ProfileGate() {
                         Check your connection and try again.
                     </Text>
                 </View>
-                <Button className="h-12 rounded-full px-6" onPress={refetchUserInformation}>
+                <Button className="h-12 rounded-full px-6" onPress={refetchProfile}>
                     <Text className="font-jakarta-bold">Retry</Text>
                 </Button>
             </View>
@@ -108,3 +108,4 @@ export default function AppLayout() {
         </ReduxProvider>
     );
 }
+

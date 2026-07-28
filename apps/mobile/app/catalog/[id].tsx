@@ -10,8 +10,6 @@ import ProductForm, {
 import { useGetProductQuery, useUpdateBusinessProductMutation } from "@/features/catalog/api/catalogApi";
 import type { ProductImageAsset } from "@/features/catalog/components/productMediaUpload";
 
-const BUSINESS_ID = 1;
-
 function getDefaultValues(product: ProductDto): ProductFormValues {
     return {
         name: product.name,
@@ -87,7 +85,7 @@ function EditProduct() {
     }
 
     const onSubmit = async (nextProduct: ProductFormSubmitValues) => {
-        await updateProduct({ businessId: BUSINESS_ID, productId, product: nextProduct }).unwrap();
+        await updateProduct({ businessId: product.businessId, productId, product: nextProduct }).unwrap();
         router.back();
     };
 

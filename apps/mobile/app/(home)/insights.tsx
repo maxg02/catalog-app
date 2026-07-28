@@ -12,7 +12,7 @@ import OverviewCards from "@/features/insights/components/overviewCards";
 import ProductHighlight from "@/features/insights/components/productHighlight";
 import WeeklyPerformanceCarousel from "@/features/insights/components/weeklyPerformanceCarousel";
 import { useGetBusinessInsightsQuery } from "@/features/insights/api/insightsApi";
-import { useGetUserInformationQueryState } from "@/features/profile/api/profileApi";
+import { useGetProfileQueryState } from "@/features/profile/api/profileApi";
 import { createWeeklyPerformanceDatasets } from "@/features/insights/lib/weeklyMetrics";
 
 function Insights() {
@@ -26,10 +26,12 @@ function Insights() {
     });
 
     const {
-        data: userInformation,
-        isLoading: isUserInformationLoading,
-        isError: isUserInformationError,
-    } = useGetUserInformationQueryState(undefined);
+        data: profile,
+        isLoading: isProfileLoading,
+        isError: isProfileError,
+    } = useGetProfileQueryState(undefined);
+    const business = profile?.businesses[0];
+    const businessId = business?.id;
 
     const {
         data: businessInsights,
@@ -37,7 +39,7 @@ function Insights() {
         isFetching: isBusinessInsightsFetching,
         isError: isBusinessInsightsError,
         refetch: refetchBusinessInsights,
-    } = useGetBusinessInsightsQuery();
+    } = useGetBusinessInsightsQuery(businessId ?? 0, { skip: !businessId });
 
     useEffect(() => {
         if (scrollAmount) {
@@ -52,19 +54,19 @@ function Insights() {
     }, [scrollAmount]);
 
     const onRefresh = useCallback(() => {
-        refetchBusinessInsights();
-    }, [refetchBusinessInsights]);
+        if (businessId) refetchBusinessInsights();
+    }, [businessId, refetchBusinessInsights]);
 
-    const headerTitle = isUserInformationLoading
+    const headerTitle = isProfileLoading
         ? "Loading..."
-        : isUserInformationError
-          ? "Unable to load user information"
-          : userInformation?.name;
+        : isProfileError
+          ? "Unable to load profile"
+          : business?.name ?? "No business";
 
-    const isLoading = isUserInformationLoading || isBusinessInsightsLoading;
-    const isError = isUserInformationError || isBusinessInsightsError;
+    const isLoading = isProfileLoading || isBusinessInsightsLoading;
+    const isError = isProfileError || isBusinessInsightsError;
 
-    if (isLoading || isError || !userInformation || !businessInsights) {
+    if (isLoading || isError || !business || !businessInsights) {
         return (
             <Animated.ScrollView
                 contentContainerClassName="px-6 py-4 gap-6"
@@ -73,7 +75,7 @@ function Insights() {
                 className="bg-background flex-1"
                 refreshControl={
                     <RefreshControl
-                        refreshing={isBusinessInsightsFetching && !isBusinessInsightsLoading}
+                        refreshing={Boolean(businessId) && isBusinessInsightsFetching && !isBusinessInsightsLoading}
                         onRefresh={onRefresh}
                     />
                 }
@@ -95,7 +97,11 @@ function Insights() {
                 />
                 <Card className="px-6 py-5">
                     <Text variant={"muted"}>
-                        {isError ? "Unable to load insights from the API." : "Loading insights..."}
+                        {isError
+                            ? "Unable to load insights from the API."
+                            : business
+                              ? "Loading insights..."
+                              : "Add a business to see insights."}
                     </Text>
                 </Card>
             </Animated.ScrollView>

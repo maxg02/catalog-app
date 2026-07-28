@@ -39,15 +39,26 @@ export interface BusinessLocationDto {
     country: string;
 }
 
-export interface UserBusinessDto {
-    id: string;
+export interface UserDto {
+    id: number;
     name: string;
     email: string;
-    bannerImage: string;
-    description: string;
-    category: BusinessCategories;
-    location: BusinessLocationDto | null;
     role: UserRole;
+}
+
+export interface BusinessProfileDto {
+    id: number;
+    name: string;
+    bannerImage: string | null;
+    description: string | null;
+    category: BusinessCategories | null;
+    location: BusinessLocationDto | null;
+    userId: number | null;
+}
+
+export interface ProfileDto {
+    user: UserDto;
+    businesses: BusinessProfileDto[];
 }
 
 export interface BusinessDto {

@@ -3,5 +3,6 @@ packages:
   - "packages/*"
 allowBuilds:
   '@shopify/react-native-skia': true
+  bcrypt: set this to true or false
   sharp: true
   unrs-resolver: true
