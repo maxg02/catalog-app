@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { RefreshControl, View } from "react-native";
+import { useSelector } from "react-redux";
 import { Tabs } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
@@ -14,6 +15,7 @@ import WeeklyPerformanceCarousel from "@/features/insights/components/weeklyPerf
 import { useGetBusinessInsightsQuery } from "@/features/insights/api/insightsApi";
 import { useGetProfileQueryState } from "@/features/profile/api/profileApi";
 import { createWeeklyPerformanceDatasets } from "@/features/insights/lib/weeklyMetrics";
+import type { RootState } from "@/lib/store";
 
 function Insights() {
     const scrollAmount = useScrollAmount("insights");
@@ -30,8 +32,8 @@ function Insights() {
         isLoading: isProfileLoading,
         isError: isProfileError,
     } = useGetProfileQueryState(undefined);
-    const business = profile?.businesses[0];
-    const businessId = business?.id;
+    const businessId = useSelector((state: RootState) => state.businessSelection.selectedBusinessId);
+    const business = profile?.businesses.find((item) => item.id === businessId);
 
     const {
         data: businessInsights,

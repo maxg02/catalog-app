@@ -1,5 +1,6 @@
 import React from "react";
 import { ActivityIndicator, View } from "react-native";
+import { useSelector } from "react-redux";
 import { useRouter } from "expo-router";
 import { Text } from "@/components/ui/text";
 import ProductForm, {
@@ -8,6 +9,7 @@ import ProductForm, {
 } from "@/features/catalog/components/productForm";
 import { useCreateBusinessProductMutation } from "@/features/catalog/api/catalogApi";
 import { useGetProfileQuery } from "@/features/profile/api/profileApi";
+import type { RootState } from "@/lib/store";
 
 const defaultValues: ProductFormValues = {
     name: "",
@@ -24,8 +26,8 @@ const defaultValues: ProductFormValues = {
 
 function AddProduct() {
     const router = useRouter();
-    const { data: profile, isLoading: isProfileLoading, isError: isProfileError } = useGetProfileQuery();
-    const businessId = profile?.businesses[0]?.id;
+    const { isLoading: isProfileLoading, isError: isProfileError } = useGetProfileQuery();
+    const businessId = useSelector((state: RootState) => state.businessSelection.selectedBusinessId);
     const [createProduct, { isLoading }] = useCreateBusinessProductMutation();
 
     if (isProfileLoading) {

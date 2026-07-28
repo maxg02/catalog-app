@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { RefreshControl, View } from "react-native";
+import { useSelector } from "react-redux";
 import { Tabs, useRouter } from "expo-router";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Text } from "@/components/ui/text";
@@ -14,16 +15,16 @@ import {
     useGetBusinessProductsQuery,
 } from "@/features/catalog/api/catalogApi";
 import { useGetProfileQueryState } from "@/features/profile/api/profileApi";
+import type { RootState } from "@/lib/store";
 
 function Catalog() {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<"all" | "public" | "draft">("all");
     const {
-        data: profile,
         isLoading: isProfileLoading,
         isError: isProfileError,
     } = useGetProfileQueryState(undefined);
-    const businessId = profile?.businesses[0]?.id;
+    const businessId = useSelector((state: RootState) => state.businessSelection.selectedBusinessId);
 
     const {
         data: products = [],

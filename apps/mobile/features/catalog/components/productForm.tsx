@@ -85,6 +85,7 @@ type ProductFormProps = {
 };
 
 const MAX_DETAILS = 10;
+const emptyImages: ProductImageAsset[] = [];
 const visibilityOptions = ["public", "draft"] as const;
 
 function parsePrice(value: string) {
@@ -105,7 +106,7 @@ function FieldError({ message }: { message?: string }) {
 
 function ProductForm({
     defaultValues,
-    defaultImages = [],
+    defaultImages = emptyImages,
     defaultMainImageIndex = null,
     submitLabel,
     loadingLabel,

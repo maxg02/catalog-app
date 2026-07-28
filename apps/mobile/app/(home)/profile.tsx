@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { Text } from "@/components/ui/text";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
@@ -13,8 +14,11 @@ import {
     UserCogIcon,
 } from "lucide-nativewind";
 import Card from "@/components/ui/card";
+import SearchableSelect from "@/components/ui/searchableSelect";
 import BusinessProfileDetails from "@/features/profile/components/businessProfileDetails";
+import { setSelectedBusinessId } from "@/features/profile/businessSelectionSlice";
 import { useGetProfileQueryState } from "@/features/profile/api/profileApi";
+import type { AppDispatch, RootState } from "@/lib/store";
 
 function Profile() {
     const router = useRouter();
@@ -25,7 +29,12 @@ function Profile() {
         isLoading: isProfileLoading,
         isError: isProfileError,
     } = useGetProfileQueryState(undefined);
-    const business = profile?.businesses[0];
+    const dispatch = useDispatch<AppDispatch>();
+    const selectedBusinessId = useSelector(
+        (state: RootState) => state.businessSelection.selectedBusinessId,
+    );
+    const businesses = profile?.businesses ?? [];
+    const business = businesses.find((item) => item.id === selectedBusinessId);
 
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
@@ -77,13 +86,30 @@ function Profile() {
                 </Text>
             </View>
 
-            {business ? (
-                <BusinessProfileDetails business={business} />
-            ) : (
-                <Card className="px-5 py-5">
-                    <Text variant="muted">No businesses added yet.</Text>
-                </Card>
-            )}
+            <View className="gap-3">
+                <Text className="text-xs font-jakarta-extrabold uppercase text-muted-foreground">
+                    Business
+                </Text>
+                {businesses.length > 0 ? (
+                    <SearchableSelect
+                        options={businesses.map((item) => ({
+                            label: item.name,
+                            value: String(item.id),
+                            imageUri: item.bannerImage,
+                        }))}
+                        value={business ? String(business.id) : null}
+                        placeholder="Select a business"
+                        searchPlaceholder="Search businesses..."
+                        onValueChange={(value) => dispatch(setSelectedBusinessId(Number(value)))}
+                    />
+                ) : (
+                    <Button className="h-14 rounded-full" onPress={() => router.push("/profile/edit")}>
+                        <Text className="font-jakarta-bold">Create Business</Text>
+                    </Button>
+                )}
+            </View>
+
+            <BusinessProfileDetails business={business} />
 
             <Card className="px-1 py-2">
                 <Button

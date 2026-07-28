@@ -4,12 +4,18 @@ import { useColorScheme } from "nativewind";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import "../global.css";
 import { AppThemeProvider } from "@/providers/appThemeProvider";
 import ReduxProvider from "@/providers/reduxProvider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useGetProfileQuery } from "@/features/profile/api/profileApi";
+import {
+    resolveSelectedBusinessId,
+    setSelectedBusinessId,
+} from "@/features/profile/businessSelectionSlice";
+import type { AppDispatch, RootState } from "@/lib/store";
 import {
     useFonts,
     PlusJakartaSans_200ExtraLight,
@@ -26,11 +32,27 @@ SplashScreen.preventAutoHideAsync();
 
 function ProfileGate() {
     const {
+        data: profile,
         isError: isProfileError,
         isLoading: isProfileLoading,
         isSuccess: isProfileSuccess,
         refetch: refetchProfile,
     } = useGetProfileQuery();
+    const dispatch = useDispatch<AppDispatch>();
+    const selectedBusinessId = useSelector(
+        (state: RootState) => state.businessSelection.selectedBusinessId,
+    );
+
+    useEffect(() => {
+        if (!profile) return;
+
+        const nextBusinessId = resolveSelectedBusinessId(
+            profile.businesses.map((business) => business.id),
+            selectedBusinessId,
+        );
+
+        if (nextBusinessId !== selectedBusinessId) dispatch(setSelectedBusinessId(nextBusinessId));
+    }, [dispatch, profile, selectedBusinessId]);
 
     if (isProfileLoading) {
         return (

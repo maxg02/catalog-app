@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { Image, Pressable, ScrollView, View } from "react-native";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon, SearchIcon } from "lucide-nativewind";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 type SearchableSelectOption = {
     label: string;
     value: string;
+    imageUri?: string | null;
 };
 
 type SearchableSelectProps = React.ComponentProps<typeof View> & {
@@ -67,9 +68,25 @@ function SearchableSelect({
                 disabled={disabled}
                 onPress={() => setOpen((currentOpen) => !currentOpen)}
             >
-                <Text className={selectedOption ? "text-foreground" : "text-muted-foreground"}>
-                    {selectedOption?.label ?? placeholder}
-                </Text>
+                <View className="flex-1 flex-row items-center gap-3">
+                    {selectedOption?.imageUri !== undefined &&
+                        (selectedOption.imageUri ? (
+                            <Image
+                                source={{ uri: selectedOption.imageUri }}
+                                className="h-10 w-14 rounded-xl"
+                                resizeMode="cover"
+                                accessibilityLabel={selectedOption.label + " banner"}
+                            />
+                        ) : (
+                            <View className="h-10 w-14 rounded-xl bg-muted" />
+                        ))}
+                    <Text
+                        numberOfLines={1}
+                        className={selectedOption ? "flex-1 text-foreground" : "flex-1 text-muted-foreground"}
+                    >
+                        {selectedOption?.label ?? placeholder}
+                    </Text>
+                </View>
                 {open ? (
                     <ChevronUpIcon size={18} className="text-muted-foreground" />
                 ) : (
@@ -108,7 +125,22 @@ function SearchableSelect({
                                             className="flex-row items-center justify-between rounded-xl px-3 py-3 active:bg-secondary"
                                             onPress={() => handleSelect(option.value)}
                                         >
-                                            <Text>{option.label}</Text>
+                                            <View className="flex-1 flex-row items-center gap-3">
+                                                {option.imageUri !== undefined &&
+                                                    (option.imageUri ? (
+                                                        <Image
+                                                            source={{ uri: option.imageUri }}
+                                                            className="h-12 w-16 rounded-xl"
+                                                            resizeMode="cover"
+                                                            accessibilityLabel={option.label + " banner"}
+                                                        />
+                                                    ) : (
+                                                        <View className="h-12 w-16 rounded-xl bg-muted" />
+                                                    ))}
+                                                <Text numberOfLines={1} className="flex-1">
+                                                    {option.label}
+                                                </Text>
+                                            </View>
                                             {selected && <CheckIcon size={18} className="text-primary" />}
                                         </Pressable>
                                     );
