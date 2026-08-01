@@ -1,38 +1,10 @@
 import React, { useMemo } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import type { ProductDto } from "@internal/interfaces";
 import { ActivityIndicator, View } from "react-native";
 import { Text } from "@/components/ui/text";
-import ProductForm, {
-    type ProductFormSubmitValues,
-    type ProductFormValues,
-} from "@/features/catalog/components/productForm";
+import ProductForm from "@/features/catalog/components/productForm";
+import { getProductFormValues, getProductImages, type ProductFormSubmitValues } from "@/features/catalog/lib/productLogic";
 import { useGetProductQuery, useUpdateBusinessProductMutation } from "@/features/catalog/api/catalogApi";
-import type { ProductImageAsset } from "@/features/catalog/components/productMediaUpload";
-
-function getDefaultValues(product: ProductDto): ProductFormValues {
-    return {
-        name: product.name,
-        price: String(product.price),
-        description: product.description,
-        details: Object.entries(product.details).map(([title, description]) => ({ title, description })),
-        onStock: product.onStock,
-        isFeatured: product.isFeatured,
-        visibility: product.isPublic ? "public" : "draft",
-        sale: product.sale,
-        salePrice: product.salePrice == null ? "" : String(product.salePrice),
-        saleEndDate: product.saleEndDate ? new Date(product.saleEndDate) : null,
-    };
-}
-
-function getProductImages(product: ProductDto): ProductImageAsset[] {
-    return product.image.map((uri, index) => ({
-        uri,
-        name: `product-image-${index + 1}.jpg`,
-        type: "image/jpeg",
-        isExisting: true,
-    }));
-}
 
 function EditProduct() {
     const router = useRouter();
@@ -46,7 +18,7 @@ function EditProduct() {
         refetch,
     } = useGetProductQuery(productId, { skip: !isValidProductId });
     const [updateProduct, { isLoading: isUpdatingProduct }] = useUpdateBusinessProductMutation();
-    const defaultValues = useMemo(() => (product ? getDefaultValues(product) : null), [product]);
+    const defaultValues = useMemo(() => (product ? getProductFormValues(product) : null), [product]);
     const defaultImages = useMemo(() => (product ? getProductImages(product) : []), [product]);
 
     if (!isValidProductId) {

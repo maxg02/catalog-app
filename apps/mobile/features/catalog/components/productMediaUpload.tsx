@@ -5,13 +5,7 @@ import { Alert, Image, View } from "react-native";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import ProductImagesModal from "@/features/catalog/components/productImagesModal";
-
-type ProductImageAsset = {
-    uri: string;
-    name: string;
-    type: string;
-    isExisting?: boolean;
-};
+import { addProductImages, deleteProductImage, getAssetName, type ProductImageAsset } from "@/features/catalog/lib/productLogic";
 
 type ProductMediaUploadProps = {
     images: ProductImageAsset[];
@@ -22,10 +16,6 @@ type ProductMediaUploadProps = {
 };
 
 const MAX_IMAGES = 4;
-
-function getAssetName(uri: string, index: number) {
-    return uri.split("/").pop() || `product-image-${index + 1}.jpg`;
-}
 
 function ProductMediaUpload({
     images,
@@ -40,12 +30,11 @@ function ProductMediaUpload({
     const imageUris = images.map((image) => image.uri);
 
     const addImages = (newImages: ProductImageAsset[]) => {
-        const nextImages = [...images, ...newImages].slice(0, MAX_IMAGES);
+        const next = addProductImages(images, newImages, MAX_IMAGES);
 
-        onImagesChange(nextImages);
-
-        if (mainImageIndex === null && nextImages.length > 0) {
-            onMainImageIndexChange(0);
+        onImagesChange(next.images);
+        if (mainImageIndex === null && next.defaultMainImageIndex !== null) {
+            onMainImageIndexChange(next.defaultMainImageIndex);
         }
     };
 
@@ -101,17 +90,9 @@ function ProductMediaUpload({
     };
 
     const handleDeleteImage = (selectedIndex: number) => {
-        const nextImages = images.filter((_, index) => index !== selectedIndex);
-
-        onImagesChange(nextImages);
-
-        if (nextImages.length === 0) {
-            onMainImageIndexChange(null);
-        } else if (mainImageIndex === selectedIndex) {
-            onMainImageIndexChange(0);
-        } else if (mainImageIndex !== null && selectedIndex < mainImageIndex) {
-            onMainImageIndexChange(mainImageIndex - 1);
-        }
+        const next = deleteProductImage(images, mainImageIndex, selectedIndex);
+        onImagesChange(next.images);
+        onMainImageIndexChange(next.mainImageIndex);
     };
 
     return (

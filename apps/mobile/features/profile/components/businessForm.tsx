@@ -3,8 +3,6 @@ import { View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { Building2Icon, MapPinIcon, SaveIcon } from "lucide-nativewind";
-import { BusinessCategories } from "@internal/enums";
-import type { BusinessLocationDto, BusinessProfileDto } from "@internal/interfaces";
 import { Button } from "@/components/ui/button";
 import { IconInput } from "@/components/ui/iconInput";
 import LoadingOverlay from "@/components/ui/loadingOverlay";
@@ -14,27 +12,27 @@ import { Textarea } from "@/components/ui/textarea";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
 import BusinessCategorySelector from "@/features/profile/components/businessCategorySelector";
 import BusinessBannerUpload from "@/features/profile/components/businessBannerUpload";
-import type { ProductImageAsset } from "@/features/catalog/components/productMediaUpload";
+import type { ProductImageAsset } from "@/features/catalog/lib/productLogic";
 import {
     type BusinessMutationPayload,
-    type CountryDto,
-    type StateDto,
     useGetCountriesQuery,
     useGetStatesQuery,
 } from "@/features/profile/api/profileApi";
+import {
+    emptyBusinessValues,
+    getBusinessFormValues,
+    getCountryCode,
+    getLocation,
+    getStateCode,
+    getSubmitErrorData,
+    nullableText,
+    type BusinessFormValues,
+    withCurrentOption,
+} from "@/features/profile/lib/formLogic";
 import { cn } from "@/lib/utils";
 
-type BusinessFormValues = {
-    name: string;
-    category: BusinessCategories;
-    description: string;
-    address: string;
-    city: string;
-    country: string;
-};
-
 type BusinessFormProps = {
-    defaultValues: BusinessFormValues
+    defaultValues: BusinessFormValues;
     defaultBannerImage?: ProductImageAsset | null;
     submitLabel: string;
     loadingLabel: string;
@@ -47,66 +45,8 @@ type SubmitErrorData = {
     fieldErrors?: Partial<Record<"name" | "category" | "location", string>>;
 };
 
-const emptyBusinessValues: BusinessFormValues = {
-    name: "",
-    category: BusinessCategories.FOOD,
-    description: "",
-    address: "",
-    city: "",
-    country: "",
-};
-
-function getBusinessFormValues(business: BusinessProfileDto): BusinessFormValues {
-    return {
-        name: business.name,
-        category: business.category ?? BusinessCategories.FOOD,
-        description: business.description ?? "",
-        address: business.location?.address ?? "",
-        city: business.location?.city ?? "",
-        country: business.location?.country ?? "",
-    };
-}
-
-function nullableText(value: string) {
-    const trimmed = value.trim();
-
-    return trimmed ? trimmed : null;
-}
-
-function getLocation(values: BusinessFormValues): BusinessLocationDto | null {
-    const address = values.address.trim();
-    const city = values.city.trim();
-    const country = values.country.trim();
-
-    return address || city || country ? { address, city, country } : null;
-}
-
-function getSubmitErrorData(error: unknown) {
-    if (typeof error !== "object" || !error || !("data" in error)) return undefined;
-
-    const data = (error as { data?: unknown }).data;
-
-    return typeof data === "object" && data ? (data as SubmitErrorData) : undefined;
-}
-
 function FieldError({ message }: { message?: string }) {
     return message ? <Text className="text-xs text-destructive">{message}</Text> : null;
-}
-
-function getCountryCode(countries: CountryDto[], value: string) {
-    return countries.find((country) => country.id === value || country.name === value)?.id ?? "";
-}
-
-function getStateCode(states: StateDto[], value: string) {
-    return states.find((state) => state.stateCode === value || state.name === value)?.stateCode ?? "";
-}
-
-function withCurrentOption(options: { label: string; value: string }[], current: string) {
-    const value = current.trim();
-
-    return value && !options.some((option) => option.value === value || option.label === value)
-        ? [{ label: value, value }, ...options]
-        : options;
 }
 
 function BusinessForm({
@@ -200,7 +140,7 @@ function BusinessForm({
                 location: getLocation(values),
             });
         } catch (error) {
-            const data = getSubmitErrorData(error);
+            const data = getSubmitErrorData<SubmitErrorData>(error);
 
             if (data?.fieldErrors?.name) setError("name", { message: data.fieldErrors.name });
             if (data?.fieldErrors?.category) setError("category", { message: data.fieldErrors.category });

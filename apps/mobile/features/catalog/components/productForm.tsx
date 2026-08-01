@@ -23,45 +23,18 @@ import LoadingOverlay from "@/components/ui/loadingOverlay";
 import { Text } from "@/components/ui/text";
 import { Textarea } from "@/components/ui/textarea";
 import { useScrollAmount } from "@/contexts/scrollAmountContext";
-import ProductMediaUpload, {
+import ProductMediaUpload from "@/features/catalog/components/productMediaUpload";
+import {
+    getDetailsRecord,
+    getProductSubmitValues,
+    getSubmitErrorData,
+    parsePrice,
+    validateSalePrice,
+    type ProductFormSubmitValues,
     type ProductImageAsset,
-} from "@/features/catalog/components/productMediaUpload";
+    type ProductFormValues,
+} from "@/features/catalog/lib/productLogic";
 import { cn } from "@/lib/utils";
-
-type ProductVisibility = "public" | "draft";
-
-type ProductDetail = {
-    title: string;
-    description: string;
-};
-
-type ProductFormValues = {
-    name: string;
-    price: string;
-    description: string;
-    details: ProductDetail[];
-    onStock: boolean;
-    isFeatured: boolean;
-    visibility: ProductVisibility;
-    sale: boolean;
-    salePrice: string;
-    saleEndDate: Date | null;
-};
-
-type ProductFormSubmitValues = {
-    name: string;
-    price: number;
-    description: string;
-    details: Record<string, string>;
-    isPublic: boolean;
-    onStock: boolean;
-    isFeatured: boolean;
-    sale: boolean;
-    salePrice: number | null;
-    saleEndDate: string | null;
-    images: ProductImageAsset[];
-    mainImageIndex: number | null;
-};
 
 type SubmitErrorData = {
     error?: string;
@@ -87,18 +60,6 @@ type ProductFormProps = {
 const MAX_DETAILS = 10;
 const emptyImages: ProductImageAsset[] = [];
 const visibilityOptions = ["public", "draft"] as const;
-
-function parsePrice(value: string) {
-    return Number(value.replace(",", "."));
-}
-
-function getSubmitErrorData(error: unknown) {
-    if (typeof error !== "object" || !error || !("data" in error)) return undefined;
-
-    const data = (error as { data?: unknown }).data;
-
-    return typeof data === "object" && data ? (data as SubmitErrorData) : undefined;
-}
 
 function FieldError({ message }: { message?: string }) {
     return message ? <Text className="text-xs text-destructive">{message}</Text> : null;
@@ -149,75 +110,26 @@ function ProductForm({
         };
     }, [scrollAmount]);
 
-    const getDetailsRecord = (details: ProductDetail[]) => {
-        const detailRecord: Record<string, string> = {};
-        const titles = new Set<string>();
-        let hasErrors = false;
-
-        details.forEach((detail, index) => {
-            const title = detail.title.trim();
-            const description = detail.description.trim();
-
-            if (!title && !description) return;
-
-            if (!title) {
-                setError(`details.${index}.title`, { message: "Detail title is required." });
-                hasErrors = true;
-            }
-
-            if (!description) {
-                setError(`details.${index}.description`, {
-                    message: "Detail description is required.",
-                });
-                hasErrors = true;
-            }
-
-            if (title && titles.has(title)) {
-                setError(`details.${index}.title`, { message: "Detail title must be unique." });
-                hasErrors = true;
-            }
-
-            titles.add(title);
-
-            if (title && description) detailRecord[title] = description;
-        });
-
-        return hasErrors ? null : detailRecord;
-    };
-
     const submit = async (values: ProductFormValues) => {
         setSubmitError(null);
         clearErrors("details");
         clearErrors("salePrice");
 
-        const details = getDetailsRecord(values.details);
+        const { value: details, errors: detailErrors } = getDetailsRecord(values.details);
 
-        if (!details) return;
+        detailErrors.forEach(({ index, field, message }) => setError(`details.${index}.${field}`, { message }));
+        if (detailErrors.length) return;
 
-        const salePrice = values.sale ? parsePrice(values.salePrice) : null;
-
-        if (showSaleFields && values.sale && (salePrice === null || !Number.isFinite(salePrice) || salePrice <= 0)) {
-            setError("salePrice", { message: "Sale price must be greater than 0." });
+        const salePriceError = showSaleFields ? validateSalePrice(values.sale, values.salePrice) : null;
+        if (salePriceError) {
+            setError("salePrice", { message: salePriceError });
             return;
         }
 
         try {
-            await onSubmit({
-                name: values.name.trim(),
-                price: parsePrice(values.price),
-                description: values.description.trim(),
-                details,
-                isPublic: values.visibility === "public",
-                onStock: values.onStock,
-                isFeatured: values.isFeatured,
-                sale: showSaleFields ? values.sale : false,
-                salePrice: showSaleFields ? salePrice : null,
-                saleEndDate: showSaleFields && values.saleEndDate ? values.saleEndDate.toISOString() : null,
-                images,
-                mainImageIndex,
-            });
+            await onSubmit(getProductSubmitValues(values, details, showSaleFields, images, mainImageIndex));
         } catch (error) {
-            const data = getSubmitErrorData(error);
+            const data = getSubmitErrorData<SubmitErrorData>(error);
 
             Object.entries(data?.fieldErrors ?? {}).forEach(([field, message]) => {
                 if (

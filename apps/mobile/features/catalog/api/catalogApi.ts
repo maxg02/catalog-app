@@ -1,5 +1,5 @@
 import type { CatalogProductDto, ProductDto } from "@internal/interfaces";
-import type { ProductImageAsset } from "@/features/catalog/components/productMediaUpload";
+import type { ProductImageAsset } from "@/features/catalog/lib/productLogic";
 import { baseApi } from "@/lib/api/baseApi";
 
 type ProductMutationPayload = {
@@ -33,7 +33,7 @@ type DeleteBusinessProductRequest = {
     productId: number;
 };
 
-function getProductFormData(product: ProductMutationPayload, options: { includeExistingImages: boolean }) {
+export function getProductFormData(product: ProductMutationPayload, options: { includeExistingImages: boolean }) {
     const formData = new FormData();
     const existingImages = options.includeExistingImages
         ? product.images.filter((image) => image.isExisting).map((image) => image.uri)

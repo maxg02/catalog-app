@@ -4,17 +4,14 @@ import { Alert, Image, View } from "react-native";
 import { CameraIcon, ImagePlusIcon, ImagesIcon, Trash2Icon } from "lucide-nativewind";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import type { ProductImageAsset } from "@/features/catalog/components/productMediaUpload";
+import type { ProductImageAsset } from "@/features/catalog/lib/productLogic";
+import { getAssetName } from "@/features/profile/lib/formLogic";
 
 type BusinessBannerUploadProps = {
     image: ProductImageAsset | null;
     onImageChange: (image: ProductImageAsset | null) => void;
     disabled?: boolean;
 };
-
-function getAssetName(uri: string) {
-    return uri.split("/").pop() || "business-banner.jpg";
-}
 
 export default function BusinessBannerUpload({ image, onImageChange, disabled = false }: BusinessBannerUploadProps) {
     const setPickedImage = (asset: ImagePicker.ImagePickerAsset) => {

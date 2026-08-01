@@ -27,17 +27,11 @@ import LoadingOverlay from "@/components/ui/loadingOverlay";
 import { Text } from "@/components/ui/text";
 import { useDeleteBusinessMutation, useUpdateUserMutation } from "@/features/profile/api/profileApi";
 import { formatBusinessCategory } from "@/features/profile/lib/formatBusinessCategory";
+import { getAccountValues, getSubmitErrorData, type AccountFormValues } from "@/features/profile/lib/formLogic";
 import { cn } from "@/lib/utils";
 
 type ManageAccountBusinessesFormProps = {
     profile: ProfileDto;
-};
-
-type AccountFormValues = {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
 };
 
 type SubmitErrorData = {
@@ -50,23 +44,6 @@ type BusinessCardProps = {
     isDeleting?: boolean;
     onDelete: (businessId: number) => Promise<void>;
 };
-
-function getAccountValues(profile: ProfileDto): AccountFormValues {
-    return {
-        name: profile.user.name,
-        email: profile.user.email,
-        password: "",
-        confirmPassword: "",
-    };
-}
-
-function getSubmitErrorData(error: unknown) {
-    if (typeof error !== "object" || !error || !("data" in error)) return undefined;
-
-    const data = (error as { data?: unknown }).data;
-
-    return typeof data === "object" && data ? (data as SubmitErrorData) : undefined;
-}
 
 function FieldError({ message }: { message?: string }) {
     return message ? <Text className="text-xs text-destructive">{message}</Text> : null;
@@ -91,7 +68,6 @@ function BusinessCard({ business, isDeleting = false, onDelete }: BusinessCardPr
         }
     };
 
-    console.log(business);
 
     const actions: DropdownMenuAction[] = [
         { key: "edit", label: "Edit", icon: PencilIcon, onPress: editBusiness },
@@ -210,7 +186,7 @@ function ManageAccountBusinessesForm({ profile }: ManageAccountBusinessesFormPro
                 confirmPassword: "",
             });
         } catch (error) {
-            const data = getSubmitErrorData(error);
+            const data = getSubmitErrorData<SubmitErrorData>(error);
 
             Object.entries(data?.fieldErrors ?? {}).forEach(([field, message]) => {
                 if ((field === "name" || field === "email" || field === "password") && message) {

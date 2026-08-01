@@ -1,12 +1,12 @@
 import Constants from "expo-constants";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const getWebApiUrl = () => {
+export const getWebApiUrl = (expoConfig: { hostUri?: string } | null = Constants.expoConfig) => {
     if (process.env.EXPO_PUBLIC_WEB_API_URL) {
         return process.env.EXPO_PUBLIC_WEB_API_URL;
     }
 
-    const expoHost = Constants.expoConfig?.hostUri?.split(":")[0];
+    const expoHost = expoConfig?.hostUri?.split(":")[0];
 
     return expoHost ? `http://${expoHost}:3000` : undefined;
 };

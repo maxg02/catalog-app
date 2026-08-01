@@ -1,6 +1,6 @@
 import type { BusinessLocationDto, BusinessProfileDto, ProfileDto, UserDto } from "@internal/interfaces";
 import { BusinessCategories } from "@internal/enums";
-import type { ProductImageAsset } from "@/features/catalog/components/productMediaUpload";
+import type { ProductImageAsset } from "@/features/catalog/lib/productLogic";
 import { baseApi } from "@/lib/api/baseApi";
 
 const DEMO_USER_ID = 1;
@@ -58,7 +58,7 @@ type UpdateBusinessRequest = {
     business: BusinessMutationPayload;
 };
 
-function getBusinessFormData(business: BusinessMutationPayload) {
+export function getBusinessFormData(business: BusinessMutationPayload) {
     const formData = new FormData();
     formData.append("name", business.name);
     formData.append("description", business.description ?? "");

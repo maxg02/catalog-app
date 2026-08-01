@@ -30,7 +30,7 @@ import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
-function ProfileGate() {
+export function ProfileGate() {
     const {
         data: profile,
         isError: isProfileError,
