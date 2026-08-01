@@ -16,7 +16,7 @@ export default function HomeLayout() {
 
     const scrollAmounts: Record<string, SharedValue<number>> = {
         insights: insightsScrollAmount,
-        catalog: catalogScrollAmount,
+        index: catalogScrollAmount,
         orders: ordersScrollAmount,
         profile: profileScrollAmount,
     };

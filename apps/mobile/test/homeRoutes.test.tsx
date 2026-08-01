@@ -10,10 +10,12 @@ import { useDeleteBusinessProductMutation, useGetBusinessProductsQuery } from "@
 import { useGetBusinessInsightsQuery } from "@/features/insights/api/insightsApi";
 import { useGetProfileQueryState } from "@/features/profile/api/profileApi";
 import { setSelectedBusinessId } from "@/features/profile/businessSelectionSlice";
+import { useScrollAmount } from "@/contexts/scrollAmountContext";
 
 jest.mock("lucide-nativewind", () => new Proxy({}, { get: () => () => null }));
 jest.mock("react-redux", () => ({ useDispatch: jest.fn(), useSelector: jest.fn() }));
 jest.mock("nativewind", () => ({ useColorScheme: jest.fn() }));
+jest.mock("@/contexts/scrollAmountContext", () => ({ useScrollAmount: jest.fn(() => null) }));
 jest.mock("@/features/catalog/api/catalogApi", () => ({ useDeleteBusinessProductMutation: jest.fn(), useGetBusinessProductsQuery: jest.fn() }));
 jest.mock("@/features/insights/api/insightsApi", () => ({ useGetBusinessInsightsQuery: jest.fn() }));
 jest.mock("@/features/profile/api/profileApi", () => ({ useGetProfileQueryState: jest.fn() }));
@@ -38,6 +40,7 @@ const products = useGetBusinessProductsQuery as jest.Mock;
 const insights = useGetBusinessInsightsQuery as jest.Mock;
 const deleteProduct = useDeleteBusinessProductMutation as jest.Mock;
 const colorScheme = useColorScheme as jest.Mock;
+const scrollHook = useScrollAmount as jest.Mock;
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -54,6 +57,7 @@ describe("home and settings routes", () => {
     it("renders catalog states and filters public/draft products", async () => {
         products.mockReturnValue({ data: [], isLoading: true, isFetching: false, isError: false, refetch: jest.fn() });
         const view = await render(<Catalog />);
+        expect(scrollHook).toHaveBeenCalledWith("index");
         expect(screen.getByText("Loading products...")).toBeTruthy();
         products.mockReturnValue({ data: [], isLoading: false, isFetching: false, isError: true, refetch: jest.fn() });
         await view.rerender(<Catalog />);

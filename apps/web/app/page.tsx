@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function Page() {
@@ -16,7 +17,9 @@ export default async function Page() {
         <ul>
             <h1>Businesses</h1>
             {businesses?.map((business) => (
-                <li key={business.id}>{business.name}</li>
+                <li key={business.id}>
+                    <Link href={`/catalog/${business.id}`}>{business.name}</Link>
+                </li>
             ))}
         </ul>
     );

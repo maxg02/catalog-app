@@ -45,7 +45,7 @@ function Catalog() {
         [activeTab, products],
     );
 
-    const scrollAmount = useScrollAmount("catalog");
+    const scrollAmount = useScrollAmount("index");
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
             if (scrollAmount) {
