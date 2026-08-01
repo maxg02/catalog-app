@@ -1,5 +1,6 @@
 import * as bcrypt from "bcrypt";
 import { cookies } from "next/headers";
+import { getPasswordRequirementErrors } from "@internal/interfaces";
 import { mapUserRowToDto } from "@/lib/mappers/userBusinessMapper";
 import { createClient } from "@/utils/supabase/server";
 import type { UserRow } from "@/interfaces";
@@ -59,6 +60,9 @@ export async function PUT(request: Request, { params }: UserRouteContext) {
     if (!email || !email.includes("@")) fieldErrors.email = "Valid email is required.";
     if (body.password != null && typeof body.password !== "string") {
         fieldErrors.password = "Password is invalid.";
+    } else if (password && getPasswordRequirementErrors(password).length > 0) {
+        fieldErrors.password =
+            "Password must have at least 8 characters, a lowercase letter, an uppercase letter, and a number.";
     }
 
     if (Object.keys(fieldErrors).length > 0) {

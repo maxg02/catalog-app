@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { Image, View } from "react-native";
 import { useRouter } from "expo-router";
 import {
@@ -13,7 +13,11 @@ import {
     Trash2Icon,
     UserIcon,
 } from "lucide-nativewind";
-import type { BusinessProfileDto, ProfileDto } from "@internal/interfaces";
+import {
+    getPasswordRequirementErrors,
+    type BusinessProfileDto,
+    type ProfileDto,
+} from "@internal/interfaces";
 import AlertDialog from "@/components/ui/alertDialog";
 import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/card";
@@ -33,6 +37,7 @@ type AccountFormValues = {
     name: string;
     email: string;
     password: string;
+    confirmPassword: string;
 };
 
 type SubmitErrorData = {
@@ -51,6 +56,7 @@ function getAccountValues(profile: ProfileDto): AccountFormValues {
         name: profile.user.name,
         email: profile.user.email,
         password: "",
+        confirmPassword: "",
     };
 }
 
@@ -181,6 +187,8 @@ function ManageAccountBusinessesForm({ profile }: ManageAccountBusinessesFormPro
         formState: { errors, isSubmitting },
     } = useForm<AccountFormValues>({ defaultValues });
     const isSaving = isSubmitting || isUpdatingUser;
+    const password = useWatch({ control, name: "password" });
+    const passwordErrors = password ? getPasswordRequirementErrors(password.trim()) : [];
 
     useEffect(() => {
         reset(getAccountValues(profile));
@@ -195,7 +203,12 @@ function ManageAccountBusinessesForm({ profile }: ManageAccountBusinessesFormPro
                 email: values.email.trim(),
                 password: values.password.trim() || undefined,
             }).unwrap();
-            reset({ name: values.name.trim(), email: values.email.trim(), password: "" });
+            reset({
+                name: values.name.trim(),
+                email: values.email.trim(),
+                password: "",
+                confirmPassword: "",
+            });
         } catch (error) {
             const data = getSubmitErrorData(error);
 
@@ -269,6 +282,12 @@ function ManageAccountBusinessesForm({ profile }: ManageAccountBusinessesFormPro
                     <Controller
                         control={control}
                         name="password"
+                        rules={{
+                            validate: (value) =>
+                                !value ||
+                                getPasswordRequirementErrors(value.trim()).length === 0 ||
+                                "Password does not meet the requirements.",
+                        }}
                         render={({ field: { onBlur, onChange, value } }) => (
                             <IconInput
                                 icon={LockIcon}
@@ -284,6 +303,42 @@ function ManageAccountBusinessesForm({ profile }: ManageAccountBusinessesFormPro
                         )}
                     />
                     <FieldError message={errors.password?.message} />
+                    {passwordErrors.length > 0 && (
+                        <Text
+                            className="text-xs text-destructive"
+                            accessibilityLiveRegion="polite"
+                        >
+                            {passwordErrors.map((message) => `• ${message}`).join("\n")}
+                        </Text>
+                    )}
+                </View>
+                <View className="gap-2">
+                    <Text className="font-jakarta-bold">Confirm password</Text>
+                    <Controller
+                        control={control}
+                        name="confirmPassword"
+                        rules={{
+                            deps: ["password"],
+                            validate: (value) =>
+                                (!password && !value) ||
+                                value === password ||
+                                "Passwords do not match.",
+                        }}
+                        render={({ field: { onBlur, onChange, value } }) => (
+                            <IconInput
+                                icon={LockIcon}
+                                editable={!isSaving}
+                                placeholder="Confirm new password"
+                                secureTextEntry
+                                textContentType="newPassword"
+                                value={value}
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                className={cn(errors.confirmPassword && "border-destructive")}
+                            />
+                        )}
+                    />
+                    <FieldError message={errors.confirmPassword?.message} />
                 </View>
                 {submitError && <Text className="text-sm text-destructive">{submitError}</Text>}
                 <Button
