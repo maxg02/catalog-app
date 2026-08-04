@@ -31,3 +31,7 @@ pnpm --filter @internal/mobile lint
 ```
 
 Coverage must be reported but must not fail on a percentage. Keep existing unrelated lint warnings separate from new errors.
+
+## UI changes and creation
+
+For UI changes and creation follow the ./Design.md
