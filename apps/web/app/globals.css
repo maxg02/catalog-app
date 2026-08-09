@@ -1,26 +1,112 @@
 @import "tailwindcss";
 
+/*
+ * CatalogApp design tokens, synchronized with the Business Public Catalog
+ * design generated in Stitch.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f7f8;
+  --foreground: #111618;
+  --card: #ffffff;
+  --card-foreground: #111618;
+  --popover: #ffffff;
+  --popover-foreground: #111618;
+  --primary: #13a4ec;
+  --primary-foreground: #ffffff;
+  --primary-container: #57c2f5;
+  --primary-dim: #078bc7;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #111618;
+  --muted: #f3f4f6;
+  --muted-foreground: #617c89;
+  --accent: #e8f6fd;
+  --accent-foreground: #078bc7;
+  --destructive: #c83e44;
+  --destructive-foreground: #ffffff;
+  --warning: #f97316;
+  --warning-foreground: #ffffff;
+  --success: #22c55e;
+  --success-muted: #dcfce7;
+  --border: #f3f4f6;
+  --input: #f3f4f6;
+  --ring: #13a4ec;
+  --surface: #f6f7f8;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f3f4f6;
+  --surface-container-high: #e5e7eb;
+  --radius: 0.5rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-container: var(--primary-container);
+  --color-primary-dim: var(--primary-dim);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-success: var(--success);
+  --color-success-muted: var(--success-muted);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container-high: var(--surface-container-high);
+  --font-sans: var(--font-plus-jakarta);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --shadow-ambient: 0 8px 24px rgb(17 22 24 / 8%);
+  --shadow-ambient-raised: 0 12px 32px rgb(17 22 24 / 12%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-plus-jakarta), sans-serif;
+  }
+
+  ::selection {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  button,
+  a,
+  input,
+  select {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
