@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { makeProduct } from "@/test/fixtures";
+import { EMPTY_CATALOG_FILTERS } from "../lib/catalog-products";
 import { CatalogBrowser } from "./catalog-browser";
 
 const navigation = vi.hoisted(() => ({ push: vi.fn() }));
@@ -22,6 +23,7 @@ const defaultProps = {
   totalPages: 1,
   sort: "created-desc" as const,
   searchQuery: "",
+  filters: EMPTY_CATALOG_FILTERS,
 };
 
 beforeEach(() => navigation.push.mockReset());
@@ -32,6 +34,7 @@ describe("CatalogBrowser", () => {
     render(<CatalogBrowser {...defaultProps} />);
 
     const input = screen.getByRole("searchbox", { name: "Search products" });
+    expect(input).toHaveClass("[&::-webkit-search-cancel-button]:hidden");
     await user.type(input, " Demo 04 ");
     expect(navigation.push).not.toHaveBeenCalled();
 
@@ -49,14 +52,9 @@ describe("CatalogBrowser", () => {
     expect(navigation.push).toHaveBeenCalledWith("/catalog/7");
   });
 
-  it("filters stock locally and toggles between grid and list content", async () => {
+  it("toggles between grid and list content", async () => {
     const user = userEvent.setup();
     render(<CatalogBrowser {...defaultProps} />);
-
-    expect(screen.getByText("2 products shown")).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Show in-stock products only" }));
-    expect(screen.getByText("1 product shown")).toBeInTheDocument();
-    expect(screen.queryByText("Unavailable product")).not.toBeInTheDocument();
 
     expect(screen.queryByText("Available description")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Switch to list view" }));
@@ -65,6 +63,53 @@ describe("CatalogBrowser", () => {
       "aria-pressed",
       "true",
     );
+  });
+
+  it("applies price, sale, stock, and featured filters through the shadcn menu", async () => {
+    const user = userEvent.setup();
+    render(<CatalogBrowser {...defaultProps} />);
+
+    await user.click(screen.getByRole("button", { name: "Filter products" }));
+    await user.type(screen.getByRole("spinbutton", { name: "Minimum price" }), "10");
+    await user.type(screen.getByRole("spinbutton", { name: "Maximum price" }), "100");
+    await user.click(screen.getByRole("menuitemcheckbox", { name: "Products on sale" }));
+    await user.click(screen.getByRole("menuitemcheckbox", { name: "Products in stock" }));
+    await user.click(screen.getByRole("menuitemcheckbox", { name: "Featured products" }));
+    await user.click(screen.getByRole("button", { name: "Apply filters" }));
+
+    expect(navigation.push).toHaveBeenCalledWith(
+      "/catalog/7?minPrice=10&maxPrice=100&sale=1&stock=1&featured=1",
+    );
+  });
+
+  it("clears committed filters while preserving search and sort state", async () => {
+    const user = userEvent.setup();
+    render(
+      <CatalogBrowser
+        {...defaultProps}
+        searchQuery="demo"
+        sort="price-asc"
+        filters={{ ...EMPTY_CATALOG_FILTERS, onSale: true, featured: true }}
+      />,
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "Filter products. 2 active filters" }),
+    );
+    await user.click(screen.getByRole("button", { name: "Clear" }));
+    expect(navigation.push).toHaveBeenCalledWith("/catalog/7?sort=price-asc&q=demo");
+  });
+
+  it("blocks an inverted price range", async () => {
+    const user = userEvent.setup();
+    render(<CatalogBrowser {...defaultProps} />);
+
+    await user.click(screen.getByRole("button", { name: "Filter products" }));
+    await user.type(screen.getByRole("spinbutton", { name: "Minimum price" }), "100");
+    await user.type(screen.getByRole("spinbutton", { name: "Maximum price" }), "10");
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Enter a valid price range.");
+    expect(screen.getByRole("button", { name: "Apply filters" })).toBeDisabled();
   });
 
   it("changes the server sort through the shadcn dropdown and preserves the search", async () => {
@@ -77,13 +122,17 @@ describe("CatalogBrowser", () => {
     expect(navigation.push).toHaveBeenCalledWith("/catalog/7?sort=price-asc&q=demo");
   });
 
-  it("shows contextual empty states", async () => {
-    const user = userEvent.setup();
+  it("shows contextual empty states", () => {
     const { rerender } = render(<CatalogBrowser {...defaultProps} products={[]} />);
     expect(screen.getByText("Demo Store has not published any products yet.")).toBeVisible();
 
-    rerender(<CatalogBrowser {...defaultProps} products={[makeProduct({ onStock: false })]} />);
-    await user.click(screen.getByRole("button", { name: "Show in-stock products only" }));
-    expect(screen.getByText("Try another search or turn off the stock filter.")).toBeVisible();
+    rerender(
+      <CatalogBrowser
+        {...defaultProps}
+        products={[]}
+        filters={{ ...EMPTY_CATALOG_FILTERS, inStock: true }}
+      />,
+    );
+    expect(screen.getByText("Try adjusting or clearing your filters.")).toBeVisible();
   });
 });

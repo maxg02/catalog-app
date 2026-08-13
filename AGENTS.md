@@ -1,5 +1,9 @@
 # Repository Testing Instructions
 
+## Global Settings
+
+Create components for the reused screens elements, if they are reused inside the same component put them in the features folder into /[feature]/components, if they are reused in another screen put them into the common components folder
+
 ## Mobile app
 
 For mobile changes, preserve the existing Expo-compatible Jest strategy.
@@ -71,7 +75,3 @@ pnpm --filter @internal/web build
 ```
 
 Coverage must be reported but must not fail on a percentage. The production build is required because it validates App Router server/client boundaries and metadata behavior that unit tests cannot. Keep existing unrelated warnings separate from new failures.
-
-## UI changes and creation
-
-For UI changes and creation follow the ./Design.md

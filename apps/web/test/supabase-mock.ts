@@ -10,7 +10,19 @@ export type SupabaseQueryMock = ReturnType<typeof createSupabaseQuery>;
 
 export function createSupabaseQuery(result: QueryResult) {
   const query: Record<string, unknown> = {};
-  const chainMethods = ["select", "eq", "order", "range", "or", "insert", "update", "delete", "upsert"];
+  const chainMethods = [
+    "select",
+    "eq",
+    "gte",
+    "lte",
+    "order",
+    "range",
+    "or",
+    "insert",
+    "update",
+    "delete",
+    "upsert",
+  ];
 
   for (const method of chainMethods) query[method] = vi.fn(() => query);
 

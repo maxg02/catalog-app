@@ -14,6 +14,7 @@ import {
   getSortOrder,
   isAlternativeCatalogView,
   parseBusinessId,
+  parseCatalogFilters,
   parseCatalogSort,
   parsePageNumber,
   parseSearchQuery,
@@ -32,6 +33,11 @@ type CatalogPageProps = {
     page?: string | string[];
     sort?: string | string[];
     q?: string | string[];
+    minPrice?: string | string[];
+    maxPrice?: string | string[];
+    sale?: string | string[];
+    stock?: string | string[];
+    featured?: string | string[];
   }>;
 };
 
@@ -49,6 +55,7 @@ export async function generateMetadata({
   const page = requireCatalogValue(parsePageNumber(resolvedSearchParams.page));
   const sort = requireCatalogValue(parseCatalogSort(resolvedSearchParams.sort));
   const searchQuery = requireCatalogValue(parseSearchQuery(resolvedSearchParams.q));
+  const filters = requireCatalogValue(parseCatalogFilters(resolvedSearchParams));
   const requestHeaders = await headers();
   const forwardedHost = requestHeaders.get("x-forwarded-host")?.split(",")[0]?.trim();
   const host = forwardedHost || requestHeaders.get("host");
@@ -65,7 +72,7 @@ export async function generateMetadata({
       canonical: getCatalogHref(businessId, page, DEFAULT_CATALOG_SORT),
     },
     robots:
-      isAlternativeCatalogView(sort, searchQuery)
+      isAlternativeCatalogView(sort, searchQuery, filters)
         ? {
             index: false,
             follow: true,
@@ -80,11 +87,12 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
   const currentPage = requireCatalogValue(parsePageNumber(resolvedSearchParams.page));
   const sort = requireCatalogValue(parseCatalogSort(resolvedSearchParams.sort));
   const searchQuery = requireCatalogValue(parseSearchQuery(resolvedSearchParams.q));
+  const filters = requireCatalogValue(parseCatalogFilters(resolvedSearchParams));
   if (resolvedSearchParams.sort === DEFAULT_CATALOG_SORT) {
-    redirect(getCatalogHref(businessId, currentPage, DEFAULT_CATALOG_SORT, searchQuery));
+    redirect(getCatalogHref(businessId, currentPage, DEFAULT_CATALOG_SORT, searchQuery, filters));
   }
   if (resolvedSearchParams.q !== undefined && !searchQuery) {
-    redirect(getCatalogHref(businessId, currentPage, sort));
+    redirect(getCatalogHref(businessId, currentPage, sort, "", filters));
   }
 
   const sortOrder = getSortOrder(sort);
@@ -104,6 +112,12 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
       `name.ilike.${searchPattern},description.ilike.${searchPattern}`,
     );
   }
+
+  if (filters.minPrice !== null) productsQuery = productsQuery.gte("price", filters.minPrice);
+  if (filters.maxPrice !== null) productsQuery = productsQuery.lte("price", filters.maxPrice);
+  if (filters.onSale) productsQuery = productsQuery.eq("sale", true);
+  if (filters.inStock) productsQuery = productsQuery.eq("on_stock", true);
+  if (filters.featured) productsQuery = productsQuery.eq("is_featured", true);
 
   productsQuery = productsQuery
     .order(sortOrder.column, { ascending: sortOrder.ascending })
@@ -170,6 +184,7 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
           totalPages={totalPages}
           sort={sort}
           searchQuery={searchQuery}
+          filters={filters}
         />
       </div>
     </main>

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { makeProduct } from "@/test/fixtures";
+import { EMPTY_CATALOG_FILTERS } from "../lib/catalog-products";
 
 vi.mock("react", async (importOriginal) => {
   const react = await importOriginal<typeof import("react")>();
@@ -25,6 +26,7 @@ describe("CatalogBrowser loading state", () => {
         totalPages={2}
         sort="created-desc"
         searchQuery=""
+        filters={EMPTY_CATALOG_FILTERS}
       />,
     );
 

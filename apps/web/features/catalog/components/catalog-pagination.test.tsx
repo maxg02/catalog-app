@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { EMPTY_CATALOG_FILTERS } from "../lib/catalog-products";
 import { CatalogPagination } from "./catalog-pagination";
 
 describe("CatalogPagination", () => {
@@ -12,6 +13,7 @@ describe("CatalogPagination", () => {
         totalPages={8}
         sort="price-asc"
         searchQuery="Demo 04"
+        filters={{ ...EMPTY_CATALOG_FILTERS, onSale: true, inStock: true }}
         onNavigate={vi.fn()}
       />,
     );
@@ -19,20 +21,20 @@ describe("CatalogPagination", () => {
     expect(screen.getByRole("navigation", { name: "Product catalog pages" })).toBeVisible();
     expect(screen.getByRole("link", { name: "Go to first page" })).toHaveAttribute(
       "href",
-      "/catalog/7?sort=price-asc&q=Demo+04",
+      "/catalog/7?sort=price-asc&q=Demo+04&sale=1&stock=1",
     );
     expect(screen.getByRole("link", { name: "Go to previous page" })).toHaveAttribute(
       "href",
-      "/catalog/7?page=2&sort=price-asc&q=Demo+04",
+      "/catalog/7?page=2&sort=price-asc&q=Demo+04&sale=1&stock=1",
     );
     expect(screen.getByRole("link", { name: "Go to page 3" })).toHaveAttribute("aria-current", "page");
     expect(screen.getByRole("link", { name: "Go to next page" })).toHaveAttribute(
       "href",
-      "/catalog/7?page=4&sort=price-asc&q=Demo+04",
+      "/catalog/7?page=4&sort=price-asc&q=Demo+04&sale=1&stock=1",
     );
     expect(screen.getByRole("link", { name: "Go to last page" })).toHaveAttribute(
       "href",
-      "/catalog/7?page=8&sort=price-asc&q=Demo+04",
+      "/catalog/7?page=8&sort=price-asc&q=Demo+04&sale=1&stock=1",
     );
     expect(screen.getByText("Page 3 of 8")).toBeInTheDocument();
   });
@@ -47,6 +49,7 @@ describe("CatalogPagination", () => {
         totalPages={3}
         sort="created-desc"
         searchQuery=""
+        filters={EMPTY_CATALOG_FILTERS}
         onNavigate={onNavigate}
       />,
     );
@@ -63,6 +66,7 @@ describe("CatalogPagination", () => {
         totalPages={2}
         sort="created-desc"
         searchQuery=""
+        filters={EMPTY_CATALOG_FILTERS}
         onNavigate={vi.fn()}
       />,
     );
@@ -83,6 +87,7 @@ describe("CatalogPagination", () => {
         totalPages={1}
         sort="created-desc"
         searchQuery=""
+        filters={EMPTY_CATALOG_FILTERS}
         onNavigate={vi.fn()}
       />,
     );

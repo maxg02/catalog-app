@@ -9,7 +9,11 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
-import { getCatalogHref, type CatalogSort } from "../lib/catalog-products";
+import {
+    getCatalogHref,
+    type CatalogFilters,
+    type CatalogSort,
+} from "../lib/catalog-products";
 
 type CatalogPaginationProps = {
     businessId: number;
@@ -17,6 +21,7 @@ type CatalogPaginationProps = {
     totalPages: number;
     sort: CatalogSort;
     searchQuery: string;
+    filters: CatalogFilters;
     onNavigate: (href: string) => void;
 };
 
@@ -35,6 +40,7 @@ export function CatalogPagination({
     totalPages,
     sort,
     searchQuery,
+    filters,
     onNavigate,
 }: CatalogPaginationProps) {
     if (totalPages <= 1) return null;
@@ -64,7 +70,7 @@ export function CatalogPagination({
             <PaginationContent className="gap-0.5">
                 <PaginationItem>
                     <PaginationLink
-                        href={getCatalogHref(businessId, 1, sort, searchQuery)}
+                        href={getCatalogHref(businessId, 1, sort, searchQuery, filters)}
                         onClick={navigate}
                         size="icon-sm"
                         aria-label="Go to first page"
@@ -83,6 +89,7 @@ export function CatalogPagination({
                             isFirstPage ? currentPage : currentPage - 1,
                             sort,
                             searchQuery,
+                            filters,
                         )}
                         onClick={navigate}
                         aria-disabled={isFirstPage}
@@ -97,7 +104,7 @@ export function CatalogPagination({
                         className={cn(page !== currentPage && "hidden min-[400px]:block")}
                     >
                         <PaginationLink
-                            href={getCatalogHref(businessId, page, sort, searchQuery)}
+                            href={getCatalogHref(businessId, page, sort, searchQuery, filters)}
                             onClick={navigate}
                             isActive={page === currentPage}
                             size="icon-sm"
@@ -115,6 +122,7 @@ export function CatalogPagination({
                             isLastPage ? currentPage : currentPage + 1,
                             sort,
                             searchQuery,
+                            filters,
                         )}
                         onClick={navigate}
                         aria-disabled={isLastPage}
@@ -125,7 +133,7 @@ export function CatalogPagination({
 
                 <PaginationItem>
                     <PaginationLink
-                        href={getCatalogHref(businessId, totalPages, sort, searchQuery)}
+                        href={getCatalogHref(businessId, totalPages, sort, searchQuery, filters)}
                         onClick={navigate}
                         size="icon-sm"
                         aria-label="Go to last page"

@@ -1,17 +1,9 @@
 "use client";
 
-import { useMemo, useState, useTransition, type FormEvent } from "react";
+import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { ProductDto } from "@internal/interfaces";
-import {
-    ChevronDown,
-    LayoutGrid,
-    List,
-    MessageSquare,
-    Search,
-    SlidersHorizontal,
-    X,
-} from "lucide-react";
+import { ChevronDown, LayoutGrid, List, MessageSquare, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -25,8 +17,11 @@ import { cn } from "@/lib/utils";
 import {
     catalogSortOptions,
     getCatalogHref,
+    hasActiveCatalogFilters,
+    type CatalogFilters,
     type CatalogSort,
 } from "../lib/catalog-products";
+import { CatalogFilterMenu } from "./catalog-filter-menu";
 import { FeaturedProduct } from "./featured-product";
 import { CatalogPagination } from "./catalog-pagination";
 import { ProductCard } from "./product-card";
@@ -41,6 +36,7 @@ type CatalogBrowserProps = {
     totalPages: number;
     sort: CatalogSort;
     searchQuery: string;
+    filters: CatalogFilters;
 };
 
 export function CatalogBrowser({
@@ -52,18 +48,14 @@ export function CatalogBrowser({
     totalPages,
     sort,
     searchQuery,
+    filters,
 }: CatalogBrowserProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [queryInput, setQueryInput] = useState(searchQuery);
-    const [inStockOnly, setInStockOnly] = useState(false);
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const selectedSort = catalogSortOptions.find((option) => option.value === sort)!;
-
-    const visibleProducts = useMemo(
-        () => (inStockOnly ? products.filter((product) => product.onStock) : products),
-        [inStockOnly, products],
-    );
+    const hasFilters = hasActiveCatalogFilters(filters);
 
     function navigateTo(href: string) {
         startTransition(() => router.push(href));
@@ -71,12 +63,12 @@ export function CatalogBrowser({
 
     function submitSearch(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        navigateTo(getCatalogHref(businessId, 1, sort, queryInput.trim()));
+        navigateTo(getCatalogHref(businessId, 1, sort, queryInput.trim(), filters));
     }
 
     function clearSearch() {
         setQueryInput("");
-        if (searchQuery) navigateTo(getCatalogHref(businessId, 1, sort));
+        if (searchQuery) navigateTo(getCatalogHref(businessId, 1, sort, "", filters));
     }
 
     return (
@@ -85,11 +77,6 @@ export function CatalogBrowser({
                 <form className="flex gap-2" onSubmit={submitSearch}>
                     <label className="relative min-w-0 flex-1">
                         <span className="sr-only">Search products</span>
-                        <Search
-                            className="pointer-events-none absolute top-1/2 left-4 z-10 size-5 -translate-y-1/2 text-muted-foreground"
-                            strokeWidth={1.8}
-                            aria-hidden="true"
-                        />
                         <Input
                             type="search"
                             name="q"
@@ -97,14 +84,14 @@ export function CatalogBrowser({
                             onChange={(event) => setQueryInput(event.target.value)}
                             maxLength={100}
                             placeholder="Search products..."
-                            className="h-11 rounded-lg border-0 bg-gray-100 pr-10 pl-11 shadow-none placeholder:text-muted-foreground focus-visible:border-0 focus-visible:bg-gray-100 focus-visible:ring-0 focus-visible:shadow-none [&::-webkit-search-cancel-button]:hidden"
+                            className="[&::-webkit-search-cancel-button]:hidden"
                         />
                         {queryInput && (
                             <Button
                                 type="button"
                                 variant="ghost"
                                 size="icon-xs"
-                                className="absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded-full text-muted-foreground hover:bg-gray-200"
+                                className="absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded-full"
                                 onClick={clearSearch}
                                 disabled={isPending}
                                 aria-label="Clear search"
@@ -117,27 +104,20 @@ export function CatalogBrowser({
                     <Button
                         type="submit"
                         size="icon"
-                        className="size-11 rounded-lg"
+                        className="rounded-lg"
                         disabled={isPending}
                         aria-label="Search products"
                     >
                         <Search className="size-5" strokeWidth={2} />
                     </Button>
 
-                    <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-sm"
-                        className={cn(
-                            "size-11 rounded-lg bg-gray-100 text-foreground hover:bg-gray-200",
-                            inStockOnly && "bg-primary/10 text-primary hover:bg-primary/20",
-                        )}
-                        onClick={() => setInStockOnly((current) => !current)}
-                        aria-label="Show in-stock products only"
-                        aria-pressed={inStockOnly}
-                    >
-                        <SlidersHorizontal className="size-5" strokeWidth={1.8} />
-                    </Button>
+                    <CatalogFilterMenu
+                        filters={filters}
+                        disabled={isPending}
+                        onApply={(nextFilters) =>
+                            navigateTo(getCatalogHref(businessId, 1, sort, searchQuery, nextFilters))
+                        }
+                    />
                 </form>
             </section>
 
@@ -184,9 +164,9 @@ export function CatalogBrowser({
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
-                                    variant="secondary"
+                                    variant="outline"
                                     size="sm"
-                                    className="h-9 rounded-full px-3 text-xs text-muted-foreground"
+                                    className="h-9 rounded-full px-3 text-xs"
                                     aria-label={`Sort products. Current order: ${selectedSort.shortLabel}`}
                                 >
                                     {selectedSort.shortLabel}
@@ -206,6 +186,7 @@ export function CatalogBrowser({
                                                 1,
                                                 value as CatalogSort,
                                                 searchQuery,
+                                                filters,
                                             ),
                                         )
                                     }
@@ -224,9 +205,9 @@ export function CatalogBrowser({
                         </DropdownMenu>
 
                         <Button
-                            variant="secondary"
+                            variant="outline"
                             size="icon-sm"
-                            className="size-9 rounded-full text-muted-foreground"
+                            className="size-9 rounded-full"
                             onClick={() =>
                                 setViewMode((current) => (current === "grid" ? "list" : "grid"))
                             }
@@ -243,7 +224,7 @@ export function CatalogBrowser({
                 </div>
 
                 <p className="sr-only" role="status" aria-live="polite">
-                    {visibleProducts.length} {visibleProducts.length === 1 ? "product" : "products"} shown
+                    {products.length} {products.length === 1 ? "product" : "products"} shown
                 </p>
 
                 {isPending ? (
@@ -259,14 +240,14 @@ export function CatalogBrowser({
                             <ProductCardSkeleton key={index} mode={viewMode} />
                         ))}
                     </div>
-                ) : visibleProducts.length > 0 ? (
+                ) : products.length > 0 ? (
                     <div
                         className={cn(
                             "gap-4 px-4 pb-20",
                             viewMode === "grid" ? "grid grid-cols-2" : "flex flex-col",
                         )}
                     >
-                        {visibleProducts.map((product) => (
+                        {products.map((product) => (
                             <ProductCard key={product.id} product={product} mode={viewMode} />
                         ))}
                     </div>
@@ -274,9 +255,11 @@ export function CatalogBrowser({
                     <div className="px-6 py-16 text-center">
                         <h3 className="text-base font-bold">No products found</h3>
                         <p className="mt-2 text-sm text-muted-foreground">
-                            {products.length === 0
-                                ? `${businessName} has not published any products yet.`
-                                : "Try another search or turn off the stock filter."}
+                            {hasFilters
+                                ? "Try adjusting or clearing your filters."
+                                : searchQuery
+                                  ? "Try another search."
+                                  : `${businessName} has not published any products yet.`}
                         </p>
                     </div>
                 )}
@@ -288,6 +271,7 @@ export function CatalogBrowser({
                         totalPages={totalPages}
                         sort={sort}
                         searchQuery={searchQuery}
+                        filters={filters}
                         onNavigate={navigateTo}
                     />
                 )}

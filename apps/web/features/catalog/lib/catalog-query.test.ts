@@ -5,6 +5,7 @@ import {
   isAlternativeCatalogView,
   MAX_SEARCH_LENGTH,
   parseBusinessId,
+  parseCatalogFilters,
   parseCatalogSort,
   parsePageNumber,
   parseSearchQuery,
@@ -43,6 +44,42 @@ describe("catalog query parsing", () => {
     expect(parseSearchQuery(["one", "two"])).toBeNull();
     expect(parseSearchQuery("x".repeat(MAX_SEARCH_LENGTH + 1))).toBeNull();
   });
+
+  it("parses price and boolean filters", () => {
+    expect(parseCatalogFilters({})).toEqual({
+      minPrice: null,
+      maxPrice: null,
+      onSale: false,
+      inStock: false,
+      featured: false,
+    });
+    expect(
+      parseCatalogFilters({
+        minPrice: "10.5",
+        maxPrice: "100",
+        sale: "1",
+        stock: "1",
+        featured: "1",
+      }),
+    ).toEqual({
+      minPrice: 10.5,
+      maxPrice: 100,
+      onSale: true,
+      inStock: true,
+      featured: true,
+    });
+  });
+
+  it("rejects malformed, negative, repeated, and inverted filters", () => {
+    expect(parseCatalogFilters({ minPrice: "-1" })).toBeNull();
+    expect(parseCatalogFilters({ minPrice: "0x10" })).toBeNull();
+    expect(parseCatalogFilters({ minPrice: "1.234" })).toBeNull();
+    expect(parseCatalogFilters({ maxPrice: "not-a-price" })).toBeNull();
+    expect(parseCatalogFilters({ minPrice: ["1", "2"] })).toBeNull();
+    expect(parseCatalogFilters({ sale: "true" })).toBeNull();
+    expect(parseCatalogFilters({ stock: ["1"] })).toBeNull();
+    expect(parseCatalogFilters({ minPrice: "100", maxPrice: "10" })).toBeNull();
+  });
 });
 
 describe("catalog database and SEO configuration", () => {
@@ -65,5 +102,14 @@ describe("catalog database and SEO configuration", () => {
     expect(isAlternativeCatalogView("created-desc", "")).toBe(false);
     expect(isAlternativeCatalogView("created-desc", "demo")).toBe(true);
     expect(isAlternativeCatalogView("price-asc", "")).toBe(true);
+    expect(
+      isAlternativeCatalogView("created-desc", "", {
+        minPrice: null,
+        maxPrice: null,
+        onSale: false,
+        inStock: true,
+        featured: false,
+      }),
+    ).toBe(true);
   });
 });

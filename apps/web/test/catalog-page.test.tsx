@@ -28,7 +28,16 @@ vi.mock("@/features/catalog/components/business-summary", () => ({ BusinessSumma
 
 const props = (
   id: string,
-  searchParams: { page?: string | string[]; sort?: string | string[]; q?: string | string[] } = {},
+  searchParams: {
+    page?: string | string[];
+    sort?: string | string[];
+    q?: string | string[];
+    minPrice?: string | string[];
+    maxPrice?: string | string[];
+    sale?: string | string[];
+    stock?: string | string[];
+    featured?: string | string[];
+  } = {},
 ) => ({ params: Promise.resolve({ id }), searchParams: Promise.resolve(searchParams) });
 
 const businessRow = {
@@ -68,10 +77,22 @@ describe("catalog metadata", () => {
     expect(metadata.robots).toEqual({ index: false, follow: true });
   });
 
+  it("prevents indexing filtered URLs", async () => {
+    const metadata = await generateMetadata(props("7", { stock: "1", minPrice: "10" }));
+    expect(metadata.alternates).toEqual({ canonical: "/catalog/7" });
+    expect(metadata.robots).toEqual({ index: false, follow: true });
+  });
+
   it("rejects malformed catalog parameters", async () => {
     await expect(generateMetadata(props("invalid"))).rejects.toThrow("NEXT_NOT_FOUND");
     await expect(generateMetadata(props("7", { page: "0" }))).rejects.toThrow("NEXT_NOT_FOUND");
     await expect(generateMetadata(props("7", { sort: "popular" }))).rejects.toThrow("NEXT_NOT_FOUND");
+    await expect(generateMetadata(props("7", { sale: "true" }))).rejects.toThrow(
+      "NEXT_NOT_FOUND",
+    );
+    await expect(
+      generateMetadata(props("7", { minPrice: "100", maxPrice: "10" })),
+    ).rejects.toThrow("NEXT_NOT_FOUND");
   });
 });
 
@@ -86,14 +107,35 @@ describe("CatalogPage server query", () => {
       }),
     );
 
-    render(await CatalogPage(props("7", { page: "2", sort: "price-desc", q: "Demo" })));
+    render(
+      await CatalogPage(
+        props("7", {
+          page: "2",
+          sort: "price-desc",
+          q: "Demo",
+          minPrice: "10",
+          maxPrice: "100",
+          sale: "1",
+          stock: "1",
+          featured: "1",
+        }),
+      ),
+    );
 
     expect(productsQuery.or).toHaveBeenCalledWith(
       'name.ilike."%Demo%",description.ilike."%Demo%"',
     );
+    expect(productsQuery.gte).toHaveBeenCalledWith("price", 10);
+    expect(productsQuery.lte).toHaveBeenCalledWith("price", 100);
+    expect(productsQuery.eq).toHaveBeenCalledWith("sale", true);
+    expect(productsQuery.eq).toHaveBeenCalledWith("on_stock", true);
+    expect(productsQuery.eq).toHaveBeenCalledWith("is_featured", true);
     expect(productsQuery.order).toHaveBeenNthCalledWith(1, "price", { ascending: false });
     expect(productsQuery.order).toHaveBeenNthCalledWith(2, "id", { ascending: false });
     expect(productsQuery.range).toHaveBeenCalledWith(24, 47);
+    expect(productsQuery.gte.mock.invocationCallOrder[0]).toBeLessThan(
+      productsQuery.range.mock.invocationCallOrder[0],
+    );
     expect(mocks.browser).toHaveBeenCalledWith(
       expect.objectContaining({
         businessId: 7,
@@ -101,6 +143,13 @@ describe("CatalogPage server query", () => {
         totalPages: 3,
         sort: "price-desc",
         searchQuery: "Demo",
+        filters: {
+          minPrice: 10,
+          maxPrice: 100,
+          onSale: true,
+          inStock: true,
+          featured: true,
+        },
         products: [expect.objectContaining({ id: 1 })],
         featuredProducts: [expect.objectContaining({ id: 2 })],
       }),
