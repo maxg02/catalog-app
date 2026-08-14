@@ -166,26 +166,70 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="relative mx-auto flex min-h-screen w-full max-w-[480px] flex-col bg-card shadow-sm">
-        <CatalogHeader businessName={business.name} image={business.bannerImage} />
-        <BusinessSummary
-          name={business.name}
-          description={business.description}
-          image={business.bannerImage}
-          location={location}
-        />
-        <CatalogBrowser
-          key={`search:${searchQuery}`}
-          products={products}
-          featuredProducts={featuredProducts}
+      <div className="relative mx-auto flex min-h-screen w-full max-w-[480px] flex-col bg-card shadow-sm lg:max-w-none lg:bg-background lg:shadow-none">
+        <CatalogHeader
           businessName={business.name}
           businessId={businessId}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          sort={sort}
+          image={business.bannerImage}
           searchQuery={searchQuery}
+          sort={sort}
           filters={filters}
         />
+
+        <div className="w-full lg:mx-auto lg:max-w-screen-2xl lg:px-8 lg:py-8">
+          <BusinessSummary
+            name={business.name}
+            description={business.description}
+            image={business.bannerImage}
+            location={location}
+          />
+          <CatalogBrowser
+            key={`search:${searchQuery}`}
+            products={products}
+            featuredProducts={featuredProducts}
+            businessName={business.name}
+            businessId={businessId}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            sort={sort}
+            searchQuery={searchQuery}
+            filters={filters}
+          />
+        </div>
+
+        <footer className="mt-auto hidden bg-surface-container-high px-8 py-12 shadow-inner lg:block">
+          <div className="mx-auto grid w-full max-w-screen-2xl grid-cols-3 gap-8">
+            <div>
+              <h2 className="text-xl font-bold tracking-[0.12em] text-primary uppercase">
+                {business.name}
+              </h2>
+              <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+                {business.description || `Discover products and services from ${business.name}.`}
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xs font-bold tracking-[0.16em] uppercase">
+                Contact &amp; location
+              </h3>
+              <p className="mt-4 text-sm text-muted-foreground">{location}</p>
+              <a
+                className="mt-2 inline-block text-sm text-primary hover:underline"
+                href={`mailto:?subject=${encodeURIComponent(`Inquiry for ${business.name}`)}`}
+              >
+                Send an inquiry
+              </a>
+            </div>
+            <div className="text-right">
+              <h3 className="text-xs font-bold tracking-[0.16em] uppercase">Share catalog</h3>
+              <a
+                className="mt-4 inline-block text-sm text-primary hover:underline"
+                href={`mailto:?subject=${encodeURIComponent(`${business.name} catalog`)}`}
+              >
+                Share by email
+              </a>
+            </div>
+          </div>
+        </footer>
       </div>
     </main>
   );

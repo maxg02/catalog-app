@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -23,6 +24,7 @@ type CatalogFilterMenuProps = {
     filters: CatalogFilters;
     disabled: boolean;
     onApply: (filters: CatalogFilters) => void;
+    presentation?: "dropdown" | "sidebar";
 };
 
 type FilterDraft = {
@@ -79,7 +81,69 @@ function getActiveFilterCount(filters: CatalogFilters) {
     );
 }
 
-export function CatalogFilterMenu({ filters, disabled, onApply }: CatalogFilterMenuProps) {
+type PriceFieldsProps = {
+    draft: FilterDraft;
+    draftFilters: CatalogFilters | null;
+    idPrefix: string;
+    setDraft: Dispatch<SetStateAction<FilterDraft>>;
+};
+
+function PriceFields({ draft, draftFilters, idPrefix, setDraft }: PriceFieldsProps) {
+    return (
+        <div className="grid grid-cols-2 gap-2">
+            <label
+                htmlFor={`${idPrefix}-minimum-price`}
+                className="space-y-1 text-xs font-medium text-muted-foreground"
+            >
+                Minimum price
+                <Input
+                    id={`${idPrefix}-minimum-price`}
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    inputMode="decimal"
+                    value={draft.minPrice}
+                    onChange={(event) =>
+                        setDraft((current) => ({ ...current, minPrice: event.target.value }))
+                    }
+                    placeholder="Min"
+                    className="mt-1 h-9"
+                />
+            </label>
+            <label
+                htmlFor={`${idPrefix}-maximum-price`}
+                className="space-y-1 text-xs font-medium text-muted-foreground"
+            >
+                Maximum price
+                <Input
+                    id={`${idPrefix}-maximum-price`}
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    inputMode="decimal"
+                    value={draft.maxPrice}
+                    onChange={(event) =>
+                        setDraft((current) => ({ ...current, maxPrice: event.target.value }))
+                    }
+                    placeholder="Max"
+                    className="mt-1 h-9"
+                />
+            </label>
+            {!draftFilters && (
+                <p className="col-span-2 text-xs text-destructive" role="alert">
+                    Enter a valid price range.
+                </p>
+            )}
+        </div>
+    );
+}
+
+export function CatalogFilterMenu({
+    filters,
+    disabled,
+    onApply,
+    presentation = "dropdown",
+}: CatalogFilterMenuProps) {
     const [open, setOpen] = useState(false);
     const [draft, setDraft] = useState(() => getFilterDraft(filters));
     const draftFilters = getDraftFilters(draft);
@@ -107,6 +171,94 @@ export function CatalogFilterMenu({ filters, disabled, onApply }: CatalogFilterM
         activeFilterCount === 0
             ? "Filter products"
             : `Filter products. ${activeFilterCount} active ${activeFilterCount === 1 ? "filter" : "filters"}`;
+
+    if (presentation === "sidebar") {
+        return (
+            <div className="space-y-8">
+                <div>
+                    <h3 className="mb-4 text-xs font-bold tracking-[0.16em] uppercase">
+                        Price range
+                    </h3>
+                    <PriceFields
+                        draft={draft}
+                        draftFilters={draftFilters}
+                        idPrefix="sidebar"
+                        setDraft={setDraft}
+                    />
+                </div>
+
+                <div>
+                    <h3 className="mb-4 text-xs font-bold tracking-[0.16em] uppercase">
+                        Product filters
+                    </h3>
+                    <div className="space-y-3 text-sm text-muted-foreground">
+                        <label
+                            htmlFor="sidebar-on-sale"
+                            className="flex cursor-pointer items-center gap-2 transition-colors hover:text-primary"
+                        >
+                            <Checkbox
+                                id="sidebar-on-sale"
+                                checked={draft.onSale}
+                                onCheckedChange={(checked) =>
+                                    setDraft((current) => ({ ...current, onSale: checked === true }))
+                                }
+                                disabled={disabled}
+                            />
+                            Products on sale
+                        </label>
+                        <label
+                            htmlFor="sidebar-in-stock"
+                            className="flex cursor-pointer items-center gap-2 transition-colors hover:text-primary"
+                        >
+                            <Checkbox
+                                id="sidebar-in-stock"
+                                checked={draft.inStock}
+                                onCheckedChange={(checked) =>
+                                    setDraft((current) => ({ ...current, inStock: checked === true }))
+                                }
+                                disabled={disabled}
+                            />
+                            Products in stock
+                        </label>
+                        <label
+                            htmlFor="sidebar-featured"
+                            className="flex cursor-pointer items-center gap-2 transition-colors hover:text-primary"
+                        >
+                            <Checkbox
+                                id="sidebar-featured"
+                                checked={draft.featured}
+                                onCheckedChange={(checked) =>
+                                    setDraft((current) => ({ ...current, featured: checked === true }))
+                                }
+                                disabled={disabled}
+                            />
+                            Featured products
+                        </label>
+                    </div>
+                </div>
+
+                <div className="grid gap-2">
+                    <Button
+                        type="button"
+                        className="rounded-xl"
+                        disabled={!draftFilters || disabled}
+                        onClick={applyFilters}
+                    >
+                        Apply filters
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        className="rounded-xl"
+                        onClick={clearFilters}
+                        disabled={disabled || !hasActiveCatalogFilters(filters)}
+                    >
+                        Clear filters
+                    </Button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <DropdownMenu open={open} onOpenChange={handleOpenChange}>
@@ -140,45 +292,13 @@ export function CatalogFilterMenu({ filters, disabled, onApply }: CatalogFilterM
                         Filter products
                     </DropdownMenuLabel>
 
-                    <div
-                        className="grid grid-cols-2 gap-2 px-3 pb-3"
-                        onKeyDown={(event) => event.stopPropagation()}
-                    >
-                        <label className="space-y-1 text-xs font-medium text-muted-foreground">
-                            Minimum price
-                            <Input
-                                type="number"
-                                min="0"
-                                step="0.01"
-                                inputMode="decimal"
-                                value={draft.minPrice}
-                                onChange={(event) =>
-                                    setDraft((current) => ({ ...current, minPrice: event.target.value }))
-                                }
-                                placeholder="Min"
-                                className="mt-1 h-9"
-                            />
-                        </label>
-                        <label className="space-y-1 text-xs font-medium text-muted-foreground">
-                            Maximum price
-                            <Input
-                                type="number"
-                                min="0"
-                                step="0.01"
-                                inputMode="decimal"
-                                value={draft.maxPrice}
-                                onChange={(event) =>
-                                    setDraft((current) => ({ ...current, maxPrice: event.target.value }))
-                                }
-                                placeholder="Max"
-                                className="mt-1 h-9"
-                            />
-                        </label>
-                        {!draftFilters && (
-                            <p className="col-span-2 text-xs text-destructive" role="alert">
-                                Enter a valid price range.
-                            </p>
-                        )}
+                    <div className="px-3 pb-3" onKeyDown={(event) => event.stopPropagation()}>
+                        <PriceFields
+                            draft={draft}
+                            draftFilters={draftFilters}
+                            idPrefix="dropdown"
+                            setDraft={setDraft}
+                        />
                     </div>
 
                     <DropdownMenuSeparator className="mx-0" />

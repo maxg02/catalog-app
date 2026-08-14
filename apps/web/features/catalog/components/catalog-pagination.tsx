@@ -66,7 +66,7 @@ export function CatalogPagination({
     }
 
     return (
-        <Pagination className="px-4 pb-20" aria-label="Product catalog pages">
+        <Pagination className="px-4 pb-20 lg:px-0 lg:pb-12" aria-label="Product catalog pages">
             <PaginationContent className="gap-0.5">
                 <PaginationItem>
                     <PaginationLink

@@ -7,26 +7,15 @@ import { formatProductPrice, getProductPrice } from "../lib/catalog-products";
 
 type ProductCardProps = {
     product: ProductDto;
-    mode: "grid" | "list";
 };
 
-export function ProductCard({ product, mode }: ProductCardProps) {
+export function ProductCard({ product }: ProductCardProps) {
     return (
-        <Card
-            className={cn(
-                "min-w-0 gap-3 overflow-visible rounded-none border-0 bg-transparent py-0 shadow-none ",
-                mode === "list" && "flex-row items-center gap-4",
-            )}
-        >
-            <div
-                className={cn(
-                    "relative aspect-square w-full overflow-hidden rounded-xl bg-gray-100 shadow-sm",
-                    mode === "list" && "size-28 shrink-0",
-                )}
-            >
+        <Card className="min-w-0 gap-3 overflow-visible rounded-none border-0 bg-transparent py-0 shadow-none lg:rounded-3xl lg:bg-card lg:p-4 lg:shadow-ambient lg:ring-1 lg:ring-foreground/5">
+            <div className="group relative aspect-square w-full overflow-hidden rounded-xl bg-gray-100 shadow-sm lg:rounded-2xl">
                 {product.image[0] ? (
                     <img
-                        className="size-full object-cover"
+                        className="size-full object-cover transition-transform duration-500 lg:group-hover:scale-105"
                         src={product.image[0]}
                         alt={product.name}
                         loading="lazy"
@@ -52,12 +41,9 @@ export function ProductCard({ product, mode }: ProductCardProps) {
             </div>
 
             <div className="min-w-0">
-                <h3 className="line-clamp-2 text-sm leading-tight font-semibold">{product.name}</h3>
-                {mode === "list" && product.description && (
-                    <p className="mt-1 line-clamp-1 text-xs leading-relaxed text-muted-foreground">
-                        {product.description}
-                    </p>
-                )}
+                <h3 className="line-clamp-2 text-sm leading-tight font-semibold lg:text-base">
+                    {product.name}
+                </h3>
                 <div className="mt-1 flex items-center gap-2 tabular-nums">
                     <p className="text-base font-bold text-primary">
                         {formatProductPrice(getProductPrice(product))}

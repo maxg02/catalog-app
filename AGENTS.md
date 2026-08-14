@@ -2,7 +2,7 @@
 
 ## Global Settings
 
-Create components for the reused screens elements, if they are reused inside the same component put them in the features folder into /[feature]/components, if they are reused in another screen put them into the common components folder
+Create components for the reused screens elements, if they are reused inside the same component put them in the features folder into /[feature]/components, if they are reused in another screen put them into the common components folder.
 
 ## Mobile app
 
@@ -75,3 +75,7 @@ pnpm --filter @internal/web build
 ```
 
 Coverage must be reported but must not fail on a percentage. The production build is required because it validates App Router server/client boundaries and metadata behavior that unit tests cannot. Keep existing unrelated warnings separate from new failures.
+
+### Responsiveness
+
+When making desktop versions of mobile screens reuse the components of the mobile version as much as posible. Prioritize responsive clases before creating a new component. If you really think that reusing the mobile component will overcomplicate the code you can create a new component.

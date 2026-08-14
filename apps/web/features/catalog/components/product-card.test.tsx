@@ -5,7 +5,7 @@ import { ProductCard } from "./product-card";
 
 describe("ProductCard", () => {
   it("renders a grid product with its image, price, and stock state", () => {
-    render(<ProductCard product={makeProduct()} mode="grid" />);
+    render(<ProductCard product={makeProduct()} />);
 
     expect(screen.getByRole("img", { name: "Demo product" })).toHaveAttribute(
       "src",
@@ -26,7 +26,6 @@ describe("ProductCard", () => {
           salePrice: 15,
           onStock: false,
         })}
-        mode="grid"
       />,
     );
 
@@ -39,8 +38,4 @@ describe("ProductCard", () => {
     expect(screen.getByText("Out of stock")).toBeVisible();
   });
 
-  it("shows the description in list mode", () => {
-    render(<ProductCard product={makeProduct()} mode="list" />);
-    expect(screen.getByText("A product description")).toBeVisible();
-  });
 });

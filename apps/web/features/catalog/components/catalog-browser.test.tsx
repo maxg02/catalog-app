@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { makeProduct } from "@/test/fixtures";
@@ -52,17 +52,12 @@ describe("CatalogBrowser", () => {
     expect(navigation.push).toHaveBeenCalledWith("/catalog/7");
   });
 
-  it("toggles between grid and list content", async () => {
-    const user = userEvent.setup();
+  it("keeps products in a grid and exposes the desktop filter sidebar", () => {
     render(<CatalogBrowser {...defaultProps} />);
 
     expect(screen.queryByText("Available description")).not.toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Switch to list view" }));
-    expect(screen.getByText("Available description")).toBeVisible();
-    expect(screen.getByRole("button", { name: "Switch to grid view" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
+    expect(screen.queryByRole("button", { name: /Switch to .* view/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("complementary", { name: "Catalog filters" })).toBeInTheDocument();
   });
 
   it("applies price, sale, stock, and featured filters through the shadcn menu", async () => {
@@ -70,16 +65,29 @@ describe("CatalogBrowser", () => {
     render(<CatalogBrowser {...defaultProps} />);
 
     await user.click(screen.getByRole("button", { name: "Filter products" }));
-    await user.type(screen.getByRole("spinbutton", { name: "Minimum price" }), "10");
-    await user.type(screen.getByRole("spinbutton", { name: "Maximum price" }), "100");
-    await user.click(screen.getByRole("menuitemcheckbox", { name: "Products on sale" }));
-    await user.click(screen.getByRole("menuitemcheckbox", { name: "Products in stock" }));
-    await user.click(screen.getByRole("menuitemcheckbox", { name: "Featured products" }));
-    await user.click(screen.getByRole("button", { name: "Apply filters" }));
+    const menu = screen.getByRole("menu");
+    await user.type(within(menu).getByRole("spinbutton", { name: "Minimum price" }), "10");
+    await user.type(within(menu).getByRole("spinbutton", { name: "Maximum price" }), "100");
+    await user.click(within(menu).getByRole("menuitemcheckbox", { name: "Products on sale" }));
+    await user.click(within(menu).getByRole("menuitemcheckbox", { name: "Products in stock" }));
+    await user.click(within(menu).getByRole("menuitemcheckbox", { name: "Featured products" }));
+    await user.click(within(menu).getByRole("button", { name: "Apply filters" }));
 
     expect(navigation.push).toHaveBeenCalledWith(
       "/catalog/7?minPrice=10&maxPrice=100&sale=1&stock=1&featured=1",
     );
+  });
+
+  it("applies the existing filters from the desktop sidebar", async () => {
+    const user = userEvent.setup();
+    render(<CatalogBrowser {...defaultProps} />);
+    const sidebar = screen.getByRole("complementary", { name: "Catalog filters" });
+
+    await user.type(within(sidebar).getByRole("spinbutton", { name: "Minimum price" }), "25");
+    await user.click(within(sidebar).getByRole("checkbox", { name: "Products in stock" }));
+    await user.click(within(sidebar).getByRole("button", { name: "Apply filters" }));
+
+    expect(navigation.push).toHaveBeenCalledWith("/catalog/7?minPrice=25&stock=1");
   });
 
   it("clears committed filters while preserving search and sort state", async () => {
@@ -105,11 +113,12 @@ describe("CatalogBrowser", () => {
     render(<CatalogBrowser {...defaultProps} />);
 
     await user.click(screen.getByRole("button", { name: "Filter products" }));
-    await user.type(screen.getByRole("spinbutton", { name: "Minimum price" }), "100");
-    await user.type(screen.getByRole("spinbutton", { name: "Maximum price" }), "10");
+    const menu = screen.getByRole("menu");
+    await user.type(within(menu).getByRole("spinbutton", { name: "Minimum price" }), "100");
+    await user.type(within(menu).getByRole("spinbutton", { name: "Maximum price" }), "10");
 
-    expect(screen.getByRole("alert")).toHaveTextContent("Enter a valid price range.");
-    expect(screen.getByRole("button", { name: "Apply filters" })).toBeDisabled();
+    expect(within(menu).getByRole("alert")).toHaveTextContent("Enter a valid price range.");
+    expect(within(menu).getByRole("button", { name: "Apply filters" })).toBeDisabled();
   });
 
   it("changes the server sort through the shadcn dropdown and preserves the search", async () => {
