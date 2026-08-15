@@ -83,7 +83,7 @@ describe("CatalogBrowser", () => {
     render(<CatalogBrowser {...defaultProps} />);
     const sidebar = screen.getByRole("complementary", { name: "Catalog filters" });
 
-    await user.type(within(sidebar).getByRole("spinbutton", { name: "Minimum price" }), "25");
+    await user.type(within(sidebar).getByRole("spinbutton", { name: "Min price" }), "25");
     await user.click(within(sidebar).getByRole("checkbox", { name: "Products in stock" }));
     await user.click(within(sidebar).getByRole("button", { name: "Apply filters" }));
 

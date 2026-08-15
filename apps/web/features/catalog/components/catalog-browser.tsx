@@ -72,7 +72,10 @@ export function CatalogBrowser({
 
     return (
         <>
-            <section className="bg-card px-4 py-2 lg:hidden" aria-label="Find products">
+            <section
+                className="px-[clamp(1rem,3vw,2rem)] py-2 min-[40rem]:mt-6 min-[44rem]:hidden "
+                aria-label="Find products"
+            >
                 <form className="flex gap-2" onSubmit={submitSearch}>
                     <label className="relative min-w-0 flex-1">
                         <span className="sr-only">Search products</span>
@@ -121,8 +124,11 @@ export function CatalogBrowser({
                 </form>
             </section>
 
-            <div className="lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-8 lg:pt-10">
-                <aside className="sticky top-24 hidden h-max pr-4 lg:block" aria-label="Catalog filters">
+            <div className="min-[52rem]:grid min-[52rem]:grid-cols-[clamp(10rem,20vw,15rem)_minmax(0,1fr)] min-[52rem]:gap-[clamp(1.25rem,2.5vw,2rem)] min-[52rem]:pt-[clamp(1.5rem,3vw,2.5rem)]">
+                <aside
+                    className="sticky top-24 hidden h-max pr-[clamp(0rem,1vw,1rem)] min-[52rem]:block"
+                    aria-label="Catalog filters"
+                >
                     <CatalogFilterMenu
                         key={`sidebar:${filterStateKey}`}
                         presentation="sidebar"
@@ -136,11 +142,11 @@ export function CatalogBrowser({
 
                 <div className="min-w-0">
                     {featuredProducts.length > 0 && (
-                        <section className="lg:mb-6" aria-labelledby="featured-heading">
-                            <div className="flex items-center justify-between px-4 pt-6 pb-2 lg:px-0 lg:pt-0 lg:pb-4">
+                        <section className="min-[52rem]:mb-6" aria-labelledby="featured-heading">
+                            <div className="flex items-center justify-between px-[clamp(1rem,3vw,2rem)] pt-[clamp(1.5rem,4vw,2rem)] pb-2 min-[40rem]:px-0 min-[52rem]:pt-0 min-[52rem]:pb-4">
                                 <h2
                                     id="featured-heading"
-                                    className="text-[20px] leading-tight font-bold tracking-[-0.015em] lg:text-2xl"
+                                    className="text-[clamp(1.25rem,2.8vw,1.5rem)] leading-tight font-bold tracking-[-0.015em]"
                                 >
                                     Featured Collection
                                 </h2>
@@ -153,7 +159,7 @@ export function CatalogBrowser({
                                 </Button>
                             </div>
 
-                            <div className="flex snap-x scroll-px-4 gap-4 overflow-x-auto px-4 pt-0 pb-4 [scrollbar-width:none] lg:scroll-px-0 lg:gap-6 lg:px-0 lg:pb-4 [&::-webkit-scrollbar]:hidden">
+                            <div className="flex snap-x scroll-px-[clamp(1rem,3vw,2rem)] gap-[clamp(1rem,2.5vw,1.5rem)] overflow-x-auto px-[clamp(1rem,3vw,2rem)] pt-0 pb-4 [scrollbar-width:none] min-[40rem]:scroll-px-0 min-[40rem]:px-0 [&::-webkit-scrollbar]:hidden">
                                 {featuredProducts.map((product) => (
                                     <FeaturedProduct key={product.id} product={product} />
                                 ))}
@@ -163,17 +169,16 @@ export function CatalogBrowser({
 
                     <section
                         id="products"
-                        className="scroll-mt-32 lg:scroll-mt-24"
+                        className="scroll-mt-32 min-[44rem]:scroll-mt-24"
                         aria-labelledby="products-heading"
                         aria-busy={isPending}
                     >
-                        <div className="flex items-center justify-between px-4 pt-6 pb-3 lg:px-0 lg:pb-6">
+                        <div className="flex items-center justify-between px-[clamp(1rem,3vw,2rem)] pt-[clamp(1.5rem,4vw,2rem)] pb-3 min-[40rem]:px-0 min-[52rem]:pb-6">
                             <h2
                                 id="products-heading"
-                                className="text-[20px] leading-tight font-bold tracking-[-0.015em] lg:text-2xl"
+                                className="text-[clamp(1.25rem,2.8vw,1.5rem)] leading-tight font-bold tracking-[-0.015em]"
                             >
-                                <span className="lg:hidden">Product Catalog</span>
-                                <span className="hidden lg:inline">All Products</span>
+                                All Products
                             </h2>
                             <div className="flex items-center gap-2">
                                 <DropdownMenu>
@@ -181,10 +186,10 @@ export function CatalogBrowser({
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            className="h-9 rounded-full px-3 text-xs lg:rounded-xl lg:border-0 lg:bg-surface-container-high lg:px-4"
+                                            className="h-9 rounded-full px-3 text-xs min-[40rem]:rounded-xl min-[40rem]:border-0 min-[40rem]:bg-surface-container-high min-[40rem]:px-4"
                                             aria-label={`Sort products. Current order: ${selectedSort.shortLabel}`}
                                         >
-                                            <span className="hidden font-normal text-muted-foreground lg:inline">
+                                            <span className="hidden font-normal text-muted-foreground min-[30rem]:inline">
                                                 Sort by:
                                             </span>
                                             {selectedSort.shortLabel}
@@ -230,7 +235,7 @@ export function CatalogBrowser({
 
                         {isPending ? (
                             <div
-                                className="grid grid-cols-2 gap-4 px-4 pb-20 lg:grid-cols-3 lg:gap-6 lg:px-0 lg:pb-12 xl:grid-cols-4"
+                                className="grid [container-type:inline-size] grid-cols-[repeat(auto-fit,minmax(min(100%,clamp(8.25rem,25cqw,14rem)),1fr))] gap-[clamp(1rem,2.5vw,1.5rem)] px-[clamp(1rem,3vw,2rem)] pb-20 min-[40rem]:px-0 min-[40rem]:pb-12"
                                 role="status"
                                 aria-label="Loading products"
                             >
@@ -239,7 +244,7 @@ export function CatalogBrowser({
                                 ))}
                             </div>
                         ) : products.length > 0 ? (
-                            <div className="grid grid-cols-2 gap-4 px-4 pb-20 lg:grid-cols-3 lg:gap-6 lg:px-0 lg:pb-12 xl:grid-cols-4">
+                            <div className="grid [container-type:inline-size] grid-cols-[repeat(auto-fit,minmax(min(100%,clamp(8.25rem,25cqw,14rem)),1fr))] gap-[clamp(1rem,2.5vw,1.5rem)] px-[clamp(1rem,3vw,2rem)] pb-20 min-[40rem]:px-0 min-[40rem]:pb-12">
                                 {products.map((product) => (
                                     <ProductCard key={product.id} product={product} />
                                 ))}
@@ -273,7 +278,7 @@ export function CatalogBrowser({
             </div>
 
             <Button
-                className="fixed right-6 bottom-6 z-50 h-auto rounded-full px-6 py-3 font-bold shadow-[0_8px_30px_rgba(19,164,236,0.4)] transition-transform active:scale-95 lg:hidden"
+                className="fixed right-[clamp(1rem,4vw,1.5rem)] bottom-[clamp(1rem,4vw,1.5rem)] z-50 h-auto rounded-full px-6 py-3 font-bold shadow-[0_8px_30px_rgba(19,164,236,0.4)] transition-transform active:scale-95 min-[52rem]:hidden"
                 asChild
             >
                 <a href={`mailto:?subject=${encodeURIComponent(`Inquiry for ${businessName}`)}`}>
@@ -282,7 +287,7 @@ export function CatalogBrowser({
                 </a>
             </Button>
 
-            <div className="h-10 bg-card lg:hidden" aria-hidden="true" />
+            <div className="h-10 bg-card min-[52rem]:hidden" aria-hidden="true" />
         </>
     );
 }

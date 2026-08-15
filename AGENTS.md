@@ -79,3 +79,5 @@ Coverage must be reported but must not fail on a percentage. The production buil
 ### Responsiveness
 
 When making desktop versions of mobile screens reuse the components of the mobile version as much as posible. Prioritize responsive clases before creating a new component. If you really think that reusing the mobile component will overcomplicate the code you can create a new component.
+
+When setting responsiveness, i want a fluid conversion. I want the screen to be responsive in any screen size between xl and mobile. only after the xl breakpoint the page container should stop growing and just add space on the side, below that the page container should be 100 vw and arrange the elements accordingly, making a soft transition between the mobile and desktop screens.

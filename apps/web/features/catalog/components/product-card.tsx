@@ -11,11 +11,11 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
     return (
-        <Card className="min-w-0 gap-3 overflow-visible rounded-none border-0 bg-transparent py-0 shadow-none lg:rounded-3xl lg:bg-card lg:p-4 lg:shadow-ambient lg:ring-1 lg:ring-foreground/5">
-            <div className="group relative aspect-square w-full overflow-hidden rounded-xl bg-gray-100 shadow-sm lg:rounded-2xl">
+        <Card className="min-w-0 gap-3 overflow-visible rounded-none border-0 bg-transparent py-0 shadow-none min-[36rem]:rounded-[clamp(1rem,2.5vw,1.5rem)] min-[36rem]:bg-card min-[36rem]:p-[clamp(0.75rem,1.8vw,1rem)] min-[36rem]:shadow-ambient min-[36rem]:ring-1 min-[36rem]:ring-foreground/5">
+            <div className="group relative aspect-square w-full overflow-hidden rounded-[clamp(0.75rem,2vw,1rem)] bg-gray-100 shadow-sm">
                 {product.image[0] ? (
                     <img
-                        className="size-full object-cover transition-transform duration-500 lg:group-hover:scale-105"
+                        className="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
                         src={product.image[0]}
                         alt={product.name}
                         loading="lazy"
@@ -41,7 +41,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
 
             <div className="min-w-0">
-                <h3 className="line-clamp-2 text-sm leading-tight font-semibold lg:text-base">
+                <h3 className="line-clamp-2 text-[clamp(0.875rem,1.8vw,1rem)] leading-tight font-semibold">
                     {product.name}
                 </h3>
                 <div className="mt-1 flex items-center gap-2 tabular-nums">

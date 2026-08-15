@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
         "192.168.1.107",
         "192.168.1.100",
         "192.168.100.5",
+        "localhost",
     ],
 };
 

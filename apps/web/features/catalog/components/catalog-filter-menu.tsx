@@ -82,20 +82,27 @@ function getActiveFilterCount(filters: CatalogFilters) {
 }
 
 type PriceFieldsProps = {
+    compactLabels?: boolean;
     draft: FilterDraft;
     draftFilters: CatalogFilters | null;
     idPrefix: string;
     setDraft: Dispatch<SetStateAction<FilterDraft>>;
 };
 
-function PriceFields({ draft, draftFilters, idPrefix, setDraft }: PriceFieldsProps) {
+function PriceFields({
+    compactLabels = false,
+    draft,
+    draftFilters,
+    idPrefix,
+    setDraft,
+}: PriceFieldsProps) {
     return (
         <div className="grid grid-cols-2 gap-2">
             <label
                 htmlFor={`${idPrefix}-minimum-price`}
                 className="space-y-1 text-xs font-medium text-muted-foreground"
             >
-                Minimum price
+                {compactLabels ? "Min price" : "Minimum price"}
                 <Input
                     id={`${idPrefix}-minimum-price`}
                     type="number"
@@ -114,7 +121,7 @@ function PriceFields({ draft, draftFilters, idPrefix, setDraft }: PriceFieldsPro
                 htmlFor={`${idPrefix}-maximum-price`}
                 className="space-y-1 text-xs font-medium text-muted-foreground"
             >
-                Maximum price
+                {compactLabels ? "Max price" : "Maximum price"}
                 <Input
                     id={`${idPrefix}-maximum-price`}
                     type="number"
@@ -180,6 +187,7 @@ export function CatalogFilterMenu({
                         Price range
                     </h3>
                     <PriceFields
+                        compactLabels
                         draft={draft}
                         draftFilters={draftFilters}
                         idPrefix="sidebar"
