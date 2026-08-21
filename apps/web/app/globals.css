@@ -4,6 +4,9 @@
  * CatalogApp design tokens, synchronized with the Business Public Catalog
  * design generated in Stitch.
  */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
     --background: #f6f7f8;
     --foreground: #111618;
